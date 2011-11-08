@@ -581,7 +581,9 @@ function n__block_typography ($text) {
     $text
   );
   
-  return hel2_kavychki ($text);
+  if ($_neasden_config['with-typography']) {
+    $text = hel2_kavychki ($text);
+  }
   
   return $text;
   

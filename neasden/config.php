@@ -31,6 +31,8 @@ $_neasden_config = array (
     '&rdquo;' => '”',
   ),
   
+  'with-typography' => false,
+  
   'language' => 'ru',
 
   'extensions-list'  => array (
