@@ -1,0 +1,5 @@
+<object><script></script></object>
+
+<script><iframe>123</iframe><pre>456</pre></script>
+
+<pre><iframe>123</iframe><pre>456</pre></pre>
