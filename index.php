@@ -5,7 +5,7 @@ error_reporting (E_ALL & ~E_NOTICE);
 
 if (!include 'neasden/neasden.php') die ('neasden init failed');
 
-$text = file_get_contents ('text-7.txt');
+$text = file_get_contents ('tests/test-7.txt');
 
 $res = '';
 
