@@ -50,8 +50,9 @@ $_neasden_config = array (
     'pictures' => array (
       'folder' => 'pictures/',
       'css-class' => 'p-picture',
+      'max-width' => '400',
     ),
-    'talbes' => array (
+    'tables' => array (
       'css-class' => 'p-table',
     ),
   ),

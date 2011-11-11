@@ -25,7 +25,16 @@ function n__render_group_picture ($group) {
     if ($line['class'] == 'picture') {
       $filename = $myconf['folder'] . $filebasename;
       $size = getimagesize ($filename);
-      $result .= '<img src="'. $filename .'" '. $size[3] .' alt="'. $alt .'" />'. "\n";
+      list ($width, $height) = $size;
+      if ($width > $myconf['max-width']) {
+        $height = $height * ($myconf['max-width'] / $width);
+        $width = $myconf['max-width'];
+      }
+      $result .= (
+        '<img src="'. $filename .'" '.
+        'width="'. $width .'" height="'. $height.'" '.
+        'alt="'. $alt .'" />'. "\n"
+      );
     } else {
       if (!$p) {
         $p = true;
