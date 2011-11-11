@@ -148,6 +148,73 @@ function n__restore_tags ($text) {
 }
 
 
+// puts quotes, really
+function n__enclose_within_tagless ($text, $char, $enclosures) {
+
+  if (count ($enclosures) == 0) return;
+  if (count ($enclosures) == 1) $enclosures[1] = $enclosures[0];
+  if (count ($enclosures) == 2) {
+    $enclosures[3] = $enclosures[1];
+    $enclosures[2] = $enclosures[1];
+    $enclosures[1] = $enclosures[0];
+  }
+  if (count ($enclosures) == 3) $enclosures[3] = $enclosures[2];
+
+  // obvious replacements
+  $text = preg_replace (
+    '/((^|\s|\-)'. HEL_TAGS .')'.
+    preg_quote ($char).
+    '(?!'. HEL_TAGS .'($|\-|\s))/m',
+    '$1'. $enclosures[0],
+    $text
+  );
+  
+  $text = preg_replace (
+    '/(?<!^|\s|\-)('. HEL_TAGS .
+    preg_quote ($char).
+    ')(?='. HEL_TAGS ."($|\-|\s))/m",
+    '$2'. $enclosures[3],
+    $text
+  );
+
+  // remaining replacements
+  if (1) {
+    $len = strlen ($enclosures[0]);
+    $qdepth = 0;
+    for ($i = 0; $i < strlen ($text)-1; ++ $i) {
+      $scan = substr ($text, $i, $len);
+      if ($scan == $enclosures[0]) {
+        $qdepth ++;
+        if ($qdepth > 1) $text = substr ($text, 0, $i) . $enclosures[1] . substr ($text, $i + $len);
+        $i += $len;
+      }
+      if ($scan == $enclosures[3]) {
+        if ($qdepth > 1) $text = substr ($text, 0, $i) . $enclosures[2] . substr ($text, $i + $len);
+        $qdepth --;
+        $i += $len;
+      }
+      if ($i > strlen ($text)-1) break;
+      if ($text[$i] == $char) {
+        if ($qdepth > 0) {
+          if ($qdepth > 1)
+            $text = substr ($text, 0, $i) . $enclosures[2] . substr ($text, $i + 1);
+          else
+            $text = substr ($text, 0, $i) . $enclosures[3] . substr ($text, $i + 1);
+          -- $qdepth;
+        } else {
+          $text = substr ($text, 0, $i) . $enclosures[0] . substr ($text, $i + 1);
+          ++ $qdepth;
+        }
+      }
+    }
+  }
+  
+  return $text;                                                
+
+}
+
+
+
 
 function n__split_blocks ($text) {
   global $_neasden_config;
@@ -713,7 +780,6 @@ function neasden_explain ($text) {
 
 
 function neasden ($text) {
-
 
   $result = '';
   foreach (n__format_blocks ($text) as $block) {

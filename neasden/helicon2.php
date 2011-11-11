@@ -1,71 +1,6 @@
 <?
 
   define ('HEL_VERSION', '2');
-
-  function n__enclose ($text, $char, $enclosures) {
-
-    if (count ($enclosures) == 0) return;
-    if (count ($enclosures) == 1) $enclosures[1] = $enclosures[0];
-    if (count ($enclosures) == 2) {
-      $enclosures[3] = $enclosures[1];
-      $enclosures[2] = $enclosures[1];
-      $enclosures[1] = $enclosures[0];
-    }
-    if (count ($enclosures) == 3) $enclosures[3] = $enclosures[2];
-
-    // obvious replacements
-    $text = preg_replace (
-      '/((^|\s|\-)'. HEL_TAGS .')'.
-      preg_quote ($char).
-      '(?!'. HEL_TAGS .'($|\-|\s))/m',
-      '$1'. $enclosures[0],
-      $text
-    );
-    
-    $text = preg_replace (
-      '/(?<!^|\s|\-)('. HEL_TAGS .
-      preg_quote ($char).
-      ')(?='. HEL_TAGS ."($|\-|\s))/m",
-      '$2'. $enclosures[3],
-      $text
-    );
-
-    // remaining replacements
-    if (1) {
-      $len = strlen ($enclosures[0]);
-      $qdepth = 0;
-      for ($i = 0; $i < strlen ($text)-1; ++ $i) {
-        $scan = substr ($text, $i, $len);
-        if ($scan == $enclosures[0]) {
-          $qdepth ++;
-          if ($qdepth > 1) $text = substr ($text, 0, $i) . $enclosures[1] . substr ($text, $i + $len);
-          $i += $len;
-        }
-        if ($scan == $enclosures[3]) {
-          if ($qdepth > 1) $text = substr ($text, 0, $i) . $enclosures[2] . substr ($text, $i + $len);
-          $qdepth --;
-          $i += $len;
-        }
-        if ($i > strlen ($text)-1) break;
-        if ($text[$i] == $char) {
-          if ($qdepth > 0) {
-            if ($qdepth > 1)
-              $text = substr ($text, 0, $i) . $enclosures[2] . substr ($text, $i + 1);
-            else
-              $text = substr ($text, 0, $i) . $enclosures[3] . substr ($text, $i + 1);
-            -- $qdepth;
-          } else {
-            $text = substr ($text, 0, $i) . $enclosures[0] . substr ($text, $i + 1);
-            ++ $qdepth;
-          }
-        }
-      }
-    }
-    
-    return $text;                                                
-
-  }
-  
   
   
   // replacements, quotes, dashes, no-break spaces
@@ -101,7 +36,7 @@
     }
     
     // quotes
-    $text = n__enclose ($text, '"', $quotes);
+    $text = n__enclose_within_tagless ($text, '"', $quotes);
     
 
     $b_in = n__save_tag ('<b>');
@@ -110,8 +45,8 @@
     $i_out = n__save_tag ('</i>');
 
     /*
-    $text = n__enclose ($text, '*', array ($b_in, $i_in, $i_out, $b_out));
-    $text = n__enclose ($text, '_', array ($i_in, $b_in, $b_out, $i_out));
+    $text = n__enclose_within_tagless ($text, '*', array ($b_in, $i_in, $i_out, $b_out));
+    $text = n__enclose_within_tagless ($text, '_', array ($i_in, $b_in, $b_out, $i_out));
     */
     
     // italics
