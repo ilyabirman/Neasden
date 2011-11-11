@@ -29,6 +29,7 @@ function n__render_group_picture ($group) {
       list ($width, $height) = $size;
       
       $filename_original = $filename;
+      $width_original = $width;
       $is_scaled = false;
 
       // image too wide
@@ -68,7 +69,7 @@ function n__render_group_picture ($group) {
       // wrap into a link if needed
       if ($myconf['scaled-img-link-to-original'] and $is_scaled) {
         $image_html = (
-          '<a href="'. $filename_original .'" class="'. $myconf['scaled-img-link-to-original-class'] .'">'.
+          '<a href="'. $filename_original .'" class="'. $myconf['scaled-img-link-to-original-class'] .'" width="'. $width_original .'">'.
           $image_html .
           '</a>'
         );

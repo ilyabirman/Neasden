@@ -67,15 +67,15 @@ function imageShowRealSize () {
   
   $img.data ({ 'previewWidth': $img.width () })
 
-  fullWidth = 768
+  fullWidth = $ (this).attr ('width')
 
   // full picture src is a’s href
-  sSrc = this.href
+  fullSrc = this.href
   
   bigImg = new Image ()
-  $ (bigImg).attr ('src', sSrc);
+  $ (bigImg).attr ('src', fullSrc);
   $ (bigImg).bind ('load', function () {
-    $img.attr ('src', sSrc)
+    $img.attr ('src', fullSrc)
   })
   
   $img.stop ()
