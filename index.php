@@ -57,57 +57,57 @@ echo 'Time: '. $stopwatch;
 
 <script src="js/jquery.js"></script>
 <script>
-function imageShowRealSizes()
-{
-        this.blur();
-        $(this).addClass('img-zoomed-in');
-        var aOriginalSizes, iWidth, iHeight, dImg, dFullsizeImage; 
-        /*
-        // Размеры оригинального изображения берутся из имени ссылки, куда они записываются серверным скриптом
-        aOriginalSizes = this.name.match(/(\d+)x(\d+)/i);
-        */
-        aOriginalSizes = [100, 100, 200, 200]
-        iWidth = aOriginalSizes[1];
-        iHeight = aOriginalSizes[2];
-        // Объект изображения
-        dImg = $('img', $(this));
-        // Полноразмерное изображение
-        dFullsizeImage = new Image();
-        // Адрес полноразмерного изображения берётся из ссылки
-        sSrc = this.href;
-        $(dFullsizeImage).bind('load', function(){
-            $(dImg).attr('src', sSrc);    
-        });
-        $(dFullsizeImage).attr('src', sSrc);
-        dImg.stop();
-		dImg.css("height","auto");
-        dImg.animate({width: iWidth}, 'fast');
-        return false;    
+
+function imageShowRealSize () {
+
+  this.blur ()
+  $ (this).addClass ('img-zoomed-in')
+  
+  var $img = $ ('img', $ (this))
+  
+  $img.data ({ 'previewWidth': $img.width () })
+
+  fullWidth = 768
+
+  // full picture src is a’s href
+  sSrc = this.href
+  
+  bigImg = new Image ()
+  $ (bigImg).attr ('src', sSrc);
+  $ (bigImg).bind ('load', function () {
+    $img.attr ('src', sSrc)
+  })
+  
+  $img.stop ()
+  $img.css ('height', 'auto')
+  $img.animate ({ width: fullWidth }, 'fast')
+  
+  return false
+  
 }
 
-function imageShowPrewieSizes()
-{
-        this.blur();
-        $(this).removeClass('img-zoomed-in');
-        var aOriginalSizes, iWidth, iHeight, dImg; 
-        /*
-        aOriginalSizes = this.name.match(/(\d+)x(\d+)x(\d+)x(\d+)/i);
-        */
-        aOriginalSizes = [100, 100, 200, 200]
-        iWidth = aOriginalSizes[3];
-        iHeight = aOriginalSizes[4];
-        // Объект изображения
-        dImg = $('img', $(this));
-        dImg.stop();
-		dImg.css("height","auto");
-        dImg.animate({width: iWidth}, 'fast');
-        return false;    
+function imageShowPreviewSize () {
+
+  this.blur ()
+  $ (this).removeClass ('img-zoomed-in')
+  
+  var $img = $ ('img', $ (this))
+  
+  previewWidth = $img.data ('previewWidth')
+  
+  $img.stop ()
+  $img.css ('height', 'auto')
+  $img.animate ({ width: previewWidth }, 'fast')
+  
+  return false
+  
 }
 
 
 if ($) $ (function () {
   $ ('a.link-to-big-picture')
-    .toggle (imageShowRealSizes, imageShowPrewieSizes)
+    .toggle (imageShowRealSize, imageShowPreviewSize)
     .append('<div class="zoom-helper"></div>');
 })
+
 </script>
