@@ -23,19 +23,40 @@ function n__render_group_picture ($group) {
     list ($filebasename, $alt) = explode (' ', $line['content'], 2);
     
     if ($line['class'] == 'picture') {
+
       $filename = $myconf['folder'] . $filebasename;
       $size = getimagesize ($filename);
       list ($width, $height) = $size;
 
+      // image too wide
       if ($width > $myconf['max-width']) {
 
         $height = $height * ($myconf['max-width'] / $width);
         $width = $myconf['max-width'];
 
-        if ($myconf['folder-scaled']) {
-          $filename = $myconf['folder-scaled'] . $filebasename;
-          $size = getimagesize ($filename);
-          list ($width, $height) = $size;
+        // if scaled down images should provided
+        if (array_key_exists ('scaled-img-folder', $myconf)) {
+
+          $filename_scaled = $myconf['scaled-img-folder'] . $filebasename;
+        
+          if (is_file ($filename_scaled)) {
+
+            // use the scaled file
+            $filename = $filename_scaled;
+            $size = getimagesize ($filename);
+            list ($width, $height) = $size;
+
+          } elseif (array_key_exists ('scaled-img-provider', $myconf)) {
+
+            // call the provider
+            $filename = $myconf['scaled-img-provider'] . $filebasename;
+
+          } else {
+
+            // leave the file as-is, scale with browser
+
+          }
+          
         }
 
       }

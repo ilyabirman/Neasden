@@ -49,7 +49,8 @@ $_neasden_config = array (
     ),
     'pictures' => array (
       'folder' => 'pictures/',
-      'folder-scaled' => 'pictures/scaled/',
+      'scaled-img-folder' => 'pictures/scaled/',
+      'scaled-img-provider' => '@scale-image/',
       'css-class' => 'p-picture',
       'max-width' => '400',
     ),
