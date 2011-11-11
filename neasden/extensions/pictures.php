@@ -26,15 +26,26 @@ function n__render_group_picture ($group) {
       $filename = $myconf['folder'] . $filebasename;
       $size = getimagesize ($filename);
       list ($width, $height) = $size;
+
       if ($width > $myconf['max-width']) {
+
         $height = $height * ($myconf['max-width'] / $width);
         $width = $myconf['max-width'];
+
+        if ($myconf['folder-scaled']) {
+          $filename = $myconf['folder-scaled'] . $filebasename;
+          $size = getimagesize ($filename);
+          list ($width, $height) = $size;
+        }
+
       }
+      
       $result .= (
         '<img src="'. $filename .'" '.
         'width="'. $width .'" height="'. $height.'" '.
         'alt="'. $alt .'" />'. "\n"
       );
+      
     } else {
       if (!$p) {
         $p = true;
