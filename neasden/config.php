@@ -31,7 +31,7 @@ $_neasden_config = array (
     '&rdquo;' => '”',
   ),
   
-  'with-typography' => false,
+  'with-typography' => true,
   
   'language' => 'ru',
 
@@ -49,7 +49,10 @@ $_neasden_config = array (
     ),
     'pictures' => array (
       'folder' => 'pictures/',
-      'css-class' => 'picture',
+      'css-class' => 'p-picture',
+    ),
+    'talbes' => array (
+      'css-class' => 'p-table',
     ),
   ),
   
