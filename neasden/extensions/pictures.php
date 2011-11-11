@@ -27,45 +27,50 @@ function n__render_group_picture ($group) {
       $filename = $myconf['folder'] . $filebasename;
       $size = getimagesize ($filename);
       list ($width, $height) = $size;
+      
+      $filename_original = $filename;
+      $is_scaled = false;
 
       // image too wide
       if ($width > $myconf['max-width']) {
 
+        $is_scaled = true;
         $height = $height * ($myconf['max-width'] / $width);
         $width = $myconf['max-width'];
 
-        // if scaled down images should provided
+        // if scaled down images are or should be provided
         if (array_key_exists ('scaled-img-folder', $myconf)) {
 
           $filename_scaled = $myconf['scaled-img-folder'] . $filebasename;
         
           if (is_file ($filename_scaled)) {
-
             // use the scaled file
             $filename = $filename_scaled;
             $size = getimagesize ($filename);
             list ($width, $height) = $size;
-
           } elseif (array_key_exists ('scaled-img-provider', $myconf)) {
-
             // call the provider
             $filename = $myconf['scaled-img-provider'] . $filebasename;
-
-          } else {
-
-            // leave the file as-is, scale with browser
-
           }
+
+          // otherwise leave the file as-is, browser will scale it
           
         }
 
       }
       
-      $result .= (
+      $image_html = (
         '<img src="'. $filename .'" '.
         'width="'. $width .'" height="'. $height.'" '.
         'alt="'. $alt .'" />'. "\n"
       );
+
+      // wrap into a link if needed
+      if ($myconf['scaled-img-link-to-original'] and $is_scaled) {
+        $image_html = '<a href="'. $filename_original .'">'. $image_html .'</a>';
+      }
+      
+      $result .= $image_html;
       
     } else {
       if (!$p) {
