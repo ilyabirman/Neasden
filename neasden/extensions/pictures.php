@@ -67,7 +67,11 @@ function n__render_group_picture ($group) {
 
       // wrap into a link if needed
       if ($myconf['scaled-img-link-to-original'] and $is_scaled) {
-        $image_html = '<a href="'. $filename_original .'">'. $image_html .'</a>';
+        $image_html = (
+          '<a href="'. $filename_original .'" class="'. $myconf['scaled-img-link-to-original-class'] .'">'.
+          $image_html .
+          '</a>'
+        );
       }
       
       $result .= $image_html;
