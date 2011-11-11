@@ -1,11 +1,13 @@
 <?
 
-n__define_line_class ('picture', '.*\.(jpe?g|gif|png)');
+//n__define_line_class ('picture', '.*\.(jpe?g|gif|png)');
+n__define_line_class ('picture', '.*\.(jpe?g|gif|png)(?: +(.+))?');
 
 function n__detect_class_picture ($line) {
   global $_neasden_config;
   
-  return is_file ($_neasden_config['extensions']['pictures']['folder'] . $line);
+  list ($filebasename, ) = explode (' ', $line, 2);  
+  return is_file ($_neasden_config['extensions']['pictures']['folder'] . $filebasename);
 }
 
 n__define_group ('picture', '(-picture-)(-p-)*');
@@ -18,16 +20,18 @@ function n__render_group_picture ($group) {
 
   $result = '<div class="'. $myconf['css-class'] .'">'."\n";
   foreach ($group as $line) {
+    list ($filebasename, $alt) = explode (' ', $line['content'], 2);
+    
     if ($line['class'] == 'picture') {
-      $filename = $myconf['folder'] . $line['content'];
+      $filename = $myconf['folder'] . $filebasename;
       $size = getimagesize ($filename);
-      $result .= '<img src="'. $filename .'" '. $size[3] .' alt="" />'. "\n";
+      $result .= '<img src="'. $filename .'" '. $size[3] .' alt="'. $alt .'" />'. "\n";
     } else {
       if (!$p) {
         $p = true;
-        $result .= '<p>' . $line['content'];
+        $result .= '<p>' . $filebasename;
       } else {
-        $result .= '<br />' . "\n" . $line['content'];
+        $result .= '<br />' . "\n" . $filebasename;
       }
     }
   }
