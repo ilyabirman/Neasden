@@ -35,7 +35,9 @@ echo 'Time: '. $stopwatch;
   h3, h4, h5, h6 { font-size: 100%; }
   p+ul, p+ol { margin-top: -.7em }
   blockquote { color: #009; border-left: 1px #009 solid; padding-left: 1em }
-  .picture p { margin: .35em 0 0 0; font-size: 85%; }
+  .p-picture p { margin: .35em 0 .7em 0; font-size: 85%; }
+  .p-table { margin: 0 0 .7em 0; border-collapse: collapse }
+  .p-table td { border: 1px #ccc solid; padding: 10px }
   ul li, ol li { margin: 0 0 .35em 0 }
   td { padding: 0 1em 0 0 }
 </style>
