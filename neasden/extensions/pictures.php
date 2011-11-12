@@ -80,9 +80,9 @@ function n__render_group_picture ($group) {
     } else {
       if (!$p) {
         $p = true;
-        $result .= '<p>' . $filebasename;
+        $result .= '<p>' . $line['content'];
       } else {
-        $result .= '<br />' . "\n" . $filebasename;
+        $result .= '<br />' . "\n" . $line['content'];
       }
     }
   }
