@@ -49,15 +49,15 @@ $_neasden_config = array (
     ),
     'pictures' => array (
       'folder' => 'pictures/',
-      'css-class' => 'p-picture',
-      'max-width' => '400',
+      'css-class' => 'txt-picture',
+      'max-width' => '768',
       'scaled-img-folder' => 'pictures/scaled/',
-      //'scaled-img-provider' => '@scale-image/',
+      'scaled-img-provider' => '@scale-image:',
       'scaled-img-link-to-original' => true,
       'scaled-img-link-to-original-class' => 'link-to-big-picture',
     ),
     'tables' => array (
-      'css-class' => 'p-table',
+      'css-class' => 'txt-table',
     ),
   ),
   
