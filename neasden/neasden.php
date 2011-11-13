@@ -25,8 +25,6 @@ if (array_key_exists ('__overload', $_neasden_config)) {
   }
 }
 
-require 'helicon2.php';
-
 $_neasden_required_line_classes = array ();
 
 $_neasden_line_classes = array (
