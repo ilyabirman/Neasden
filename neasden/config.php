@@ -2,6 +2,8 @@
 
 $_neasden_config = array (
 
+  '__overload' => 'neasden-config.php',
+
   'block-strengths' => array (
 
     'code' => N_BLOCK_STRENGTH_OPAQUE,
@@ -53,7 +55,7 @@ $_neasden_config = array (
       'max-width' => '768',
       'scaled-img-folder' => 'pictures/scaled/',
       'scaled-img-provider' => '@scale-image:',
-      'scaled-img-extension' => '.scaled.jpg',
+      'scaled-img-extension' => 'scaled.jpg',
       'scaled-img-link-to-original' => true,
       'scaled-img-link-to-original-class' => 'link-to-big-picture',
     ),

@@ -16,6 +16,13 @@ define ('HEL_TAGS', '('. HEL_TAG .')*');
 define ('N_MAX_H_LEVEL', 6);
 
 require 'config.php';
+
+if (array_key_exists ('__overload', $_neasden_config)) {
+  $_default_config = $_neasden_config;
+  require $_neasden_config['__overload'];
+  $_neasden_config = array_merge ($_default_config, $_neasden_config);
+}
+
 require 'helicon2.php';
 
 $_neasden_required_line_classes = array ();
