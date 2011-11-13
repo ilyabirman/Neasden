@@ -46,7 +46,7 @@ $_neasden_groups = array (
   'h4'      => '(-h4-)+',
   'h5'      => '(-h5-)+',
   'h6'      => '(-h6-)+',
-/*
+  /*
   'list'    => '((-ol-item-)|(-ul-item-))((-ol-item-)|(-ul-item-)|(-p-))*',
   'hr'      => '(-hr-)',
   'table'   => '(-hr-)(-tr-)+(-hr-)?',
@@ -644,10 +644,165 @@ function n__groups ($text) {
 
 
 
+// replacements, quotes, dashes, no-break spaces
+// input text must be netto:
+// no html entities, just actual utf-8 chars
+  
+function n__typography ($text) {
+  global $_neasden_config, $_neasden_language;
+
+  $nbsp = " ";
+  
+  $quotes = $_neasden_language['quotes'];
+  $dash = $_neasden_language['dash'];
+
+  //$span_tsp = n__save_tag ('<span class=\"tsp\">'. $nbsp .'</span>');
+  $nobr_in = n__save_tag ('<nobr>');
+  $nobr_out = n__save_tag ('</nobr>');
+
+  //echo $text;
+  //die;
+
+  $text = preg_replace_callback ('/(?:\<[^\>]+\>)/isxu', 'n__save_tag', $text);
+
+  // replacements
+  if (1) {
+    if (array_key_exists ('replacements', $_neasden_language)) {
+      $text = str_replace (
+        array_keys ($_neasden_language['replacements']),
+        array_values ($_neasden_language['replacements']),
+        $text
+      );
+    }
+  }
+  
+  // quotes
+  $text = n__enclose_within_tagless ($text, '"', $quotes);
+  
+
+  $b_in = n__save_tag ('<b>');
+  $b_out = n__save_tag ('</b>');
+  $i_in = n__save_tag ('<i>');
+  $i_out = n__save_tag ('</i>');
+
+  /*
+  $text = n__enclose_within_tagless ($text, '*', array ($b_in, $i_in, $i_out, $b_out));
+  $text = n__enclose_within_tagless ($text, '_', array ($i_in, $b_in, $b_out, $i_out));
+  */
+  
+  // italics
+  $text = preg_replace (
+    '/(?:\_(?=\S)(.*?)\_)|(?:\_(.*?)(?<=\S)\_)/isu',
+    $i_in . '$1$2' . $i_out,
+    $text
+  );
+
+  // bold
+  $text = preg_replace (
+    '/(?:\*(?=\S)(.*?)\*)|(?:\*(.*?)(?<=\S)\*)/isu',
+    $b_in . '$1$2' . $b_out,
+    $text
+  );
+
+  
+  /*
+  
+  // obvious quotes
+  $text = preg_replace (
+    '/((^|\s|\-)'. HEL_TAGS .')\"(?!'. HEL_TAGS .'($|\-|\s))/m',
+    '$1'. $quotes[0],
+    $text
+  );
+  
+  $text = preg_replace (
+    '/(?<!^|\s|\-)('. HEL_TAGS .'\")(?='. HEL_TAGS ."($|\-|\s))/m",
+    '$2'. $quotes[3],
+    $text
+  );
+
+  // remaining quotes
+  if (1) {
+    $len = strlen ($quotes[0]);
+    $qdepth = 0;
+    for ($i = 0; $i < strlen ($text)-1; ++ $i) {
+      $scan = substr ($text, $i, $len);
+      if ($scan == $quotes[0]) {
+        $qdepth ++;
+        if ($qdepth > 1) $text = substr ($text, 0, $i) . $quotes[1] . substr ($text, $i + $len);
+        $i += $len;
+      }
+      if ($scan == $quotes[3]) {
+        if ($qdepth > 1) $text = substr ($text, 0, $i) . $quotes[2] . substr ($text, $i + $len);
+        $qdepth --;
+        $i += $len;
+      }
+      if ($i > strlen ($text)-1) break;
+      if ($text[$i] == '"') {
+        if ($qdepth > 0) {
+          if ($qdepth > 1)
+            $text = substr ($text, 0, $i) . $quotes[2] . substr ($text, $i + 1);
+          else
+            $text = substr ($text, 0, $i) . $quotes[3] . substr ($text, $i + 1);
+          -- $qdepth;
+        } else {
+          $text = substr ($text, 0, $i) . $quotes[0] . substr ($text, $i + 1);
+          ++ $qdepth;
+        }
+      }
+    }
+  }                                                
+  
+  */
+  
+  
+  // dash
+  if (1) {
+    $text = preg_replace ('/ \- /m', ' '. $dash .' ', $text);
+    $text = preg_replace ('/^('. HEL_TAGS .')\- /m', '$1'. $dash .' ', $text);
+    $text = preg_replace ('/ \-('. HEL_TAGS .')$/m', $nbsp . $dash. '$1', $text);
+  }
+
+
+  // unions and prepositions
+  if ($nobreak_fw = $_neasden_language['with-next']) {
+    $text = preg_replace (
+      "/".
+      "(?<!\pL|\-)".    // not-a—Unicode-letter-or-dash lookbehind
+      $nobreak_fw .     // a preposition
+      HEL_TAGS.
+      "\s".             // and a space
+      "/isu",      
+      '$1$2'. $nbsp,
+      $text
+    );
+  }
+
+  if ($nobreak_bw = $_neasden_language['with-prev']) {
+    $text = preg_replace (
+      "/".
+      "\s".            // a space
+      HEL_TAGS.
+      $nobreak_bw .    // a particle
+      "(?!\pL|\-)".    // not-a—Unicode-letter-or-dash lookforward
+      "/isu",      
+      $nbsp .'$1$2',
+      $text
+    );
+  }
+
+
+  $text = n__restore_tags ($text);
+
+  return $text;
+
+}
+
+
+
 // any opaque block or a text block after formatting
 // should be typographed with this function
 
-function n__block_typography ($text) {
+function n__process_opaque_block ($text) {
   global $_neasden_config, $_neasden_tag_machine;
   
   // replace &laquo; with normal quote characters
@@ -658,7 +813,7 @@ function n__block_typography ($text) {
   );
   
   if ($_neasden_config['with-typography']) {
-    $text = hel2_kavychki ($text);
+    $text = n__typography ($text);
   }
   
   return $text;
@@ -703,7 +858,7 @@ function n__format_blocks ($text) {
 
     // opaque blocks should be typographed
     if ($initial_block['strength'] < N_BLOCK_STRENGTH_SACRED) {
-      $resulting_block['result'] = n__block_typography ($resulting_block['result']);
+      $resulting_block['result'] = n__process_opaque_block ($resulting_block['result']);
     }
 
     $resulting_blocks[] = $resulting_block;
