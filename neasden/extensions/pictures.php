@@ -41,9 +41,22 @@ function n__render_group_picture ($group) {
 
         // if scaled down images are or should be provided
         if (array_key_exists ('scaled-img-folder', $myconf)) {
-
-          $filename_scaled = $myconf['scaled-img-folder'] . $filebasename;
         
+          $scaled_filebasename = $filebasename;
+
+          if (array_key_exists ('scaled-img-extension', $myconf)) {
+            $basename_elements = explode ('.', $scaled_filebasename);
+            if (count ($basename_elements) < 2) $basename_elements[] = '';
+            $ext = array_pop ($basename_elements);
+            $basename_elements[] = $myconf['scaled-img-extension'];
+            $basename = implode ('.', $basename_elements);
+            $path_elements[] = $basename;
+            $scaled_filebasename = implode ('/', $path_elements);
+          }
+        
+          $filename_scaled = $myconf['scaled-img-folder'] . $scaled_filebasename;
+          die ($filename_scaled);
+          
           if (is_file ($filename_scaled)) {
             // use the scaled file
             $filename = $filename_scaled;
@@ -51,7 +64,7 @@ function n__render_group_picture ($group) {
             list ($width, $height) = $size;
           } elseif (array_key_exists ('scaled-img-provider', $myconf)) {
             // call the provider
-            $filename = $myconf['scaled-img-provider'] . $filebasename;
+            $filename = $myconf['scaled-img-provider'] . $scaled_filebasename;
           }
 
           // otherwise leave the file as-is, browser will scale it
