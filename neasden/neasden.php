@@ -18,9 +18,11 @@ define ('N_MAX_H_LEVEL', 6);
 require 'config.php';
 
 if (array_key_exists ('__overload', $_neasden_config)) {
-  $_default_config = $_neasden_config;
-  require $_neasden_config['__overload'];
-  $_neasden_config = array_merge ($_default_config, $_neasden_config);
+  if (is_file ($_neasden_config['__overload'])) {
+    $_default_config = $_neasden_config;
+    require $_neasden_config['__overload'];
+    $_neasden_config = array_merge ($_default_config, $_neasden_config);
+  }
 }
 
 require 'helicon2.php';
