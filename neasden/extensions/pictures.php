@@ -55,7 +55,6 @@ function n__render_group_picture ($group) {
           }
         
           $filename_scaled = $myconf['scaled-img-folder'] . $scaled_filebasename;
-          die ($filename_scaled);
           
           if (is_file ($filename_scaled)) {
             // use the scaled file
