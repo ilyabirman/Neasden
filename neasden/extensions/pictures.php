@@ -20,7 +20,7 @@ function n__render_group_picture ($group) {
 
   $result = '<div class="'. $myconf['css-class'] .'">'."\n";
   foreach ($group as $line) {
-    list ($filebasename, $alt) = explode (' ', $line['content'], 2);
+    @list ($filebasename, $alt) = explode (' ', $line['content'], 2);
     
     if ($line['class'] == 'picture') {
 
