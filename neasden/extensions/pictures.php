@@ -78,10 +78,10 @@ function n__render_group_picture ($group) {
         'alt="'. $alt .'" />'. "\n"
       );
       
-      $cssc_zoomlink = $myconf['scaled-img-link-to-original-class'];
-      $cssc_zoomicon = 'txt-picture-zoom-icon';
-      $cssc_zoomable = 'txt-picture-zoomable';
-      $cssc_zoomin = 'txt-picture-zoom-in';
+      $cssc_zoomlink = $myconf['css-class'] .'-zoom-link';
+      $cssc_zoomicon = $myconf['css-class'] .'-zoom-icon';
+      $cssc_zoomable = $myconf['css-class'] .'-zoomable';
+      $cssc_zoomin   = $myconf['css-class'] .'-zoom-in';
 
       // wrap into a link if needed
       if ($myconf['scaled-img-link-to-original'] and $is_scaled) {

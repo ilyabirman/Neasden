@@ -51,10 +51,10 @@ $_neasden_config = array (
     ),
     'pictures' => array (
       'folder' => 'pictures/',
-      'css-class' => 'txt-picture',
-      'max-width' => '768',
+      'css-class' => 'txt-picture', // see also var csscPrefix in scaleimage.js
+      'max-width' => '368',
       'scaled-img-folder' => 'pictures/scaled/',
-      'scaled-img-provider' => '@scale-image:',
+      //'scaled-img-provider' => '@scale-image:',
       'scaled-img-extension' => 'scaled.jpg',
       'scaled-img-link-to-original' => true,
       'scaled-img-link-to-original-class' => 'link-to-big-picture',

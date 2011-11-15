@@ -1,5 +1,7 @@
 if ($) $ (function () {
   
+  var csscPrefix = 'txt-picture'
+  
   var imageAnimateWidthTo = function ($img, width) {
     
     $img.stop ()
@@ -14,7 +16,7 @@ if ($) $ (function () {
   var imageShowRealSize = function () {
   
     this.blur ()
-    $ (this).addClass ('txt-picture-zoomed')
+    $ (this).addClass (csscPrefix + '-zoomed')
     
     var $img = $ ('img', $ (this))
     
@@ -38,7 +40,7 @@ if ($) $ (function () {
   var imageShowPreviewSize = function () {
   
     this.blur ()
-    $ (this).removeClass ('txt-picture-zoomed')
+    $ (this).removeClass (csscPrefix + '-zoomed')
     
     var $img = $ ('img', $ (this))
     
@@ -48,6 +50,6 @@ if ($) $ (function () {
     
   }
   
-  $ ('a.link-to-big-picture').toggle (imageShowRealSize, imageShowPreviewSize)
+  $ ('a.' + csscPrefix + '-zoom-link').toggle (imageShowRealSize, imageShowPreviewSize)
 
 })
