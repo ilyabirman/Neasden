@@ -589,6 +589,7 @@ function n__groups ($text) {
     // parse and match line groups
     
     $line = n__parse_line ($line);
+    $line['result'] = '';
     $line['depth'] = $depth;
     $rdef .= '-'. $line['class'] .'-';
         
