@@ -48,8 +48,6 @@ if ($) $ (function () {
     
   }
   
-  $ ('a.link-to-big-picture')
-    .toggle (imageShowRealSize, imageShowPreviewSize)
-    .prepend('<div class="txt-picture-zoom-icon"><div class="txt-picture-zoomable"></div><div class="txt-picture-zoom-in"></div></div>');
+  $ ('a.link-to-big-picture').toggle (imageShowRealSize, imageShowPreviewSize)
 
 })
