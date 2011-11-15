@@ -14,7 +14,7 @@ if ($) $ (function () {
   var imageShowRealSize = function () {
   
     this.blur ()
-    $ (this).addClass ('img-zoomed-in')
+    $ (this).addClass ('txt-picture-zoomed')
     
     var $img = $ ('img', $ (this))
     
@@ -38,7 +38,7 @@ if ($) $ (function () {
   var imageShowPreviewSize = function () {
   
     this.blur ()
-    $ (this).removeClass ('img-zoomed-in')
+    $ (this).removeClass ('txt-picture-zoomed')
     
     var $img = $ ('img', $ (this))
     
@@ -50,6 +50,6 @@ if ($) $ (function () {
   
   $ ('a.link-to-big-picture')
     .toggle (imageShowRealSize, imageShowPreviewSize)
-    .append('<div class="zoom-helper"></div>');
+    .prepend('<div class="txt-picture-zoom-icon"><div class="txt-picture-zoomable"></div><div class="txt-picture-zoom-in"></div></div>');
 
 })

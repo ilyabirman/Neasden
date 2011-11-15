@@ -28,7 +28,7 @@ $stopwatch = stopwatch ();
 //}
 
 $stopwatch = stopwatch () - $stopwatch;
-echo 'Time: '. $stopwatch;
+#echo 'Time: '. $stopwatch;
 
 ?>
 
@@ -42,11 +42,30 @@ echo 'Time: '. $stopwatch;
   h3, h4, h5, h6 { font-size: 100%; }
   p+ul, p+ol { margin-top: -.7em }
   blockquote { color: #009; border-left: 1px #009 solid; padding-left: 1em }
+
+  .txt-picture { margin-bottom: .7em }
   .txt-picture p { margin: .35em 0 .7em 0; font-size: 85%; }
+  .txt-picture a { position: relative; display: inline-block }
+  .txt-picture a img { border: 1px #ccc solid }
+  .txt-picture a:hover img { border-color: #f33 }
+  .txt-picture a .txt-picture-zoom-icon,
+  .txt-picture a .txt-picture-zoom-in,
+  .txt-picture a .txt-picture-zoomable {
+    position: absolute; 
+    width: .7em; height: .7em
+  }
+  .txt-picture a .txt-picture-zoom-icon { right: .35em; top: .35em; display: none }
+  .txt-picture a:hover .txt-picture-zoom-icon { display: block }
+  .txt-picture a .txt-picture-zoom-in { right: .35em; border-right: 1px #f33 solid }
+  .txt-picture a .txt-picture-zoomable { top: .35em; border-top: 1px #f33 solid }
+  .txt-picture a.txt-picture-zoomed .txt-picture-zoom-in { display: none }
+
   .txt-table { margin: 0 0 .7em 0; border-collapse: collapse }
   .txt-table td { border: 1px #ccc solid; padding: 10px }
+  
   ul li, ol li { margin: 0 0 .35em 0 }
   td { padding: 0 1em 0 0 }
+  
 </style>
 
 <?#= neasden_explain ($text); ?>
