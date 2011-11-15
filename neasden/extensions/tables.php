@@ -14,7 +14,19 @@ function n__render_group_table ($group) {
     $result .= "<tr>\n";
     $tr = explode ('|', trim ($line['content'], '|'));
     foreach ($tr as $td) {
-      $result .= "<td>". trim ($td) ."</td>\n";
+      
+      $lsp = (mb_substr ($td, 0, 1) == ' ');
+      $rsp = (mb_substr ($td, -1)   == ' ');
+      
+      if     ($lsp and $rsp)  $alignment = 'center';
+      elseif ($lsp)           $alignment = 'right';
+      elseif ($rsp)           $alignment = 'left';
+      else                    $alignment = '';
+      
+      if ($alignment) $alignment = ' style="text-align: '. $alignment .'"';
+      
+      $result .= "<td ". $alignment .">". trim ($td) ."</td>\n";
+      
     }
     $result .= "</tr>\n";
   }

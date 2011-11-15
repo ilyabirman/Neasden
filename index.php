@@ -8,7 +8,8 @@
 */
 
 header ('Content-Type: text/html; charset=utf-8');
-error_reporting (E_ALL & ~E_NOTICE);
+//error_reporting (E_ALL & ~E_NOTICE);
+error_reporting (E_ALL);
 
 if (!include 'neasden/neasden.php') die ('neasden init failed');
 
@@ -61,7 +62,7 @@ $stopwatch = stopwatch () - $stopwatch;
   .txt-picture a.txt-picture-zoomed .txt-picture-zoom-in { display: none }
 
   .txt-table { margin: 0 0 .7em 0; border-collapse: collapse }
-  .txt-table td { border: 1px #ccc solid; padding: 10px }
+  .txt-table td { border: #ccc solid; border: 1px 0; padding: .35em 1em .35em 0 }
   
   ul li, ol li { margin: 0 0 .35em 0 }
   td { padding: 0 1em 0 0 }
