@@ -654,7 +654,7 @@ function n__typography ($text) {
   
   $quotes = $_neasden_language['quotes'];
   $dash = $_neasden_language['dash'];
-
+  
   //$span_tsp = n__save_tag ('<span class=\"tsp\">'. $nbsp .'</span>');
   $nobr_in = n__save_tag ('<nobr>');
   $nobr_out = n__save_tag ('</nobr>');
@@ -678,6 +678,12 @@ function n__typography ($text) {
   // quotes
   $text = n__enclose_within_tagless ($text, '"', $quotes);
   
+  /*
+  $text = str_replace ('«', '<wbr class="typo"><span class="slaquo-s typo"> </span> <span class="hlaquo-s typo">«</span>', $text);
+
+  $text = str_replace ('„', '<wbr class="typo"><span class="slaquo-s typo"> </span> <span class="hlaquo-s typo">„</span>', $text);
+  */
+
 
   $b_in = n__save_tag ('<b>');
   $b_out = n__save_tag ('</b>');
