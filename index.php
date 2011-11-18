@@ -81,7 +81,7 @@ $stopwatch = stopwatch () - $stopwatch;
   
 </style>
 
-<?= neasden_explain ($text); ?>
+<?#= neasden_explain ($text); ?>
 
 <!--
 <pre><?= htmlspecialchars ($res) ?></pre>

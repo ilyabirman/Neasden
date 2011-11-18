@@ -833,7 +833,7 @@ function n__format_blocks ($text) {
   // remove html if necessary
   if (!$_neasden_config['with-html']) {
     $text = str_replace ('<', '&lt;', $text);
-    $text = str_replace ('>', '&gt;', $text);
+    #$text = str_replace ('>', '&gt;', $text);
   }
     
   // dirty split
