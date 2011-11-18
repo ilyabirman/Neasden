@@ -3,6 +3,18 @@
 $_neasden_config = array (
 
   '__overload' => 'neasden-config.php',
+  
+  '__profiles' => array (
+    'simple' => array (
+      'with-html' => false,
+      'extensions-list' => array (
+        'lists',
+        'hr',
+        'tables',
+        'youtube',
+      ),
+    ),
+  ),
 
   'block-strengths' => array (
 
@@ -32,12 +44,14 @@ $_neasden_config = array (
     '&ldquo;' => '“',
     '&rdquo;' => '”',
   ),
-  
+
+  'with-html' => false,
+
   'with-typography' => true,
   
   'language' => 'ru',
 
-  'extensions-list'  => array (
+  'extensions-list' => array (
     'lists',
     'hr',
     'tables',

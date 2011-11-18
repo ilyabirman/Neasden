@@ -654,7 +654,7 @@ function n__typography ($text) {
   
   $quotes = $_neasden_language['quotes'];
   $dash = $_neasden_language['dash'];
-  
+
   //$span_tsp = n__save_tag ('<span class=\"tsp\">'. $nbsp .'</span>');
   $nobr_in = n__save_tag ('<nobr>');
   $nobr_out = n__save_tag ('</nobr>');
@@ -678,12 +678,6 @@ function n__typography ($text) {
   // quotes
   $text = n__enclose_within_tagless ($text, '"', $quotes);
   
-  /*
-  $text = str_replace ('«', '<wbr class="typo"><span class="slaquo-s typo"> </span> <span class="hlaquo-s typo">«</span>', $text);
-
-  $text = str_replace ('„', '<wbr class="typo"><span class="slaquo-s typo"> </span> <span class="hlaquo-s typo">„</span>', $text);
-  */
-
 
   $b_in = n__save_tag ('<b>');
   $b_out = n__save_tag ('</b>');
@@ -830,19 +824,25 @@ function n__process_opaque_block ($text) {
 function n__format_blocks ($text) {
   global $_neasden_config, $_neasden_explaining;
 
+  // remove html if necessary
+  if (!$_neasden_config['with-html']) {
+    $text = str_replace ('<', '&lt;', $text);
+    $text = str_replace ('>', '&gt;', $text);
+  }
+    
   // dirty split
   $initial_blocks = n__split_blocks ($text);
 
   // process initial blocks
   $resulting_blocks = array ();  
   foreach ($initial_blocks as $initial_block) {
-
+   
+    // if explaining, borough the initial
+    // explanation to result
     if ($_neasden_explaining) {
       $resulting_block = $initial_block;
     }
     
-    // if explaining, borough the initial
-    // explanation to result
     $resulting_block['result'] = $initial_block['content'];
 
     // text blocks should be formatted
