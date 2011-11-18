@@ -22,6 +22,9 @@ if (array_key_exists ('__overload', $_neasden_config)) {
     $_default_config = $_neasden_config;
     require $_neasden_config['__overload'];
     $_neasden_config = array_merge ($_default_config, $_neasden_config);
+    
+    // now use this as a basis for profiles
+    $_default_config = $_neasden_config;
   }
 }
 
@@ -68,7 +71,7 @@ function n__init () {
 
   include 'languages/'. $_neasden_config['language'] .'.php';
 
-  foreach ($_neasden_config['extensions-list'] as $ext) {
+  foreach ($_neasden_config['__extensions'] as $ext) {
     include 'extensions/'. $ext .'.php';
   }
   
@@ -518,9 +521,12 @@ function n__render_group ($class, $group) {
 
 
 function n__matching_group ($rdef) {
-  global $_neasden_groups;
+  global $_neasden_groups, $_neasden_config;
   foreach ($_neasden_groups as $group_class => $group_regex) {
-    if (preg_match ('/^'. $group_regex .'$/', $rdef)) {
+    if (
+      !@in_array ($group_class, $_neasden_config['banned-groups']) and
+      preg_match ('/^'. $group_regex .'$/', $rdef)
+    ) {
       return $group_class;
     }
   }
@@ -948,7 +954,15 @@ function neasden_explain ($text) {
 
 
 
-function neasden ($text) {
+function neasden ($text, $profile = '') {
+  global $_default_config, $_neasden_config;
+  
+  if ($profile and @$_default_config['__profiles'][$profile]) {
+    $_neasden_config = array_merge ($_default_config, $_default_config['__profiles'][$profile]);
+  }
+  
+  #echo '<pre>';
+  #print_r ($_neasden_config);
 
   $result = '';
   foreach (n__format_blocks ($text) as $block) {

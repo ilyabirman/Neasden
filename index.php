@@ -30,7 +30,7 @@ function stopwatch () {
 
 $stopwatch = stopwatch ();
 //for ($i = 0; $i < 100; $i ++) {
-  $res = neasden ($text);
+  $res = neasden ($text, 'simple');
 //}
 
 $stopwatch = stopwatch () - $stopwatch;
@@ -81,7 +81,7 @@ $stopwatch = stopwatch () - $stopwatch;
   
 </style>
 
-<?#= neasden_explain ($text); ?>
+<?= neasden_explain ($text); ?>
 
 <!--
 <pre><?= htmlspecialchars ($res) ?></pre>

@@ -7,13 +7,18 @@ $_neasden_config = array (
   '__profiles' => array (
     'simple' => array (
       'with-html' => false,
-      'extensions-list' => array (
-        'lists',
-        'hr',
-        'tables',
-        'youtube',
+      'banned-groups' => array (
+        'picture',
       ),
     ),
+  ),
+
+  '__extensions' => array (
+    'lists',
+    'hr',
+    'tables',
+    'pictures',
+    'youtube',
   ),
 
   'block-strengths' => array (
@@ -50,14 +55,6 @@ $_neasden_config = array (
   'with-typography' => true,
   
   'language' => 'ru',
-
-  'extensions-list' => array (
-    'lists',
-    'hr',
-    'tables',
-    'pictures',
-    'youtube',
-  ),
 
   'extensions' => array (
     'lists' => array (
