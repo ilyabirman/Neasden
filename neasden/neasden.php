@@ -221,11 +221,14 @@ function n__typography ($text) {
   $nobr_in = n__save_tag ('<nobr>');
   $nobr_out = n__save_tag ('</nobr>');
 
-  //echo $text;
-  //die;
+  #echo htmlspecialchars ($text);
+  #die;
 
   $text = preg_replace_callback ('/(?:\<[^\>]+\>)/isxu', 'n__save_tag', $text);
 
+  #echo htmlspecialchars ($text);
+  #die;
+  
   // replacements
   if (1) {
     if (array_key_exists ('replacements', $_neasden_language)) {
@@ -264,57 +267,6 @@ function n__typography ($text) {
     $b_in . '$1$2' . $b_out,
     $text
   );
-
-  
-  /*
-  
-  // obvious quotes
-  $text = preg_replace (
-    '/((^|\s|\-)'. HEL_TAGS .')\"(?!'. HEL_TAGS .'($|\-|\s))/m',
-    '$1'. $quotes[0],
-    $text
-  );
-  
-  $text = preg_replace (
-    '/(?<!^|\s|\-)('. HEL_TAGS .'\")(?='. HEL_TAGS ."($|\-|\s))/m",
-    '$2'. $quotes[3],
-    $text
-  );
-
-  // remaining quotes
-  if (1) {
-    $len = strlen ($quotes[0]);
-    $qdepth = 0;
-    for ($i = 0; $i < strlen ($text)-1; ++ $i) {
-      $scan = substr ($text, $i, $len);
-      if ($scan == $quotes[0]) {
-        $qdepth ++;
-        if ($qdepth > 1) $text = substr ($text, 0, $i) . $quotes[1] . substr ($text, $i + $len);
-        $i += $len;
-      }
-      if ($scan == $quotes[3]) {
-        if ($qdepth > 1) $text = substr ($text, 0, $i) . $quotes[2] . substr ($text, $i + $len);
-        $qdepth --;
-        $i += $len;
-      }
-      if ($i > strlen ($text)-1) break;
-      if ($text[$i] == '"') {
-        if ($qdepth > 0) {
-          if ($qdepth > 1)
-            $text = substr ($text, 0, $i) . $quotes[2] . substr ($text, $i + 1);
-          else
-            $text = substr ($text, 0, $i) . $quotes[3] . substr ($text, $i + 1);
-          -- $qdepth;
-        } else {
-          $text = substr ($text, 0, $i) . $quotes[0] . substr ($text, $i + 1);
-          ++ $qdepth;
-        }
-      }
-    }
-  }                                                
-  
-  */
-  
   
   // dash
   if (1) {
@@ -325,30 +277,33 @@ function n__typography ($text) {
 
 
   // unions and prepositions
-  if ($nobreak_fw = $_neasden_language['with-next']) {
-    $text = preg_replace (
-      "/".
-      "(?<!\pL|\-)".    // not-a—Unicode-letter-or-dash lookbehind
-      $nobreak_fw .     // a preposition
-      HEL_TAGS.
-      "\s".             // and a space
-      "/isu",      
-      '$1$2'. $nbsp,
-      $text
-    );
-  }
-
-  if ($nobreak_bw = $_neasden_language['with-prev']) {
-    $text = preg_replace (
-      "/".
-      "\s".            // a space
-      HEL_TAGS.
-      $nobreak_bw .    // a particle
-      "(?!\pL|\-)".    // not-a—Unicode-letter-or-dash lookforward
-      "/isu",      
-      $nbsp .'$1$2',
-      $text
-    );
+  if (1) {
+    //die ($text);
+    if ($nobreak_fw = $_neasden_language['with-next']) {
+      $text = preg_replace (
+        "/".
+        "(?<!\pL|\-)".    // not-a—Unicode-letter-or-dash lookbehind
+        $nobreak_fw .     // a preposition
+        HEL_TAGS.
+        " ".              // and a space
+        "/isu",      
+        '$1$2'. $nbsp,
+        $text
+      );
+    }
+  
+    if ($nobreak_bw = $_neasden_language['with-prev']) {
+      $text = preg_replace (
+        "/".
+        " ".             // a space
+        HEL_TAGS.
+        $nobreak_bw .    // a particle
+        "(?!\pL|\-)".    // not-a—Unicode-letter-or-dash lookforward
+        "/isu",      
+        $nbsp .'$1$2',
+        $text
+      );
+    }
   }
 
 
@@ -885,6 +840,7 @@ function n__format_fragments ($text) {
       }
       
     }
+  
 
     // opaque fragments should be typographed
     if ($initial_fragment['strength'] < N_FRAG_STRENGTH_SACRED) {
