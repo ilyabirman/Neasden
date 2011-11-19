@@ -118,11 +118,19 @@ function n__tag_name ($text) {
 
 
 
-// return 'text', 'sacred' or 'opaque' for an html element
+// return a fragment strength for an html element
 function n__element_strength ($element) {
   global $_neasden_config;
+  /*
   if (array_key_exists ($element, $_neasden_config['fragment-strengths'])) {
     return $_neasden_config['fragment-strengths'][$element];
+  }
+  */
+  if (in_array ($element, $_neasden_config['sacred-elements'])) {
+    return N_FRAG_STRENGTH_SACRED;
+  }
+  if (in_array ($element, $_neasden_config['opaque-elements'])) {
+    return N_FRAG_STRENGTH_OPAQUE;
   }
   return N_FRAG_STRENGTH_TEXT;
 }
@@ -294,7 +302,6 @@ function n__split_fragments ($text) {
         // so commit all previous text to this fragment
         // start a new run with a '<'
         // and then just see how it goes from there
-        
         $thisfrag['content'] .= substr ($r, 0, -1);
         $thisfrag['strength'] = n__element_strength ($current_el);
         $r = substr ($r, -1, 1);
@@ -351,7 +358,7 @@ function n__split_fragments ($text) {
 
               // so we are now off sacred elements, 
               // so finish and append this fragment, start new fragment
-              $thisfrag['content'] .= $r;
+              $thisfrag['content'] .= $r ."\n";
               //$thisfrag['content'] .= n__save_tag ($r);
               $fragments[] = $thisfrag;
               $thisfrag = array ('content' => '', 'strength' => -1);
@@ -362,7 +369,8 @@ function n__split_fragments ($text) {
           } else {
 
             if (
-              in_array ($tagname, array_keys ($_neasden_config['fragment-strengths']))
+              in_array ($tagname, $_neasden_config['opaque-elements']) or
+              in_array ($tagname, $_neasden_config['sacred-elements'])
             ) {
   
               // closing tag makes no sense, it wasn’t open

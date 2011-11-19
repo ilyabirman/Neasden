@@ -20,10 +20,19 @@ $_neasden_config = array (
     'pictures',
     'youtube',
   ),
-
+  
+  'opaque-elements' => array (
+    'p', 'ul', 'ol', 'li', 'blockquote', 'table', 'pre', 'textarea',
+  ),
+  
+  'sacred-elements' => array (
+    'object', 'embed', 'iframe', 'script', 'style', 'code'
+  ),
+  
+  /*
   'fragment-strengths' => array (
 
-    'code' => N_FRAG_STRENGTH_OPAQUE,
+    'code' => N_FRAG_STRENGTH_OPAQUE, // inline element
     'pre' => N_FRAG_STRENGTH_OPAQUE,
     'textarea' => N_FRAG_STRENGTH_OPAQUE,
     'p' => N_FRAG_STRENGTH_OPAQUE,
@@ -39,7 +48,8 @@ $_neasden_config = array (
     'style' => N_FRAG_STRENGTH_SACRED,
     
   ),
-
+  */
+  
   'with-html' => true,
   'with-groups' => true,
   'with-typography' => true,
