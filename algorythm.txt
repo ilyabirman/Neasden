@@ -1,0 +1,9 @@
+Algorythm
+
+- Split text into independent fragments
+- with each fragment:
+  — if fragment is text
+    - Split fragment into groups
+    - with each group
+      -
+    - Join groups together
