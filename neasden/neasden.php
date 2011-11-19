@@ -108,35 +108,6 @@ function n__define_group ($group, $regex) {
 
 
 
-function n__tag_name ($text) {
-  if ($text[0] != '<') return;
-  if ($text[strlen ($text) - 1] != '>') return;
-  $text = ltrim (substr ($text, 1, -1)) . ' ';
-  $text = substr ($text, 0, strpos ($text, ' '));
-  return strtolower (rtrim ($text));
-}
-
-
-
-// return a fragment strength for an html element
-function n__element_strength ($element) {
-  global $_neasden_config;
-  /*
-  if (array_key_exists ($element, $_neasden_config['fragment-strengths'])) {
-    return $_neasden_config['fragment-strengths'][$element];
-  }
-  */
-  if (in_array ($element, $_neasden_config['sacred-elements'])) {
-    return N_FRAG_STRENGTH_SACRED;
-  }
-  if (in_array ($element, $_neasden_config['opaque-elements'])) {
-    return N_FRAG_STRENGTH_OPAQUE;
-  }
-  return N_FRAG_STRENGTH_TEXT;
-}
-
-
-
 function n__special_sequence ($index) {
   return HEL_SPECIAL_CHAR . str_pad ($index, HEL_SPECIAL_SEQUENCE_LENGTH, '0', STR_PAD_LEFT) . HEL_SPECIAL_CHAR;
 }
@@ -164,6 +135,7 @@ function n__restore_tags ($text) {
   return $text;
 
 }
+
 
 
 // puts quotes, really
@@ -228,430 +200,6 @@ function n__enclose_within_tagless ($text, $char, $enclosures) {
   }
   
   return $text;                                                
-
-}
-
-
-
-
-function n__split_fragments ($text) {
-  global $_neasden_config;
-
-  $machine = array (
-    'text' => array (
-      '<' => 'tag',
-    ),
-    'tag' => array (
-      '>' => 'text',
-      "'" => 'attr-s',
-      '"' => 'attr-d',
-    ),
-    'attr-s' => array (
-      "'" => 'tag',
-    ),
-    'attr-d' => array (
-      '"' => 'tag',
-    ),
-    'comment' => array (),
-  );
-  
-  $l = strlen ($text);
-  $r = '';
-  $state = 'text';
-  $prevstate = 'text';
-  $tagstack = array ();
-  $fragments = array ();
-  $thisfrag = array ('content' => '', 'strength' => -1);
-  $current_el = '';
-  
-  for ($i = 0; $i < $l; $i ++ ) {
-  
-    $c = $text[$i];
-    $r .= $c;
-    
-    // auto manage state machine
-    if (array_key_exists ($c,  $machine[$state])) {
-      $state = $machine[$state][$c];
-    }
-
-    // html comments: manually manage states
-    if ($state == 'tag' and $r == '<!--') {
-      $state = 'comment';
-      if ($thisfrag['content']) {
-        $fragments[] = $thisfrag;
-      }
-      $thisfrag = array ('content' => $r, 'strength' => -1);
-      $r = '';
-    }
-    if ($state == 'comment' and substr ($r, -3, 3) == '-->') { 
-      $state = 'text';
-      $thisfrag['content'] .= $r;
-      $thisfrag['strength'] = N_FRAG_STRENGTH_SACRED;
-      if ($thisfrag['content']) {
-        $fragments[] = $thisfrag;
-      }
-      $thisfrag = array ('content' => '', 'strength' => -1);
-      $r = '';
-    }
-    
-    // state change
-    if ($state != $prevstate) {
-      if ($prevstate == 'text' and $state == 'tag') {
-
-        // state changes from text to tag,
-        // so commit all previous text to this fragment
-        // start a new run with a '<'
-        // and then just see how it goes from there
-        $thisfrag['content'] .= substr ($r, 0, -1);
-        $thisfrag['strength'] = n__element_strength ($current_el);
-        $r = substr ($r, -1, 1);
-        
-      } elseif ($prevstate == 'tag' and $state == 'text') {
-
-        $tagname = n__tag_name ($r);
-
-        if ($tagname[0] != '/') {
-        
-          // open tag
-
-          if (
-            n__element_strength ($tagname) > $thisfrag['strength']
-          ) {
-
-            // new fragment is stronger,
-            // so commit this fragment to fragments, start a new fragment
-            if ($thisfrag['content']) {
-              $fragments[] = $thisfrag;
-            }
-            $thisfrag = array ('content' => $r, 'strength' => -1);
-            
-          } else {
-          
-            $thisfrag['content'] .= $r;
-            //$thisfrag['content'] .= n__save_tag ($r);
-            
-          }
-            
-          $tagstack[] = $tagname;
-          $current_el = $tagname;
-          $r = '';
-          
-        } else {
-
-          // close tag
-          $tagname = substr ($tagname, 1);
-
-          if (in_array ($tagname, $tagstack)) {
-          
-            $strength_before = n__element_strength ($current_el);
-            
-            // so tag is in stack, so we force close it
-            while (array_pop ($tagstack) != $tagname);
-            // if anything remains in the stack, that’s new current tag
-            if (count ($tagstack) > 0) {
-              $current_el = $tagstack [count ($tagstack) - 1];
-            } else {
-              $current_el = '';
-            }
-            
-            if (n__element_strength ($current_el) < $strength_before) {
-
-              // so we are now off sacred elements, 
-              // so finish and append this fragment, start new fragment
-              $thisfrag['content'] .= $r ."\n";
-              //$thisfrag['content'] .= n__save_tag ($r);
-              $fragments[] = $thisfrag;
-              $thisfrag = array ('content' => '', 'strength' => -1);
-              $r = '';
-              
-            }
-            
-          } else {
-
-            if (
-              in_array ($tagname, $_neasden_config['opaque-elements']) or
-              in_array ($tagname, $_neasden_config['sacred-elements'])
-            ) {
-  
-              // closing tag makes no sense, it wasn’t open
-
-              // so end whatever fragments we have
-              if ($thisfrag['content']) {
-                $fragments[] = $thisfrag;
-              }
-
-              // make a new sacred fragment of this weird tag
-              $fragments[] = array (
-                'content' => $r,
-                'strength' => N_FRAG_STRENGTH_SACRED,
-              );
-
-              // and start new fragment
-              $thisfrag = array ('content' => '', 'strength' => -1);
-              $r = '';
-            }
-          }
-        }
-        
-      }
-    }
-
-    $prevstate = $state;
-
-  }
-  
-  $thisfrag['content'] .= $r;
-  $thisfrag['strength'] = n__element_strength ($current_el);
-  $r = '';
-  
-  if ($thisfrag['content']) {
-    $fragments[] = $thisfrag;
-  }
-
-  return $fragments;
-  
-}
-
-
-
-
-function n__parse_line ($line) {
-  global $_neasden_config, $_neasden_line_classes;
-
-  $line = rtrim ($line);
-  
-  $result = array (
-    'content' => $line,
-    'quote-level' => 0,
-    'class' => 'p',
-    'class-data' => null,
-  );
-  
-  if (strlen ($line) == 0) {
-    $result['class'] = 'empty';
-    return $result;
-  }
-  
-  // headings
-  $line_hashless = ltrim ($line, $_neasden_config['char-headings']);
-  $heading_level = strlen ($line) - strlen ($line_hashless);
-  if ($heading_level > 0 and $line_hashless[0] == ' ') {
-    $result['content'] = ltrim ($line_hashless, ' ');
-    $result['class'] = 'h'. min ($heading_level, N_MAX_H_LEVEL);
-    return $result;
-  }
-  
-  /*
-  // ordered list items
-  $line_numberless = ltrim ($line, '0123456789');
-  $line_number = substr ($line, 0, strlen ($line) - strlen ($line_numberless));
-  if ($line_number != '' and substr ($line_numberless, 0, 2) == '. ') {
-    if ($c = ltrim (substr ($line_numberless, 1), ' ')) {
-      $result['content'] = $c;
-      $result['class'] = 'ol-item';
-      $result['class-data'] = $line_number;
-      return $result;
-    }
-  }
-  
-  // unordered list items
-  if (strstr ($_neasden_config['chars-ul-items'], $line[0])) {
-    if ($c = ltrim (substr ($line, 1), ' ' . $line[0])) {
-      $result['content'] = $c;
-      $result['class'] = 'ul-item';
-      return $result;
-    }
-  }
-  //*/
-
-#  } elseif (function_exists ('n__render_group_'. $class)) {
-#    return call_user_func ('n__render_group_'. $class, $group);
-
-  
-  // other classes
-  foreach ($_neasden_line_classes as $class => $regex) {
-    $regex = '/^(?:'. $regex .')$/isu';
-    if (preg_match ($regex, $line, $matches)) {
-      if (
-        !function_exists ('n__detect_class_'. $class)
-        or call_user_func ('n__detect_class_'. $class, $line)
-      ) {
-        $result['class'] = $class;
-        $result['class-data'] = $matches;
-        return $result;
-      }
-    }
-  }
-  
-  return $result;
-  
-}
-
-
-function n__render_group ($class, $group) {
-
-  if (!$class) return;
-  
-  $simple_group_classes = array (
-    'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'
-  );
-
-  if ($class == 'empty') {
-
-    return '';
-
-  } elseif (function_exists ('n__render_group_'. $class)) {
-  
-    return call_user_func ('n__render_group_'. $class, $group);
-    
-  } else {
-  
-    if (in_array ($class, $simple_group_classes)) {
-      $ot = $ct = $class;
-    } else {
-      $ot = 'p neasden:class="'. $class .'"';
-      $ct = 'p';
-    }
-    
-    $lines_content = array ();
-    foreach ($group as $line) {
-      $lines_content[] = $line['content'];
-    }
-    $lines_content = implode ('<br />'."\n", $lines_content);
-    
-    return "<". $ot .">". $lines_content ."</". $ct .">\n";
-
-
-  }
-  
-}
-
-
-
-function n__matching_group ($rdef) {
-  global $_neasden_groups, $_neasden_config;
-  foreach ($_neasden_groups as $group_class => $group_regex) {
-    if (
-      !@in_array ($group_class, $_neasden_config['banned-groups']) and
-      preg_match ('/^'. $group_regex .'$/', $rdef)
-    ) {
-      return $group_class;
-    }
-  }
-}
-
-
-
-function n__groups ($text) {
-  global $_neasden_config, $_neasden_groups, $_neasden_explaining;
-
-  $text = str_replace ("\r\n", "\n", $text); 
-  $text = str_replace ("\r", "\n", $text); 
-  $src_lines = explode ("\n", $text);
-  $src_lines[] = '';
-
-  $prev_quote_level = 0;
-
-  $prev_spaceshift = 0;
-  $depths_spaceshifts = array (0);
-  $depth = 0;
-  
-  $list_levels = array ();
- 
-  $last_group_class = '';
- 
-  $groups = array ();
-  $good_buffer = array ();
-  
-  $rdef = '';
-
-  foreach ($src_lines as $src_line) {
-  
-    // quote level
-    $line_quoteless = ltrim ($src_line, $_neasden_config['char-quotes']);
-    $quote_level = strlen ($src_line) - strlen ($line_quoteless);
-    $src_line = $line_quoteless;
-    $quote_level_changed = ($prev_quote_level != $quote_level);
-    $quote_level_inc = max (0, $quote_level - $prev_quote_level);
-    $quote_level_dec = max (0, $prev_quote_level - $quote_level);
-    $prev_quote_level = $quote_level;
-
-    // analize spaceshifts and depth
-    $line = ltrim ($src_line, ' ');
-    $spaceshift = strlen ($src_line) - strlen ($line);
-    if ($spaceshift > $prev_spaceshift) {
-      $depth ++;
-      $depths_spaceshifts[] = $spaceshift;
-    }
-    if ($spaceshift < $prev_spaceshift) {
-      $new_depth = 0;
-      foreach ($depths_spaceshifts as $depth_spaceshift) {
-        if ($spaceshift > $depth_spaceshift) {
-          $new_depth ++;
-        } else {
-          $spaceshift = $depth_spaceshift;
-          break;
-        }
-      }
-      while ($depth > $new_depth) {
-        $depth --;
-        array_pop ($depths_spaceshifts);
-      }
-    }
-    $prev_spaceshift = $spaceshift;
-
-    // parse and match line groups
-    
-    $line = n__parse_line ($line);
-    $line['result'] = '';
-    $line['depth'] = $depth;
-    $rdef .= '-'. $line['class'] .'-';
-        
-    $line['debug'] = implode ("-\n-", explode ('--', $rdef));
-
-    $match_found = false;
-
-    if ($group_class = n__matching_group ($rdef) and !$quote_level_changed) {
-      $last_group_class = $group_class;
-      $match_found = true;
-      $good_buffer[] = $line;
-    }
-    
-    #$line['debug'] .= "\n".'gbuf: '. $good_buffer[0]['class'];
-    #$line['debug'] .= "\n".'gbuf: '. count ($good_buffer);
-
-    if ($quote_level_changed or !$match_found) {
-
-      if ($quote_level_changed) {
-        $line['debug'] .= "\n".'qlc';
-      }
-
-      if (!$match_found) {
-        $line['debug'] .= "\n".'nomatch ';
-      }
-      
-      $line['result'] = n__render_group ($last_group_class, $good_buffer);
-
-      for ($i=0; $i<$quote_level_inc; $i++) $line['result'] .= '<blockquote>'."\n";
-      for ($i=0; $i<$quote_level_dec; $i++) $line['result'] .= '</blockquote>'."\n";
-      
-      // now the widow line should be processed as part of next group
-
-      $good_buffer = array ($line);
-      $rdef = '-'. $line['class'] .'-';
-      $last_group_class = n__matching_group ($rdef);
-      
-    }
-    
-
-    $groups[] = $line;
-    
-  }
-
-  $another_line['result'] = n__render_group ($last_group_class, $good_buffer);
-  $groups[] = $another_line;
-
-  return $groups;
 
 }
 
@@ -812,6 +360,7 @@ function n__typography ($text) {
 
 
 
+
 // any opaque fragment or a text fragment after formatting
 // should be typographed with this function
 
@@ -832,6 +381,468 @@ function n__process_opaque_fragment ($text) {
   return $text;
   
 }
+
+
+
+function n__render_group ($class, $group) {
+
+  if (!$class) return;
+  
+  $simple_group_classes = array (
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'
+  );
+
+  if ($class == 'empty') {
+
+    return '';
+
+  } elseif (function_exists ('n__render_group_'. $class)) {
+  
+    return call_user_func ('n__render_group_'. $class, $group);
+    
+  } else {
+  
+    if (in_array ($class, $simple_group_classes)) {
+      $ot = $ct = $class;
+    } else {
+      $ot = 'p neasden:class="'. $class .'"';
+      $ct = 'p';
+    }
+    
+    $lines_content = array ();
+    foreach ($group as $line) {
+      $lines_content[] = $line['content'];
+    }
+    $lines_content = implode ('<br />'."\n", $lines_content);
+    
+    return "<". $ot .">". $lines_content ."</". $ct .">\n";
+
+
+  }
+  
+}
+
+
+
+// return a group class by it’s current running definition
+function n__matching_group ($rdef) {
+  global $_neasden_groups, $_neasden_config;
+  foreach ($_neasden_groups as $group_class => $group_regex) {
+    if (
+      !@in_array ($group_class, $_neasden_config['banned-groups']) and
+      preg_match ('/^'. $group_regex .'$/', $rdef)
+    ) {
+      return $group_class;
+    }
+  }
+}
+
+
+
+function n__parse_group_line ($line) {
+  global $_neasden_config, $_neasden_line_classes;
+
+  $line = rtrim ($line);
+  
+  $result = array (
+    'content' => $line,
+    'quote-level' => 0,
+    'class' => 'p',
+    'class-data' => null,
+  );
+  
+  if (strlen ($line) == 0) {
+    $result['class'] = 'empty';
+    return $result;
+  }
+  
+  // headings
+  $line_hashless = ltrim ($line, $_neasden_config['char-headings']);
+  $heading_level = strlen ($line) - strlen ($line_hashless);
+  if ($heading_level > 0 and $line_hashless[0] == ' ') {
+    $result['content'] = ltrim ($line_hashless, ' ');
+    $result['class'] = 'h'. min ($heading_level, N_MAX_H_LEVEL);
+    return $result;
+  }
+  
+  /*
+  // ordered list items
+  $line_numberless = ltrim ($line, '0123456789');
+  $line_number = substr ($line, 0, strlen ($line) - strlen ($line_numberless));
+  if ($line_number != '' and substr ($line_numberless, 0, 2) == '. ') {
+    if ($c = ltrim (substr ($line_numberless, 1), ' ')) {
+      $result['content'] = $c;
+      $result['class'] = 'ol-item';
+      $result['class-data'] = $line_number;
+      return $result;
+    }
+  }
+  
+  // unordered list items
+  if (strstr ($_neasden_config['chars-ul-items'], $line[0])) {
+    if ($c = ltrim (substr ($line, 1), ' ' . $line[0])) {
+      $result['content'] = $c;
+      $result['class'] = 'ul-item';
+      return $result;
+    }
+  }
+  //*/
+
+#  } elseif (function_exists ('n__render_group_'. $class)) {
+#    return call_user_func ('n__render_group_'. $class, $group);
+
+  
+  // other classes
+  foreach ($_neasden_line_classes as $class => $regex) {
+    $regex = '/^(?:'. $regex .')$/isu';
+    if (preg_match ($regex, $line, $matches)) {
+      if (
+        !function_exists ('n__detect_class_'. $class)
+        or call_user_func ('n__detect_class_'. $class, $line)
+      ) {
+        $result['class'] = $class;
+        $result['class-data'] = $matches;
+        return $result;
+      }
+    }
+  }
+  
+  return $result;
+  
+}
+
+
+
+function n__groups ($text) {
+  global $_neasden_config, $_neasden_groups, $_neasden_explaining;
+
+  $text = str_replace ("\r\n", "\n", $text); 
+  $text = str_replace ("\r", "\n", $text); 
+  $src_lines = explode ("\n", $text);
+  $src_lines[] = '';
+
+  $prev_quote_level = 0;
+
+  $prev_spaceshift = 0;
+  $depths_spaceshifts = array (0);
+  $depth = 0;
+  
+  $list_levels = array ();
+ 
+  $last_group_class = '';
+ 
+  $groups = array ();
+  $good_buffer = array ();
+  
+  $rdef = '';
+
+  foreach ($src_lines as $src_line) {
+  
+    // quote level
+    $line_quoteless = ltrim ($src_line, $_neasden_config['char-quotes']);
+    $quote_level = strlen ($src_line) - strlen ($line_quoteless);
+    $src_line = $line_quoteless;
+    $quote_level_changed = ($prev_quote_level != $quote_level);
+    $quote_level_inc = max (0, $quote_level - $prev_quote_level);
+    $quote_level_dec = max (0, $prev_quote_level - $quote_level);
+    $prev_quote_level = $quote_level;
+
+    // analize spaceshifts and depth
+    $line = ltrim ($src_line, ' ');
+    $spaceshift = strlen ($src_line) - strlen ($line);
+    if ($spaceshift > $prev_spaceshift) {
+      $depth ++;
+      $depths_spaceshifts[] = $spaceshift;
+    }
+    if ($spaceshift < $prev_spaceshift) {
+      $new_depth = 0;
+      foreach ($depths_spaceshifts as $depth_spaceshift) {
+        if ($spaceshift > $depth_spaceshift) {
+          $new_depth ++;
+        } else {
+          $spaceshift = $depth_spaceshift;
+          break;
+        }
+      }
+      while ($depth > $new_depth) {
+        $depth --;
+        array_pop ($depths_spaceshifts);
+      }
+    }
+    $prev_spaceshift = $spaceshift;
+
+    // parse and match line groups
+    
+    $line = n__parse_group_line ($line);
+    $line['result'] = '';
+    $line['depth'] = $depth;
+    $rdef .= '-'. $line['class'] .'-';
+        
+    $line['debug'] = implode ("-\n-", explode ('--', $rdef));
+
+    $match_found = false;
+
+    if ($group_class = n__matching_group ($rdef) and !$quote_level_changed) {
+      $last_group_class = $group_class;
+      $match_found = true;
+      $good_buffer[] = $line;
+    }
+    
+    #$line['debug'] .= "\n".'gbuf: '. $good_buffer[0]['class'];
+    #$line['debug'] .= "\n".'gbuf: '. count ($good_buffer);
+
+    if ($quote_level_changed or !$match_found) {
+
+      if ($quote_level_changed) {
+        $line['debug'] .= "\n".'qlc';
+      }
+
+      if (!$match_found) {
+        $line['debug'] .= "\n".'nomatch ';
+      }
+      
+      $line['result'] = n__render_group ($last_group_class, $good_buffer);
+
+      for ($i=0; $i<$quote_level_inc; $i++) $line['result'] .= '<blockquote>'."\n";
+      for ($i=0; $i<$quote_level_dec; $i++) $line['result'] .= '</blockquote>'."\n";
+      
+      // now the widow line should be processed as part of next group
+
+      $good_buffer = array ($line);
+      $rdef = '-'. $line['class'] .'-';
+      $last_group_class = n__matching_group ($rdef);
+      
+    }
+    
+
+    $groups[] = $line;
+    
+  }
+
+  $another_line['result'] = n__render_group ($last_group_class, $good_buffer);
+  $groups[] = $another_line;
+
+  return $groups;
+
+}
+
+
+
+
+// return a fragment strength for an html element
+
+function n__element_strength ($element) {
+  global $_neasden_config;
+  /*
+  if (array_key_exists ($element, $_neasden_config['fragment-strengths'])) {
+    return $_neasden_config['fragment-strengths'][$element];
+  }
+  */
+  if (in_array ($element, $_neasden_config['sacred-elements'])) {
+    return N_FRAG_STRENGTH_SACRED;
+  }
+  if (in_array ($element, $_neasden_config['opaque-elements'])) {
+    return N_FRAG_STRENGTH_OPAQUE;
+  }
+  return N_FRAG_STRENGTH_TEXT;
+}
+
+
+
+// return a clean html element name given its html representation
+// e. g. '<P Class=some>' -> 'p'
+
+function n__element_name ($text) {
+  if ($text[0] != '<') return;
+  if ($text[strlen ($text) - 1] != '>') return;
+  $text = ltrim (substr ($text, 1, -1)) . ' ';
+  $text = substr ($text, 0, strpos ($text, ' '));
+  return strtolower (rtrim ($text));
+}
+
+
+
+// splits the full text into fragments which can be treated
+// completely indepentenly, and then treats them so
+
+function n__split_fragments ($text) {
+  global $_neasden_config;
+
+  $machine = array (
+    'text' => array (
+      '<' => 'tag',
+    ),
+    'tag' => array (
+      '>' => 'text',
+      "'" => 'attr-s',
+      '"' => 'attr-d',
+    ),
+    'attr-s' => array (
+      "'" => 'tag',
+    ),
+    'attr-d' => array (
+      '"' => 'tag',
+    ),
+    'comment' => array (),
+  );
+  
+  $l = strlen ($text);
+  $r = '';
+  $state = 'text';
+  $prevstate = 'text';
+  $tagstack = array ();
+  $fragments = array ();
+  $thisfrag = array ('content' => '', 'strength' => -1);
+  $current_el = '';
+  
+  for ($i = 0; $i < $l; $i ++ ) {
+  
+    $c = $text[$i];
+    $r .= $c;
+    
+    // auto manage state machine
+    if (array_key_exists ($c,  $machine[$state])) {
+      $state = $machine[$state][$c];
+    }
+
+    // html comments: manually manage states
+    if ($state == 'tag' and $r == '<!--') {
+      $state = 'comment';
+      if ($thisfrag['content']) {
+        $fragments[] = $thisfrag;
+      }
+      $thisfrag = array ('content' => $r, 'strength' => -1);
+      $r = '';
+    }
+    if ($state == 'comment' and substr ($r, -3, 3) == '-->') { 
+      $state = 'text';
+      $thisfrag['content'] .= $r;
+      $thisfrag['strength'] = N_FRAG_STRENGTH_SACRED;
+      if ($thisfrag['content']) {
+        $fragments[] = $thisfrag;
+      }
+      $thisfrag = array ('content' => '', 'strength' => -1);
+      $r = '';
+    }
+    
+    // state change
+    if ($state != $prevstate) {
+      if ($prevstate == 'text' and $state == 'tag') {
+
+        // state changes from text to tag,
+        // so commit all previous text to this fragment
+        // start a new run with a '<'
+        // and then just see how it goes from there
+        $thisfrag['content'] .= substr ($r, 0, -1);
+        $thisfrag['strength'] = n__element_strength ($current_el);
+        $r = substr ($r, -1, 1);
+        
+      } elseif ($prevstate == 'tag' and $state == 'text') {
+
+        $tagname = n__element_name ($r);
+
+        if ($tagname[0] != '/') {
+        
+          // open tag
+
+          if (
+            n__element_strength ($tagname) > $thisfrag['strength']
+          ) {
+
+            // new fragment is stronger,
+            // so commit this fragment to fragments, start a new fragment
+            if ($thisfrag['content']) {
+              $fragments[] = $thisfrag;
+            }
+            $thisfrag = array ('content' => $r, 'strength' => -1);
+            
+          } else {
+          
+            $thisfrag['content'] .= $r;
+            //$thisfrag['content'] .= n__save_tag ($r);
+            
+          }
+            
+          $tagstack[] = $tagname;
+          $current_el = $tagname;
+          $r = '';
+          
+        } else {
+
+          // close tag
+          $tagname = substr ($tagname, 1);
+
+          if (in_array ($tagname, $tagstack)) {
+          
+            $strength_before = n__element_strength ($current_el);
+            
+            // so tag is in stack, so we force close it
+            while (array_pop ($tagstack) != $tagname);
+            // if anything remains in the stack, that’s new current tag
+            if (count ($tagstack) > 0) {
+              $current_el = $tagstack [count ($tagstack) - 1];
+            } else {
+              $current_el = '';
+            }
+            
+            if (n__element_strength ($current_el) < $strength_before) {
+
+              // so we are now off sacred elements, 
+              // so finish and append this fragment, start new fragment
+              $thisfrag['content'] .= $r ."\n";
+              //$thisfrag['content'] .= n__save_tag ($r);
+              $fragments[] = $thisfrag;
+              $thisfrag = array ('content' => '', 'strength' => -1);
+              $r = '';
+              
+            }
+            
+          } else {
+
+            if (
+              in_array ($tagname, $_neasden_config['opaque-elements']) or
+              in_array ($tagname, $_neasden_config['sacred-elements'])
+            ) {
+  
+              // closing tag makes no sense, it wasn’t open
+
+              // so end whatever fragments we have
+              if ($thisfrag['content']) {
+                $fragments[] = $thisfrag;
+              }
+
+              // make a new sacred fragment of this weird tag
+              $fragments[] = array (
+                'content' => $r,
+                'strength' => N_FRAG_STRENGTH_SACRED,
+              );
+
+              // and start new fragment
+              $thisfrag = array ('content' => '', 'strength' => -1);
+              $r = '';
+            }
+          }
+        }
+        
+      }
+    }
+
+    $prevstate = $state;
+
+  }
+  
+  $thisfrag['content'] .= $r;
+  $thisfrag['strength'] = n__element_strength ($current_el);
+  $r = '';
+  
+  if ($thisfrag['content']) {
+    $fragments[] = $thisfrag;
+  }
+
+  return $fragments;
+  
+}
+
 
 
 
