@@ -5,7 +5,7 @@ $_neasden_config = array (
   '__overload' => 'neasden-config.php',
   
   '__profiles' => array (
-    'simple' => array (
+    'comments' => array (
       'with-html' => false,
       'banned-groups' => array (
         'picture',
@@ -35,7 +35,11 @@ $_neasden_config = array (
     
   ),
 
-  'format-blocks' => true,
+  'with-html' => true,
+  'with-groups' => true,
+  'with-typography' => true,
+  
+  'language' => 'ru',
 
   'char-headings'  => '#',
 
@@ -49,12 +53,6 @@ $_neasden_config = array (
     '&ldquo;' => '“',
     '&rdquo;' => '”',
   ),
-
-  'with-html' => false,
-
-  'with-typography' => true,
-  
-  'language' => 'ru',
 
   'extensions' => array (
     'lists' => array (

@@ -853,7 +853,7 @@ function n__format_blocks ($text) {
 
     // text blocks should be formatted
     if (
-      $_neasden_config['format-blocks'] and
+      $_neasden_config['with-groups'] and
       $initial_block['strength'] == N_BLOCK_STRENGTH_TEXT
     ) {
 

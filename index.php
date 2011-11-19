@@ -1,8 +1,6 @@
 <?
 
 /*
-профили конфига
-вариант для комментариев, без хтмла
 дефис после неразрывного пробела не заменится на тире
 если дефисов больше трёх подряд, то не нужно их трогать ни один (-------)
 выносить кавычки за ссылку
@@ -30,7 +28,7 @@ function stopwatch () {
 
 $stopwatch = stopwatch ();
 //for ($i = 0; $i < 100; $i ++) {
-  $res = neasden ($text, 'simple');
+  $res = neasden ($text, 'comments');
 //}
 
 $stopwatch = stopwatch () - $stopwatch;
@@ -76,7 +74,7 @@ $stopwatch = stopwatch () - $stopwatch;
     margin-right: 0.7em;
   }
   span.hlaquo-s {
-      margin-left: -0.7em;
+    margin-left: -0.7em;
   }
   
 </style>
