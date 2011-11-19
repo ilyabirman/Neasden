@@ -1,8 +1,8 @@
 <?
 
-define ('N_BLOCK_STRENGTH_TEXT', 0); // formatted, typographed
-define ('N_BLOCK_STRENGTH_OPAQUE', 7); // typographed
-define ('N_BLOCK_STRENGTH_SACRED', 9); // returned as is
+define ('N_FRAG_STRENGTH_TEXT', 0); // grouped, typographed
+define ('N_FRAG_STRENGTH_OPAQUE', 7); // typographed
+define ('N_FRAG_STRENGTH_SACRED', 9); // returned as is
 
 define ('HEL_SPECIAL_CHAR', "\x1");
 //define ('HEL_SPECIAL_CHAR', "+");
@@ -121,10 +121,10 @@ function n__tag_name ($text) {
 // return 'text', 'sacred' or 'opaque' for an html element
 function n__element_strength ($element) {
   global $_neasden_config;
-  if (array_key_exists ($element, $_neasden_config['block-strengths'])) {
-    return $_neasden_config['block-strengths'][$element];
+  if (array_key_exists ($element, $_neasden_config['fragment-strengths'])) {
+    return $_neasden_config['fragment-strengths'][$element];
   }
-  return N_BLOCK_STRENGTH_TEXT;
+  return N_FRAG_STRENGTH_TEXT;
 }
 
 
@@ -226,7 +226,7 @@ function n__enclose_within_tagless ($text, $char, $enclosures) {
 
 
 
-function n__split_blocks ($text) {
+function n__split_fragments ($text) {
   global $_neasden_config;
 
   $machine = array (
@@ -252,8 +252,8 @@ function n__split_blocks ($text) {
   $state = 'text';
   $prevstate = 'text';
   $tagstack = array ();
-  $blocks = array ();
-  $thisblock = array ('content' => '', 'strength' => -1);
+  $fragments = array ();
+  $thisfrag = array ('content' => '', 'strength' => -1);
   $current_el = '';
   
   for ($i = 0; $i < $l; $i ++ ) {
@@ -269,20 +269,20 @@ function n__split_blocks ($text) {
     // html comments: manually manage states
     if ($state == 'tag' and $r == '<!--') {
       $state = 'comment';
-      if ($thisblock['content']) {
-        $blocks[] = $thisblock;
+      if ($thisfrag['content']) {
+        $fragments[] = $thisfrag;
       }
-      $thisblock = array ('content' => $r, 'strength' => -1);
+      $thisfrag = array ('content' => $r, 'strength' => -1);
       $r = '';
     }
     if ($state == 'comment' and substr ($r, -3, 3) == '-->') { 
       $state = 'text';
-      $thisblock['content'] .= $r;
-      $thisblock['strength'] = N_BLOCK_STRENGTH_SACRED;
-      if ($thisblock['content']) {
-        $blocks[] = $thisblock;
+      $thisfrag['content'] .= $r;
+      $thisfrag['strength'] = N_FRAG_STRENGTH_SACRED;
+      if ($thisfrag['content']) {
+        $fragments[] = $thisfrag;
       }
-      $thisblock = array ('content' => '', 'strength' => -1);
+      $thisfrag = array ('content' => '', 'strength' => -1);
       $r = '';
     }
     
@@ -291,12 +291,12 @@ function n__split_blocks ($text) {
       if ($prevstate == 'text' and $state == 'tag') {
 
         // state changes from text to tag,
-        // so commit all previous text to this block
+        // so commit all previous text to this fragment
         // start a new run with a '<'
         // and then just see how it goes from there
         
-        $thisblock['content'] .= substr ($r, 0, -1);
-        $thisblock['strength'] = n__element_strength ($current_el);
+        $thisfrag['content'] .= substr ($r, 0, -1);
+        $thisfrag['strength'] = n__element_strength ($current_el);
         $r = substr ($r, -1, 1);
         
       } elseif ($prevstate == 'tag' and $state == 'text') {
@@ -308,20 +308,20 @@ function n__split_blocks ($text) {
           // open tag
 
           if (
-            n__element_strength ($tagname) > $thisblock['strength']
+            n__element_strength ($tagname) > $thisfrag['strength']
           ) {
 
-            // new block is stronger,
-            // so commit this block to blocks, start a new block
-            if ($thisblock['content']) {
-              $blocks[] = $thisblock;
+            // new fragment is stronger,
+            // so commit this fragment to fragments, start a new fragment
+            if ($thisfrag['content']) {
+              $fragments[] = $thisfrag;
             }
-            $thisblock = array ('content' => $r, 'strength' => -1);
+            $thisfrag = array ('content' => $r, 'strength' => -1);
             
           } else {
           
-            $thisblock['content'] .= $r;
-            //$thisblock['content'] .= n__save_tag ($r);
+            $thisfrag['content'] .= $r;
+            //$thisfrag['content'] .= n__save_tag ($r);
             
           }
             
@@ -350,11 +350,11 @@ function n__split_blocks ($text) {
             if (n__element_strength ($current_el) < $strength_before) {
 
               // so we are now off sacred elements, 
-              // so finish and append this block, start new block
-              $thisblock['content'] .= $r;
-              //$thisblock['content'] .= n__save_tag ($r);
-              $blocks[] = $thisblock;
-              $thisblock = array ('content' => '', 'strength' => -1);
+              // so finish and append this fragment, start new fragment
+              $thisfrag['content'] .= $r;
+              //$thisfrag['content'] .= n__save_tag ($r);
+              $fragments[] = $thisfrag;
+              $thisfrag = array ('content' => '', 'strength' => -1);
               $r = '';
               
             }
@@ -362,24 +362,24 @@ function n__split_blocks ($text) {
           } else {
 
             if (
-              in_array ($tagname, array_keys ($_neasden_config['block-strengths']))
+              in_array ($tagname, array_keys ($_neasden_config['fragment-strengths']))
             ) {
   
               // closing tag makes no sense, it wasn’t open
 
-              // so end whatever block we have
-              if ($thisblock['content']) {
-                $blocks[] = $thisblock;
+              // so end whatever fragments we have
+              if ($thisfrag['content']) {
+                $fragments[] = $thisfrag;
               }
 
-              // make a new sacred block of this weird tag
-              $blocks[] = array (
+              // make a new sacred fragment of this weird tag
+              $fragments[] = array (
                 'content' => $r,
-                'strength' => N_BLOCK_STRENGTH_SACRED,
+                'strength' => N_FRAG_STRENGTH_SACRED,
               );
 
-              // and start new block
-              $thisblock = array ('content' => '', 'strength' => -1);
+              // and start new fragment
+              $thisfrag = array ('content' => '', 'strength' => -1);
               $r = '';
             }
           }
@@ -392,15 +392,15 @@ function n__split_blocks ($text) {
 
   }
   
-  $thisblock['content'] .= $r;
-  $thisblock['strength'] = n__element_strength ($current_el);
+  $thisfrag['content'] .= $r;
+  $thisfrag['strength'] = n__element_strength ($current_el);
   $r = '';
   
-  if ($thisblock['content']) {
-    $blocks[] = $thisblock;
+  if ($thisfrag['content']) {
+    $fragments[] = $thisfrag;
   }
 
-  return $blocks;
+  return $fragments;
   
 }
 
@@ -804,10 +804,10 @@ function n__typography ($text) {
 
 
 
-// any opaque block or a text block after formatting
+// any opaque fragment or a text fragment after formatting
 // should be typographed with this function
 
-function n__process_opaque_block ($text) {
+function n__process_opaque_fragment ($text) {
   global $_neasden_config, $_neasden_tag_machine;
   
   // replace &laquo; with normal quote characters
@@ -827,7 +827,7 @@ function n__process_opaque_block ($text) {
 
 
 
-function n__format_blocks ($text) {
+function n__format_fragments ($text) {
   global $_neasden_config, $_neasden_explaining;
 
   // remove html if necessary
@@ -837,46 +837,46 @@ function n__format_blocks ($text) {
   }
     
   // dirty split
-  $initial_blocks = n__split_blocks ($text);
+  $initial_fragments = n__split_fragments ($text);
 
-  // process initial blocks
-  $resulting_blocks = array ();  
-  foreach ($initial_blocks as $initial_block) {
+  // process initial fragments
+  $resulting_fragments = array ();  
+  foreach ($initial_fragments as $initial_fragment) {
    
     // if explaining, borough the initial
     // explanation to result
     if ($_neasden_explaining) {
-      $resulting_block = $initial_block;
+      $resulting_fragment = $initial_fragment;
     }
     
-    $resulting_block['result'] = $initial_block['content'];
+    $resulting_fragment['result'] = $initial_fragment['content'];
 
-    // text blocks should be formatted
+    // text fragments should be formatted
     if (
       $_neasden_config['with-groups'] and
-      $initial_block['strength'] == N_BLOCK_STRENGTH_TEXT
+      $initial_fragment['strength'] == N_FRAG_STRENGTH_TEXT
     ) {
 
-      $resulting_block['result'] = '';
-      $resulting_block['processing'] = array ();
+      $resulting_fragment['result'] = '';
+      $resulting_fragment['processing'] = array ();
 
-      foreach (n__groups ($initial_block['content']) as $group) {
-        $resulting_block['processing'][] = $group;
-        $resulting_block['result'] .= $group['result'];
+      foreach (n__groups ($initial_fragment['content']) as $group) {
+        $resulting_fragment['processing'][] = $group;
+        $resulting_fragment['result'] .= $group['result'];
       }
       
     }
 
-    // opaque blocks should be typographed
-    if ($initial_block['strength'] < N_BLOCK_STRENGTH_SACRED) {
-      $resulting_block['result'] = n__process_opaque_block ($resulting_block['result']);
+    // opaque fragments should be typographed
+    if ($initial_fragment['strength'] < N_FRAG_STRENGTH_SACRED) {
+      $resulting_fragment['result'] = n__process_opaque_fragment ($resulting_fragment['result']);
     }
 
-    $resulting_blocks[] = $resulting_block;
+    $resulting_fragments[] = $resulting_fragment;
     
   }
   
-  return $resulting_blocks;
+  return $resulting_fragments;
   
 }
 
@@ -892,26 +892,26 @@ function neasden_explain ($text) {
   $result .= '<style>';
   $result .= 'table.neasden-explanation { font-size: 85%; background: #f0f0f0 }';
   $result .= 'table.neasden-explanation td { border-top: 1px #ccc solid; padding: 2px 8px 2px 2px }';
-  $result .= 'table.neasden-explanation tr.block td { border-top: 2px #000 solid }';
+  $result .= 'table.neasden-explanation tr.frag td { border-top: 2px #000 solid }';
   $result .= '</style>';
   
   $result .= '<table class="neasden-explanation" cellspacing="0" cellpadding="0" border="0">';
   
   $result .= '<tr valign="top">';
-  $result .= '<td><pre><b>blocks and groups</b></pre></td>';
+  $result .= '<td><pre><b>frags and groups</b></pre></td>';
   $result .= '<td><pre><b>processing</b></pre></td>';
   $result .= '<td><pre><b>result</b></pre></td>';
   $result .= '</tr>';
   
-  foreach (n__format_blocks ($text) as $block) {
+  foreach (n__format_fragments ($text) as $frag) {
 
     $color = '#f00';
-    if ($block['strength'] == N_BLOCK_STRENGTH_TEXT) $color = '#080';
-    if ($block['strength'] == N_BLOCK_STRENGTH_OPAQUE) $color = '#00a';
-    if ($block['strength'] == N_BLOCK_STRENGTH_SACRED) $color = '#000';
+    if ($frag['strength'] == N_FRAG_STRENGTH_TEXT) $color = '#080';
+    if ($frag['strength'] == N_FRAG_STRENGTH_OPAQUE) $color = '#00a';
+    if ($frag['strength'] == N_FRAG_STRENGTH_SACRED) $color = '#000';
     
-    $result .= '<tr valign="top" class="block">';
-    $result .= '<td style="background: #ffc; color: '. $color .'"><pre>['. htmlspecialchars ($block['content']) .']</pre></td>';
+    $result .= '<tr valign="top" class="frag">';
+    $result .= '<td style="background: #ffc; color: '. $color .'"><pre>['. htmlspecialchars ($frag['content']) .']</pre></td>';
     
     /*
     $result .= '<td>';
@@ -923,20 +923,20 @@ function neasden_explain ($text) {
     
     */
     
-    if (is_array ($block['processing'])) {
+    if (is_array (@$frag['processing'])) {
       $result .= '<td><pre>see below ↓</pre></td>';
     } else {
-      $result .= '<td><pre>['. @print_r ($block['debug'], true) .']</pre></td>';
+      $result .= '<td><pre>['. @print_r ($frag['debug'], true) .']</pre></td>';
     }
-    $result .= '<td><pre>['. htmlspecialchars ($block['result']) .']</pre></td>';
+    $result .= '<td><pre>['. htmlspecialchars ($frag['result']) .']</pre></td>';
     $result .= '</tr>';
 
-    if (is_array ($block['processing'])) {
-      foreach ($block['processing'] as $group) {
+    if (is_array (@$frag['processing'])) {
+      foreach ($frag['processing'] as $group) {
         $result .= '<tr valign="top">';
-        $result .= '<td><pre>['. htmlspecialchars  ($group['content']) .']</pre></td>';
-        $result .= '<td><pre>['. str_repeat ('>', $group['depth']) .''.$group['class'] .' ('. $group['class-data'] .')<br />'. @print_r ($group['debug'], true) .']</pre></td>';
-        $result .= '<td><pre>['. htmlspecialchars  ($group['result']) .']</pre></td>';
+        $result .= '<td><pre>['. @htmlspecialchars  ($group['content']) .']</pre></td>';
+        $result .= '<td><pre>['. @str_repeat ('>', $group['depth']) .''. @$group['class'] .' ('. @$group['class-data'] .')<br />'. @print_r ($group['debug'], true) .']</pre></td>';
+        $result .= '<td><pre>['. @htmlspecialchars  ($group['result']) .']</pre></td>';
         $result .= '</tr>';
       }
     }
@@ -965,8 +965,8 @@ function neasden ($text, $profile = '') {
   #print_r ($_neasden_config);
 
   $result = '';
-  foreach (n__format_blocks ($text) as $block) {
-    $result .= $block['result'];
+  foreach (n__format_fragments ($text) as $frag) {
+    $result .= $frag['result'];
   }
 
   return $result;

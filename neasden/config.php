@@ -21,17 +21,22 @@ $_neasden_config = array (
     'youtube',
   ),
 
-  'block-strengths' => array (
+  'fragment-strengths' => array (
 
-    'code' => N_BLOCK_STRENGTH_OPAQUE,
-    'pre' => N_BLOCK_STRENGTH_OPAQUE,
-    'textarea' => N_BLOCK_STRENGTH_OPAQUE,
+    'code' => N_FRAG_STRENGTH_OPAQUE,
+    'pre' => N_FRAG_STRENGTH_OPAQUE,
+    'textarea' => N_FRAG_STRENGTH_OPAQUE,
+    'p' => N_FRAG_STRENGTH_OPAQUE,
+    'ul' => N_FRAG_STRENGTH_OPAQUE,
+    'ol' => N_FRAG_STRENGTH_OPAQUE,
+    'blockquote' => N_FRAG_STRENGTH_OPAQUE,
+    'li' => N_FRAG_STRENGTH_OPAQUE,
 
-    'object' => N_BLOCK_STRENGTH_SACRED,
-    'embed' => N_BLOCK_STRENGTH_SACRED,
-    'iframe' => N_BLOCK_STRENGTH_SACRED,
-    'script' => N_BLOCK_STRENGTH_SACRED,
-    'style' => N_BLOCK_STRENGTH_SACRED,
+    'object' => N_FRAG_STRENGTH_SACRED,
+    'embed' => N_FRAG_STRENGTH_SACRED,
+    'iframe' => N_FRAG_STRENGTH_SACRED,
+    'script' => N_FRAG_STRENGTH_SACRED,
+    'style' => N_FRAG_STRENGTH_SACRED,
     
   ),
 
