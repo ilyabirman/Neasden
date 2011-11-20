@@ -14,6 +14,7 @@ define ('HEL_TAGS', '('. HEL_TAG .')*');
 
 
 define ('N_MAX_H_LEVEL', 6);
+define ('N_DEFAULT_GROUP', 'p');
 
 require 'config.php';
 
@@ -53,7 +54,7 @@ $_neasden_groups = array (
   'table'   => '(-hr-)(-tr-)+(-hr-)?',
   */
   //'img'     => '(-img-name-)((-img-name-)|(-p-))*',
-   //'youtube' => '(-youtube-href-)(-p-)*',
+  //'youtube' => '(-youtube-href-)(-p-)*',
 );
 
 $_neasden_saved_tags = array ();
@@ -270,9 +271,10 @@ function n__typography ($text) {
   
   // dash
   if (1) {
-    $text = preg_replace ('/ \- /m', ' '. $dash .' ', $text);
-    $text = preg_replace ('/^('. HEL_TAGS .')\- /m', '$1'. $dash .' ', $text);
-    $text = preg_replace ('/ \-('. HEL_TAGS .')$/m', $nbsp . $dash. '$1', $text);
+    #$text = preg_replace ('/ ('. HEL_TAGS .')\-('. HEL_TAGS .') /m', ' $1'. $dash .'$2 ', $text);
+    #$text = preg_replace ('/^('. HEL_TAGS .')\-('. HEL_TAGS .') /m', '$1'. $dash .'$2 ', $text);
+    $text = preg_replace ('/(?<=^| )('. HEL_TAGS .')\-('. HEL_TAGS .')(?= |$)/m', '$1'. $dash .'$2', $text);
+    #$text = preg_replace ('/ \-('. HEL_TAGS .')$/m', $nbsp . $dash. '$1', $text);
   }
 
 
@@ -340,6 +342,9 @@ function n__process_opaque_fragment ($text) {
 
 
 function n__render_group ($class, $group) {
+
+  #print_r ($group);
+  #echo '<br />';
 
   if (!$class) return;
   
@@ -484,7 +489,7 @@ function n__groups ($text) {
   
   $list_levels = array ();
  
-  $last_group_class = '';
+  $last_group_class = N_DEFAULT_GROUP;
  
   $groups = array ();
   $good_buffer = array ();
@@ -549,12 +554,15 @@ function n__groups ($text) {
     if ($quote_level_changed or !$match_found) {
 
       if ($quote_level_changed) {
-        $line['debug'] .= "\n".'qlc';
+        $line['debug'] .= "\n".'qlc ';
       }
 
       if (!$match_found) {
         $line['debug'] .= "\n".'nomatch ';
       }
+      
+      print_r ($last_group_class);
+      echo '<br>';
       
       $line['result'] = n__render_group ($last_group_class, $good_buffer);
 
@@ -565,11 +573,10 @@ function n__groups ($text) {
 
       $good_buffer = array ($line);
       $rdef = '-'. $line['class'] .'-';
-      $last_group_class = n__matching_group ($rdef);
+      $last_group_class = n__matching_group ($rdef) or $last_group_class = N_DEFAULT_GROUP;
       
     }
     
-
     $groups[] = $line;
     
   }
