@@ -270,13 +270,14 @@ function n__typography ($text) {
   );
   
   // dash
-  if (1) {
-    #$text = preg_replace ('/ ('. HEL_TAGS .')\-('. HEL_TAGS .') /m', ' $1'. $dash .'$2 ', $text);
-    #$text = preg_replace ('/^('. HEL_TAGS .')\-('. HEL_TAGS .') /m', '$1'. $dash .'$2 ', $text);
-    $text = preg_replace ('/(?<=^| )('. HEL_TAGS .')\-('. HEL_TAGS .')(?= |$)/m', '$1'. $dash .'$2', $text);
-    #$text = preg_replace ('/ \-('. HEL_TAGS .')$/m', $nbsp . $dash. '$1', $text);
-  }
+  $text = preg_replace (
+    '/(?<=^| |'. preg_quote ($nbsp) .')('. HEL_TAGS .')\-('. HEL_TAGS .')(?= |$)/m',
+    '$1'. $dash .'$2',
+    $text
+  );
 
+  // space before dash
+  $text = preg_replace ('/ ('. HEL_TAGS .')'. preg_quote ($dash) .'/', $nbsp .'$1'. $dash, $text);
 
   // unions and prepositions
   if (1) {
