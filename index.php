@@ -42,7 +42,7 @@ $stopwatch = stopwatch () - $stopwatch;
 
 <?#= 'Time: '. $stopwatch; ?>
 
-<?= neasden_explain ($text); ?>
+<?#= neasden_explain ($text); ?>
 
 <?= '<pre>'. htmlspecialchars ($res) .'</pre>' ?>
 
