@@ -10,7 +10,7 @@ define ('HEL_SPECIAL_SEQUENCE_LENGTH', 6);
 
 define ('HEL_TAG', '\\' . HEL_SPECIAL_CHAR .'\d{'. HEL_SPECIAL_SEQUENCE_LENGTH .'}\\' . HEL_SPECIAL_CHAR);
 
-define ('HEL_TAGS', '('. HEL_TAG .')*');
+define ('HEL_TAGS', '(?:'. HEL_TAG .')*');
 
 
 define ('N_MAX_H_LEVEL', 6);
@@ -286,7 +286,7 @@ function n__typography ($text) {
         "/".
         "(?<!\pL|\-)".    // not-a—Unicode-letter-or-dash lookbehind
         $nobreak_fw .     // a preposition
-        HEL_TAGS.
+        "(". HEL_TAGS .")".
         " ".              // and a space
         "/isu",      
         '$1$2'. $nbsp,
@@ -298,7 +298,7 @@ function n__typography ($text) {
       $text = preg_replace (
         "/".
         " ".             // a space
-        HEL_TAGS.
+        "(". HEL_TAGS .")".
         $nobreak_bw .    // a particle
         "(?!\pL|\-)".    // not-a—Unicode-letter-or-dash lookforward
         "/isu",      
