@@ -559,8 +559,8 @@ function n__groups ($text) {
         $line['debug'] .= "\n".'nomatch ';
       }
       
-      print_r ($last_group_class);
-      echo '<br>';
+      #print_r ($last_group_class);
+      #echo '<br>';
       
       $line['result'] = n__render_group ($last_group_class, $good_buffer);
 
