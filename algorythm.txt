@@ -1,9 +1,15 @@
 Algorythm
 
 - Split text into independent fragments
+
 - with each fragment:
-  — if fragment is text
+  - if fragment is text
     - Split fragment into groups
     - with each group
       -
     - Join groups together
+    - now this fragment is opaque
+  − if fragment is opaque
+    - Typography
+    - now this fragment is sacred
+
