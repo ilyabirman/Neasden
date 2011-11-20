@@ -12,7 +12,6 @@ define ('HEL_TAG', '\\' . HEL_SPECIAL_CHAR .'\d{'. HEL_SPECIAL_SEQUENCE_LENGTH .
 
 define ('HEL_TAGS', '(?:'. HEL_TAG .')*');
 
-
 define ('N_MAX_H_LEVEL', 6);
 define ('N_DEFAULT_GROUP', 'p');
 
@@ -58,8 +57,6 @@ $_neasden_groups = array (
 );
 
 $_neasden_saved_tags = array ();
-
-$_neasden_explaining = false;
 
 
 
@@ -475,7 +472,7 @@ function n__parse_group_line ($line) {
 
 
 function n__groups ($text) {
-  global $_neasden_config, $_neasden_groups, $_neasden_explaining;
+  global $_neasden_config, $_neasden_groups;
 
   $text = str_replace ("\r\n", "\n", $text); 
   $text = str_replace ("\r", "\n", $text); 
@@ -810,7 +807,7 @@ function n__split_fragments ($text) {
 
 
 function n__format_fragments ($text) {
-  global $_neasden_config, $_neasden_explaining;
+  global $_neasden_config, $_neasden_intent;
 
   // remove html if necessary
   if (!$_neasden_config['with-html']) {
@@ -827,7 +824,7 @@ function n__format_fragments ($text) {
    
     // if explaining, borough the initial
     // explanation to result
-    if ($_neasden_explaining) {
+    if ($_neasden_intent == 'explain') {
       $resulting_fragment = $initial_fragment;
     }
     
@@ -866,9 +863,9 @@ function n__format_fragments ($text) {
 
 
 function neasden_explain ($text) {
-  global $_neasden_explaining;
+  global $_neasden_intent;
   
-  $_neasden_explaining = true;
+  $_neasden_intent = 'explain';
  
   $result = '';
   
@@ -929,17 +926,25 @@ function neasden_explain ($text) {
 
   $result .= '</table>';
   
-  $_neasden_explaining = false;
-
   return $result;
 
 }
 
 
 
+function neasden_detect ($text) {
+  global $_default_config, $_neasden_config, $_neasden_intent;
+
+  $_neasden_intent = 'detect';
+}
+
+
+
 function neasden ($text, $profile = '') {
-  global $_default_config, $_neasden_config;
-  
+  global $_default_config, $_neasden_config, $_neasden_intent;
+
+  $_neasden_intent = 'render'; 
+
   if ($profile and @$_default_config['__profiles'][$profile]) {
     $_neasden_config = array_merge ($_default_config, $_default_config['__profiles'][$profile]);
   }
