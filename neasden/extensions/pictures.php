@@ -63,7 +63,7 @@ function n__render_group_picture ($group) {
             list ($width, $height) = $size;
           } elseif (array_key_exists ('scaled-img-provider', $myconf)) {
             // call the provider
-            $filename = $myconf['scaled-img-provider'] . $scaled_filebasename;
+            $filename = $myconf['scaled-img-provider'] . $filebasename;
           }
 
           // otherwise leave the file as-is, browser will scale it
