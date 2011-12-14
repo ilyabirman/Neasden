@@ -4,13 +4,13 @@ define ('N_FRAG_STRENGTH_TEXT', 0); // grouped, typographed
 define ('N_FRAG_STRENGTH_OPAQUE', 7); // typographed
 define ('N_FRAG_STRENGTH_SACRED', 9); // returned as is
 
-define ('HEL_SPECIAL_CHAR', "\x1");
-//define ('HEL_SPECIAL_CHAR', "+");
-define ('HEL_SPECIAL_SEQUENCE_LENGTH', 6);
+define ('N_RX_SPECIAL_CHAR', "\x1");
+//define ('N_RX_SPECIAL_CHAR', "+");
+define ('N_RX_SPECIAL_SEQUENCE_LENGTH', 6);
 
-define ('HEL_TAG', '\\' . HEL_SPECIAL_CHAR .'\d{'. HEL_SPECIAL_SEQUENCE_LENGTH .'}\\' . HEL_SPECIAL_CHAR);
+define ('N_RX_TAG', '\\' . N_RX_SPECIAL_CHAR .'\d{'. N_RX_SPECIAL_SEQUENCE_LENGTH .'}\\' . N_RX_SPECIAL_CHAR);
 
-define ('HEL_TAGS', '(?:'. HEL_TAG .')*');
+define ('N_RX_TAGS', '(?:'. N_RX_TAG .')*');
 
 define ('N_MAX_H_LEVEL', 6);
 define ('N_DEFAULT_GROUP', 'p');
@@ -107,7 +107,7 @@ function n__define_group ($group, $regex) {
 
 
 function n__special_sequence ($index) {
-  return HEL_SPECIAL_CHAR . str_pad ($index, HEL_SPECIAL_SEQUENCE_LENGTH, '0', STR_PAD_LEFT) . HEL_SPECIAL_CHAR;
+  return N_RX_SPECIAL_CHAR . str_pad ($index, N_RX_SPECIAL_SEQUENCE_LENGTH, '0', STR_PAD_LEFT) . N_RX_SPECIAL_CHAR;
 }
 
 
@@ -150,17 +150,17 @@ function n__enclose_within_tagless ($text, $char, $enclosures) {
 
   // obvious replacements
   $text = preg_replace (
-    '/((^|\s|\-)'. HEL_TAGS .')'.
+    '/((^|\s|\-)'. N_RX_TAGS .')'.
     preg_quote ($char).
-    '(?!'. HEL_TAGS .'($|\-|\s))/m',
+    '(?!'. N_RX_TAGS .'($|\-|\s))/m',
     '$1'. $enclosures[0],
     $text
   );
   
   $text = preg_replace (
-    '/(?<!^|\s|\-)('. HEL_TAGS .
+    '/(?<!^|\s|\-)('. N_RX_TAGS .
     preg_quote ($char).
-    ')(?='. HEL_TAGS ."($|\-|\s))/m",
+    ')(?='. N_RX_TAGS ."($|\-|\s))/m",
     '$2'. $enclosures[3],
     $text
   );
@@ -268,13 +268,13 @@ function n__typography ($text) {
   
   // dash
   $text = preg_replace (
-    '/(?<=^| |'. preg_quote ($nbsp) .')('. HEL_TAGS .')\-('. HEL_TAGS .')(?= |$)/m',
+    '/(?<=^| |'. preg_quote ($nbsp) .')('. N_RX_TAGS .')\-('. N_RX_TAGS .')(?= |$)/m',
     '$1'. $dash .'$2',
     $text
   );
 
   // space before dash
-  $text = preg_replace ('/ ('. HEL_TAGS .')'. preg_quote ($dash) .'/', $nbsp .'$1'. $dash, $text);
+  $text = preg_replace ('/ ('. N_RX_TAGS .')'. preg_quote ($dash) .'/', $nbsp .'$1'. $dash, $text);
 
   // unions and prepositions
   if (1) {
@@ -284,7 +284,7 @@ function n__typography ($text) {
         "/".
         "(?<!\pL|\-)".    // not-a—Unicode-letter-or-dash lookbehind
         $nobreak_fw .     // a preposition
-        "(". HEL_TAGS .")".
+        "(". N_RX_TAGS .")".
         " ".              // and a space
         "/isu",      
         '$1$2'. $nbsp,
@@ -296,7 +296,7 @@ function n__typography ($text) {
       $text = preg_replace (
         "/".
         " ".             // a space
-        "(". HEL_TAGS .")".
+        "(". N_RX_TAGS .")".
         $nobreak_bw .    // a particle
         "(?!\pL|\-)".    // not-a—Unicode-letter-or-dash lookforward
         "/isu",      
