@@ -5,7 +5,6 @@ define ('N_FRAG_STRENGTH_OPAQUE', 7); // typographed
 define ('N_FRAG_STRENGTH_SACRED', 9); // returned as is
 
 define ('N_RX_SPECIAL_CHAR', "\x1");
-//define ('N_RX_SPECIAL_CHAR', "+");
 define ('N_RX_SPECIAL_SEQUENCE_LENGTH', 6);
 
 define ('N_RX_TAG', '\\' . N_RX_SPECIAL_CHAR .'\d{'. N_RX_SPECIAL_SEQUENCE_LENGTH .'}\\' . N_RX_SPECIAL_CHAR);
@@ -254,14 +253,14 @@ function n__typography ($text) {
   
   // italics
   $text = preg_replace (
-    '/(?:\_(?=\S)(.*?)\_)|(?:\_(.*?)(?<=\S)\_)/isu',
+    '/(?:\_(?=\S)(.*?)\_)|(?:\_(.*?)(?<=\S)\_)/imu',
     $i_in . '$1$2' . $i_out,
     $text
   );
 
   // bold
   $text = preg_replace (
-    '/(?:\*(?=\S)(.*?)\*)|(?:\*(.*?)(?<=\S)\*)/isu',
+    '/(?:\*(?=\S)(.*?)\*)|(?:\*(.*?)(?<=\S)\*)/imu',
     $b_in . '$1$2' . $b_out,
     $text
   );
