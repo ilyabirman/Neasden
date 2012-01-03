@@ -240,31 +240,20 @@ function n__typography ($text) {
   // quotes
   $text = n__enclose_within_tagless ($text, '"', $quotes);
   
+  $duomap = array ('/' => 'i', '*' => 'b');
 
-  $b_in = n__save_tag ('<b>');
-  $b_out = n__save_tag ('</b>');
-  $i_in = n__save_tag ('<i>');
-  $i_out = n__save_tag ('</i>');
-
-  /*
-  $text = n__enclose_within_tagless ($text, '*', array ($b_in, $i_in, $i_out, $b_out));
-  $text = n__enclose_within_tagless ($text, '_', array ($i_in, $b_in, $b_out, $i_out));
-  */
+  foreach ($duomap as $from => $to) {
+    if (!@$t_in[$to]) $t_in[$to] = n__save_tag ('<'. $to .'>');
+    if (!@$t_out[$to]) $t_out[$to] = n__save_tag ('</'. $to .'>');
+    $pair = '\\'. $from .'\\'. $from;
+    $text = preg_replace (
+      '/(?:'. $pair .'(?=\S)(.*?)'. $pair .')|(?:'. $pair .'(.*?)(?<=\S)'. $pair .')/imu',
+      $t_in[$to] . '$1$2' . $t_out[$to],
+      $text
+    );
+  }
   
-  // italics
-  $text = preg_replace (
-    '/(?:\_(?=\S)(.*?)\_)|(?:\_(.*?)(?<=\S)\_)/imu',
-    $i_in . '$1$2' . $i_out,
-    $text
-  );
 
-  // bold
-  $text = preg_replace (
-    '/(?:\*(?=\S)(.*?)\*)|(?:\*(.*?)(?<=\S)\*)/imu',
-    $b_in . '$1$2' . $b_out,
-    $text
-  );
-  
   // dash
   $text = preg_replace (
     '/(?<=^| |'. preg_quote ($nbsp) .')('. N_RX_TAGS .')\-('. N_RX_TAGS .')(?= |$)/m',
