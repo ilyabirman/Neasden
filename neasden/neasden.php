@@ -907,16 +907,6 @@ function neasden_explain ($text) {
     $result .= '<tr valign="top" class="frag">';
     $result .= '<td style="background: #ffc; color: '. $color .'"><pre>['. htmlspecialchars ($frag['content']) .']</pre></td>';
     
-    /*
-    $result .= '<td>';
-    $result .= '<table cellspacing="0" cellpadding="4" border="1" style="border-color: #fefefe">';
-    
-    $result .= '</table>';
-    
-    $result .= '</td>';
-    
-    */
-    
     if (is_array (@$frag['processing'])) {
       $result .= '<td><pre>see below ↓</pre></td>';
     } else {
