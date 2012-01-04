@@ -27,6 +27,8 @@ if (array_key_exists ('__overload', $_neasden_config)) {
   }
 }
 
+$_neasden_resources = array ();
+
 $_neasden_required_line_classes = array ();
 
 $_neasden_line_classes = array (
@@ -103,6 +105,12 @@ function n__define_group ($group, $regex) {
   $_neasden_groups[$group] = $regex;
 }
 
+
+
+function n__resource_detected ($resource) {
+  global $_neasden_resources;
+  $_neasden_resources[] = $resource;
+}
 
 
 function n__special_sequence ($index) {
@@ -819,7 +827,6 @@ function n__split_fragments ($text) {
 
 
 
-
 function n__format_fragments ($text) {
   global $_neasden_config, $_neasden_intent;
 
@@ -936,31 +943,82 @@ function neasden_explain ($text) {
 
 
 
-function neasden_detect ($text) {
-  global $_default_config, $_neasden_config, $_neasden_intent;
+function neasden ($text, $profile = '', $intent = '') {
+  global $_default_config, $_neasden_config, $_neasden_intent, $_neasden_resources;
 
-  $_neasden_intent = 'detect';
-}
-
-
-
-function neasden ($text, $profile = '') {
-  global $_default_config, $_neasden_config, $_neasden_intent;
-
-  $_neasden_intent = 'render'; 
+  $_neasden_intent = $intent; 
+  $_neasden_resources = array ();
 
   if ($profile and @$_default_config['__profiles'][$profile]) {
     $_neasden_config = array_merge ($_default_config, $_default_config['__profiles'][$profile]);
   }
   
-  #echo '<pre>';
-  #print_r ($_neasden_config);
-
   $result = '';
+  
+  if ($intent == 'explain') {
+    $result .= '<style>';
+    $result .= 'table.neasden-explanation { font-size: 85%; background: #f0f0f0 }';
+    $result .= 'table.neasden-explanation td { border-top: 1px #ccc solid; padding: 2px 8px 2px 2px }';
+    $result .= 'table.neasden-explanation tr.frag td { border-top: 2px #000 solid }';
+    $result .= '</style>';
+    
+    $result .= '<table class="neasden-explanation" cellspacing="0" cellpadding="0" border="0">';
+    
+    $result .= '<tr valign="top">';
+    $result .= '<td><pre><b>frags and groups</b></pre></td>';
+    $result .= '<td><pre><b>processing</b></pre></td>';
+    $result .= '<td><pre><b>result</b></pre></td>';
+    $result .= '</tr>';
+  }
+  
   foreach (n__format_fragments ($text) as $frag) {
-    $result .= $frag['result'];
+  
+    if ($intent == '') {
+
+      $result .= $frag['result'];
+
+    }
+    
+    if ($intent == 'explain') {
+
+      $color = '#f00';
+      if ($frag['strength'] == N_FRAG_STRENGTH_TEXT) $color = '#080';
+      if ($frag['strength'] == N_FRAG_STRENGTH_OPAQUE) $color = '#00a';
+      if ($frag['strength'] == N_FRAG_STRENGTH_SACRED) $color = '#000';
+      
+      $result .= '<tr valign="top" class="frag">';
+      $result .= '<td style="background: #ffc; color: '. $color .'"><pre>['. htmlspecialchars ($frag['content']) .']</pre></td>';
+      
+      if (is_array (@$frag['processing'])) {
+        $result .= '<td><pre>see below ↓</pre></td>';
+      } else {
+        $result .= '<td><pre>['. @print_r ($frag['debug'], true) .']</pre></td>';
+      }
+      $result .= '<td><pre>['. htmlspecialchars ($frag['result']) .']</pre></td>';
+      $result .= '</tr>';
+  
+      if (is_array (@$frag['processing'])) {
+        foreach ($frag['processing'] as $group) {
+          $result .= '<tr valign="top">';
+          $result .= '<td><pre>['. @htmlspecialchars  ($group['content']) .']</pre></td>';
+          $result .= '<td><pre>['. @str_repeat ('>', $group['depth']) .''. @$group['class'] .' ('. @$group['class-data'] .')<br />'. @print_r ($group['debug'], true) .']</pre></td>';
+          $result .= '<td><pre>['. @htmlspecialchars  ($group['result']) .']</pre></td>';
+          $result .= '</tr>';
+        }
+      }
+
+    }
+    
   }
 
+  if ($intent == 'explain') {
+    $result .= '</table>';
+  }
+
+  if ($intent == 'detect') {
+    $result = $_neasden_resources;
+  }
+    
   return $result;
 
 }

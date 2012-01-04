@@ -27,6 +27,8 @@ function n__render_group_picture ($group) {
       $filename = $myconf['folder'] . $filebasename;
       $size = getimagesize ($filename);
       list ($width, $height) = $size;
+
+      n__resource_detected ($filename);
       
       $filename_original = $filename;
       $width_original = $width;
