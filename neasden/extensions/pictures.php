@@ -24,12 +24,12 @@ function n__render_group_picture ($group) {
     
     if ($line['class'] == 'picture') {
 
+      n__resource_detected ($filebasename);
+      
       $filename = $myconf['folder'] . $filebasename;
       $size = getimagesize ($filename);
       list ($width, $height) = $size;
 
-      n__resource_detected ($filename);
-      
       $filename_original = $filename;
       $width_original = $width;
       $is_scaled = false;
