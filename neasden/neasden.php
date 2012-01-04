@@ -202,6 +202,19 @@ function n__enclose_within_tagless ($text, $char, $enclosures) {
 
 
 
+// 
+
+function n__process_double_brackets_contents_callback ($params) {
+  $text = @$params[1] . @$params[2] . @$params[3] . @$params[4];
+  @list ($href, $text) = explode (' ', $text, 2);
+  $a_in = n__save_tag ('<a href="'. $href .'">');
+  $a_out = n__save_tag ('</a>');
+  if (!@$text) $text = $href;
+  return $a_in . $text . $a_out;
+}
+
+
+
 // replacements, quotes, dashes, no-break spaces
 // input text must be netto:
 // no html entities, just actual utf-8 chars
@@ -226,6 +239,32 @@ function n__typography ($text) {
   #echo htmlspecialchars ($text);
   #die;
   
+  // double brackets
+  $pairs = array ('\\(\\(', '\\)\\)', '\\[\\[', '\\]\\]');
+  $text = preg_replace_callback (
+    '/'.
+    '(?:'. $pairs[0] .'(?=\S)(.*?)'. $pairs[1] .')|(?:'. $pairs[0] .'(.*?)(?<=\S)'. $pairs[1] .')'.
+    '|'.
+    '(?:'. $pairs[2] .'(?=\S)(.*?)'. $pairs[3] .')|(?:'. $pairs[2] .'(.*?)(?<=\S)'. $pairs[3] .')'.
+    '/imu',
+    'n__process_double_brackets_contents_callback',
+    $text
+  );
+  
+  // wiki stuff
+  $duomap = array ('/' => 'i', '*' => 'b', '#' => 'tt', '-' => 's');
+  foreach ($duomap as $from => $to) {
+    if (!@$t_in[$to]) $t_in[$to] = n__save_tag ('<'. $to .'>');
+    if (!@$t_out[$to]) $t_out[$to] = n__save_tag ('</'. $to .'>');
+    $pair = '\\'. $from .'\\'. $from;
+    $text = preg_replace (
+      '/(?:'. $pair .'(?=\S)(.*?)'. $pair .')|(?:'. $pair .'(.*?)(?<=\S)'. $pair .')/imu',
+      $t_in[$to] . '$1$2' . $t_out[$to],
+      $text
+    );
+  }
+  
+
   // replacements
   if (1) {
     if (array_key_exists ('replacements', $_neasden_language)) {
@@ -239,19 +278,6 @@ function n__typography ($text) {
   
   // quotes
   $text = n__enclose_within_tagless ($text, '"', $quotes);
-  
-  $duomap = array ('/' => 'i', '*' => 'b');
-
-  foreach ($duomap as $from => $to) {
-    if (!@$t_in[$to]) $t_in[$to] = n__save_tag ('<'. $to .'>');
-    if (!@$t_out[$to]) $t_out[$to] = n__save_tag ('</'. $to .'>');
-    $pair = '\\'. $from .'\\'. $from;
-    $text = preg_replace (
-      '/(?:'. $pair .'(?=\S)(.*?)'. $pair .')|(?:'. $pair .'(.*?)(?<=\S)'. $pair .')/imu',
-      $t_in[$to] . '$1$2' . $t_out[$to],
-      $text
-    );
-  }
   
 
   // dash
