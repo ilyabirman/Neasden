@@ -883,66 +883,6 @@ function n__format_fragments ($text) {
 
 
 
-function neasden_explain ($text) {
-  global $_neasden_intent;
-  
-  $_neasden_intent = 'explain';
- 
-  $result = '';
-  
-  $result .= '<style>';
-  $result .= 'table.neasden-explanation { font-size: 85%; background: #f0f0f0 }';
-  $result .= 'table.neasden-explanation td { border-top: 1px #ccc solid; padding: 2px 8px 2px 2px }';
-  $result .= 'table.neasden-explanation tr.frag td { border-top: 2px #000 solid }';
-  $result .= '</style>';
-  
-  $result .= '<table class="neasden-explanation" cellspacing="0" cellpadding="0" border="0">';
-  
-  $result .= '<tr valign="top">';
-  $result .= '<td><pre><b>frags and groups</b></pre></td>';
-  $result .= '<td><pre><b>processing</b></pre></td>';
-  $result .= '<td><pre><b>result</b></pre></td>';
-  $result .= '</tr>';
-  
-  foreach (n__format_fragments ($text) as $frag) {
-
-    $color = '#f00';
-    if ($frag['strength'] == N_FRAG_STRENGTH_TEXT) $color = '#080';
-    if ($frag['strength'] == N_FRAG_STRENGTH_OPAQUE) $color = '#00a';
-    if ($frag['strength'] == N_FRAG_STRENGTH_SACRED) $color = '#000';
-    
-    $result .= '<tr valign="top" class="frag">';
-    $result .= '<td style="background: #ffc; color: '. $color .'"><pre>['. htmlspecialchars ($frag['content']) .']</pre></td>';
-    
-    if (is_array (@$frag['processing'])) {
-      $result .= '<td><pre>see below ↓</pre></td>';
-    } else {
-      $result .= '<td><pre>['. @print_r ($frag['debug'], true) .']</pre></td>';
-    }
-    $result .= '<td><pre>['. htmlspecialchars ($frag['result']) .']</pre></td>';
-    $result .= '</tr>';
-
-    if (is_array (@$frag['processing'])) {
-      foreach ($frag['processing'] as $group) {
-        $result .= '<tr valign="top">';
-        $result .= '<td><pre>['. @htmlspecialchars  ($group['content']) .']</pre></td>';
-        $result .= '<td><pre>['. @str_repeat ('>', $group['depth']) .''. @$group['class'] .' ('. @$group['class-data'] .')<br />'. @print_r ($group['debug'], true) .']</pre></td>';
-        $result .= '<td><pre>['. @htmlspecialchars  ($group['result']) .']</pre></td>';
-        $result .= '</tr>';
-      }
-    }
-
-    
-  } 
-
-  $result .= '</table>';
-  
-  return $result;
-
-}
-
-
-
 function neasden ($text, $profile = '', $intent = '') {
   global $_default_config, $_neasden_config, $_neasden_intent, $_neasden_resources;
 
