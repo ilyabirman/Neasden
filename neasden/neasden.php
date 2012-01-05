@@ -160,15 +160,15 @@ function n__enclose_within_tagless ($text, $char, $enclosures) {
     '/((^|\s|\-)'. N_RX_TAGS .')'.
     preg_quote ($char).
     '(?!'. N_RX_TAGS .'($|\-|\s))/m',
-    '$1'. $enclosures[0],
+    '$1$2'. $enclosures[0],
     $text
   );
   
   $text = preg_replace (
-    '/(?<!^|\s|\-)('. N_RX_TAGS .
+    '/(?<!^|\s|\-)('. N_RX_TAGS .')'.
     preg_quote ($char).
-    ')(?='. N_RX_TAGS ."($|\-|\s))/m",
-    '$2'. $enclosures[3],
+    '(?='. N_RX_TAGS ."($|\-|\s))/m",
+    '$1'. $enclosures[3],
     $text
   );
 
@@ -268,9 +268,13 @@ function n__typography ($text) {
   foreach ($duomap as $from => $to) {
     if (!@$t_in[$to]) $t_in[$to] = n__save_tag ('<'. $to .'>');
     if (!@$t_out[$to]) $t_out[$to] = n__save_tag ('</'. $to .'>');
-    $pair = '\\'. $from .'\\'. $from;
+    $char = '\\'. $from;
     $text = preg_replace (
-      '/(?:'. $pair .'(?=\S)(.*?)'. $pair .')|(?:'. $pair .'(.*?)(?<=\S)'. $pair .')/imu',
+      '/'.
+      '(?:'. $char.$char .'(?!'. $char .')(?=\S)(.*?)'. $char.$char .')'.
+      '|'.
+      '(?:'. $char.$char .'(?!'. $char .')(.*?)(?<=\S)'. $char.$char .')'.
+      '/imu',
       $t_in[$to] . '$1$2' . $t_out[$to],
       $text
     );
