@@ -248,12 +248,16 @@ function n__typography ($text) {
   #die;
   
   // double brackets
-  $pairs = array ('\\(\\(', '\\)\\)', '\\[\\[', '\\]\\]');
+  $chars = array ('\\(', '\\)', '\\[', '\\]');
   $text = preg_replace_callback (
     '/'.
-    '(?:'. $pairs[0] .'(?=\S)(.*?)'. $pairs[1] .')|(?:'. $pairs[0] .'(.*?)(?<=\S)'. $pairs[1] .')'.
+    '(?:'. $chars[0].$chars[0] .'(?!'. $chars[0] .')(?=\S)(.*?)'.  $chars[1].$chars[1] .')'.
     '|'.
-    '(?:'. $pairs[2] .'(?=\S)(.*?)'. $pairs[3] .')|(?:'. $pairs[2] .'(.*?)(?<=\S)'. $pairs[3] .')'.
+    '(?:'. $chars[0].$chars[0] .'(?!'. $chars[0] .')(.*?)(?<=\S)'. $chars[1].$chars[1] .')'.
+    '|'.
+    '(?:'. $chars[2].$chars[2] .'(?!'. $chars[2] .')(?=\S)(.*?)'.  $chars[3].$chars[3] .')'.
+    '|'.
+    '(?:'. $chars[2].$chars[2] .'(?!'. $chars[2] .')(.*?)(?<=\S)'. $chars[3].$chars[3] .')'.
     '/imu',
     'n__process_double_brackets_contents_callback',
     $text
