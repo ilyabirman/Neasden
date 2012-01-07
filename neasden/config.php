@@ -19,6 +19,7 @@ $_neasden_config = array (
     'tables',
     'pictures',
     'youtube',
+    'vimeo',
   ),
   
   'opaque-elements' => array (
