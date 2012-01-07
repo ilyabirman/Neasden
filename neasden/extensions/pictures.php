@@ -88,7 +88,7 @@ function n__render_group_picture ($group) {
       // wrap into a link if needed
       if ($myconf['scaled-img-link-to-original'] and $is_scaled) {
         $image_html = (
-          '<a href="'. $filename_original .'" class="'. $cssc_zoomlink .'" width="'. $width_original .'">' ."\n".
+          '<a href="'. $myconf['src-prefix'] . $filename_original .'" class="'. $cssc_zoomlink .'" width="'. $width_original .'">' ."\n".
           '<div class="'. $cssc_zoomicon .'">'.
           '<div class="'. $cssc_zoomable .'"></div>'.
           '<div class="'. $cssc_zoomin .'"></div>'.

@@ -16,6 +16,7 @@ function n__render_group_fotorama ($group) {
 
   $p = false;
 
+
   n__require_link ($_neasden_config['__overload'] .'extensions/fotorama/fotorama.js');
   n__require_link ($_neasden_config['__overload'] .'extensions/fotorama/fotorama.css');
 
@@ -45,7 +46,7 @@ function n__render_group_fotorama ($group) {
       }
 
       $image_html = (
-        '<img src="'. $filename .'" '.
+        '<img src="'. $myconf['src-prefix'] . $filename .'" '.
         'width="'. $width .'" height="'. $height.'" '.
         'alt="'. $alt .'" />'. "\n"
       );
