@@ -17,10 +17,10 @@ define ('N_DEFAULT_GROUP', 'p');
 require 'config.php';
 
 if (array_key_exists ('__overload', $_neasden_config)) {
-  if (is_file ($_neasden_config['__overload'])) {
+  if (is_file ($_neasden_config['__overload']. 'config.php')) {
     $_default_config = $_neasden_config;
-    require $_neasden_config['__overload'];
-    $_neasden_config = array_merge ($_default_config, $_neasden_config);
+    require $_neasden_config['__overload']. 'config.php';
+    $_neasden_config = array_merge_recursive ($_default_config, $_neasden_config);
     
     // now use this as a basis for profiles
     $_default_config = $_neasden_config;
@@ -71,7 +71,19 @@ function n__init () {
   include 'languages/'. $_neasden_config['language'] .'.php';
 
   foreach ($_neasden_config['__extensions'] as $ext) {
-    include 'extensions/'. $ext .'.php';
+
+    $dir = rtrim (dirname (__FILE__), '/'). '/';
+    
+    if (is_file ($extfile = $dir . 'extensions/'. $ext .'.php')) {
+      #echo $extfile.'<br>';
+      include $extfile;
+    }
+    
+    if (is_file ($extfile = $_neasden_config['__overload']. 'extensions/'. $ext .'.php')) {
+      #echo $extfile.'<br>';
+      include $extfile;
+    }
+    
   }
   
   foreach ($_neasden_required_line_classes as $class => $no_need) {
@@ -898,7 +910,7 @@ function neasden ($text, $profile = '', $intent = '') {
   $_neasden_resources = array ();
 
   if ($profile and @$_default_config['__profiles'][$profile]) {
-    $_neasden_config = array_merge ($_default_config, $_default_config['__profiles'][$profile]);
+    $_neasden_config = array_merge_recursive ($_default_config, $_default_config['__profiles'][$profile]);
   }
   
   $result = '';

@@ -2,7 +2,7 @@
 
 $_neasden_config = array (
 
-  '__overload' => 'neasden-config.php',
+  '__overload' => 'user/',
   
   '__profiles' => array (
     'comments' => array (
