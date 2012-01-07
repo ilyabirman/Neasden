@@ -87,6 +87,11 @@ $_neasden_config = array (
     'tables' => array (
       'css-class' => 'txt-table',
     ),
+    'youtube' => array (
+      'css-class' => 'txt-video',
+      'width' => 768,
+      'height' => 480,
+    ),
   ),
   
 );
