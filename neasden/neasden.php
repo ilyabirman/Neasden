@@ -264,7 +264,7 @@ function n__typography ($text) {
   );
   
   // wiki stuff
-  $duomap = array ('/' => 'i', '*' => 'b', '#' => 'tt', '-' => 's');
+  $duomap = array ('/' => 'i', '*' => 'b', '-' => 's');
   foreach ($duomap as $from => $to) {
     if (!@$t_in[$to]) $t_in[$to] = n__save_tag ('<'. $to .'>');
     if (!@$t_out[$to]) $t_out[$to] = n__save_tag ('</'. $to .'>');
