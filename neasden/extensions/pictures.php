@@ -75,7 +75,7 @@ function n__render_group_picture ($group) {
       }
       
       $image_html = (
-        '<img src="'. $filename .'" '.
+        '<img src="'. $myconf['src-prefix'] . $filename .'" '.
         'width="'. $width .'" height="'. $height.'" '.
         'alt="'. $alt .'" />'. "\n"
       );

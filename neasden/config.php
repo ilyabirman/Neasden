@@ -74,6 +74,7 @@ $_neasden_config = array (
       'chars-ul-items' => array ('-', '–', '—', '*'),
     ),
     'pictures' => array (
+      'src-prefix' => 'http://neasden/',
       'folder' => 'pictures/',
       'css-class' => 'txt-picture', // see also var csscPrefix in scaleimage.js
       'max-width' => '368',
