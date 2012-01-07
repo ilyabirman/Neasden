@@ -16,8 +16,8 @@ function n__render_group_fotorama ($group) {
 
   $p = false;
 
-  n__require_link ('user/extensions/fotorama/fotorama.js');
-  n__require_link ('user/extensions/fotorama/fotorama.css');
+  n__require_link ($_neasden_config['__overload'] .'extensions/fotorama/fotorama.js');
+  n__require_link ($_neasden_config['__overload'] .'extensions/fotorama/fotorama.css');
 
   $result = (
     '<div class="'. $myconf['css-class'] .' fotorama" '.
