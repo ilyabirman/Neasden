@@ -28,10 +28,10 @@ function stopwatch () {
 
 $stopwatch = stopwatch ();
 //for ($i = 0; $i < 100; $i ++) {
-  $res = neasden ($text, '', 'detect');//, 'comments');
+  $res = neasden ($text, '');//, 'comments');
 //}
 
-print_r ($res);
+#print_r ($res);
 
 $stopwatch = stopwatch () - $stopwatch;
 

@@ -1,13 +1,19 @@
+Грубер ((http://daringfireball.net/2011/09/to_the_future всё написал)). (Грубер ((http://daringfireball.net/2011/09/to_the_future всё написал))). Грубер (((http://daringfireball.net/2011/09/to_the_future всё написал)).) Грубер (((http://daringfireball.net/2011/09/to_the_future всё написал))).
+
+"Без малого" - одно из дурацких выражений
+
 Проверка //старого нового// курсива.
 
 --Ещё --про//ве**р//к**а--.
 
 Не должно быть бага: Грубер ((http://daringfireball.net/2011/09/to_the_future всё//написал)).
 
-((01_2560x1600.jpg Заметка для теста Нисдена))
+## Педали
 
-Грубер [[http://daringfireball.net/2011/09/to_the_future всё написал]].
+DSC_0164.JPG
 
-Грубер <a href="http://daringfireball.net/linked/2011/11/14/device-specs">про нерелевантность техспецификации</a> современных устройств:
+wdj-free-ss.jpg
 
-> Spec-based reviews of computers and gadgets are inherently flawed, a relic of an era that’s already gone. Movie reviews are about what the movie is like to watch. Is it enjoyable, is it entertaining, does it look and sound good? Imagine a movie review based on specs, where you gave points for how long it was, whether the photography is in focus, deduct points for continuity errors in the story, and then out comes a number like «7,5 / 10», with little to no mention about, you know, whether the movie was effective as a piece of art.
+astra-chistoprudov.jpg
+
+7250.jpg
