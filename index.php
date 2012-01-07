@@ -17,7 +17,7 @@ error_reporting (E_ALL);
 
 if (!include 'neasden/neasden.php') die ('neasden init failed');
 
-$text = file_get_contents ('tests/test-10.txt');
+$text = file_get_contents ('tests/test-9.txt');
 $res = '';
 
 function stopwatch () {
@@ -40,6 +40,10 @@ $stopwatch = stopwatch () - $stopwatch;
 <html>
 <head>
   <link rel="stylesheet" href="style.css" />
+  <link href="fotorama.css" type="text/css" rel="stylesheet">
+  <script src="js/jquery.js" type="text/javascript"></script>
+  <script src="js/fotorama.js" type="text/javascript"></script>
+  <script src="js/scaleimage.js"></script>
 </head>
 <body>
 
@@ -57,9 +61,6 @@ $stopwatch = stopwatch () - $stopwatch;
 <td><?= $res ?></td>
 </tr>
 </table>
-
-<script src="js/jquery.js"></script>
-<script src="js/scaleimage.js"></script>
 
 </body>
 </html>
