@@ -1,12 +1,12 @@
 <?
 
 if (!($chars_ul_items = @$_neasden_config['extensions']['lists']['chars-ul-items'])) {
-  $chars_ul_items = array ('-', '*');
+  $chars_ul_items = array ('-', '–', '–', '*');
 }
 
 $ul_item_regex = array ();
 foreach ($chars_ul_items as $item) {
-  $ul_item_regex[] = '(\\'. $item .'\\'. $item .'?[^'. $item .'].*)';
+  $ul_item_regex[] = '(\\'. $item .'[^'. $item .'].*)';
 }
 $ul_item_regex = implode ('|', $ul_item_regex);
 
