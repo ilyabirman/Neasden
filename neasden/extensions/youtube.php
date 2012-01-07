@@ -2,7 +2,7 @@
 
 n__define_line_class (
   'youtube',
-  'http\:\/\/(?:www\.)?(?:(?:youtube\.com\/watch\/\?v\=)|(?:youtu\.be\/))(.{11})'
+  'http\:\/\/(?:www\.)?(?:(?:youtube\.com\/watch\/?\?v\=)|(?:youtu\.be\/))(.{11})'
 );
 n__define_group ('youtube', '(-youtube-)(-p-)*');
 
