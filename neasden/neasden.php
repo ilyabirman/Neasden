@@ -983,24 +983,26 @@ function neasden ($text, $profile = '', $intent = '') {
     $result .= '</table>';
   }
   
+  if ($intent == '') {
+    $preresult = '';
+  
+    foreach (array_unique ($_neasden_links) as $link) {
+    
+      if (substr ($link, -3) == '.js') {
+        $preresult .= '<script src="'. $link .'"></script>'. "\n";
+      }
+      if (substr ($link, -4) == '.css') {
+        $preresult .= '<style type="text/css" >@import url('. $link .'); </style>'. "\n";
+      }
+  
+    }
+  
+    $result = $preresult . $result;
+  }
+  
   if ($intent == 'detect') {
     $result = $_neasden_resources;
   }
-  
-  $preresult = '';
-
-  foreach (array_unique ($_neasden_links) as $link) {
-  
-    if (substr ($link, -3) == '.js') {
-      $preresult .= '<script src="'. $link .'"></script>'. "\n";
-    }
-    if (substr ($link, -4) == '.css') {
-      $preresult .= '<style type="text/css" >@import url('. $link .'); </style>'. "\n";
-    }
-
-  }
-
-  $result = $preresult . $result;
   
   return $result;
 
