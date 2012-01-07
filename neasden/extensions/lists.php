@@ -16,7 +16,8 @@ n__define_line_class ('ul-item', $ul_item_regex);
 //die ($ul_item_regex);
 //if (preg_match ('/^'.$ul_item_regex.'$/', '----------')) die ('!');
 
-n__define_group ('list', '((-ol-item-)|(-ul-item-))((-ol-item-)|(-ul-item-)|(-p-))+');
+#n__define_group ('list', '((-ol-item-)|(-ul-item-))((-ol-item-)|(-ul-item-)|(-p-))+');
+n__define_group ('list', '(((-ol-item-)|(-ul-item-))(-p-)*)+');
 
 function n__render_group_list ($group) {
 
