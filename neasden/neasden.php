@@ -27,6 +27,8 @@ if (array_key_exists ('__overload', $_neasden_config)) {
   }
 }
 
+$_neasden_links = array ();
+
 $_neasden_resources = array ();
 
 $_neasden_required_line_classes = array ();
@@ -122,6 +124,12 @@ function n__define_group ($group, $regex) {
 function n__resource_detected ($resource) {
   global $_neasden_resources;
   $_neasden_resources[] = $resource;
+}
+
+
+function n__require_link ($link) {
+  global $_neasden_links;
+  $_neasden_links[] = $link;
 }
 
 
@@ -382,7 +390,7 @@ function n__process_opaque_fragment ($text) {
 
 
 function n__render_group ($class, $group) {
-
+  
   #print_r ($group);
   #echo '<br />';
 
@@ -904,7 +912,7 @@ function n__format_fragments ($text) {
 
 
 function neasden ($text, $profile = '', $intent = '') {
-  global $_default_config, $_neasden_config, $_neasden_intent, $_neasden_resources;
+  global $_default_config, $_neasden_config, $_neasden_intent, $_neasden_resources, $_neasden_links;
 
   $_neasden_intent = $intent; 
   $_neasden_resources = array ();
@@ -974,11 +982,26 @@ function neasden ($text, $profile = '', $intent = '') {
   if ($intent == 'explain') {
     $result .= '</table>';
   }
-
+  
   if ($intent == 'detect') {
     $result = $_neasden_resources;
   }
-    
+  
+  $preresult = '';
+
+  foreach (array_unique ($_neasden_links) as $link) {
+  
+    if (substr ($link, -3) == '.js') {
+      $preresult .= '<script src="'. $link .'"></script>'. "\n";
+    }
+    if (substr ($link, -4) == '.css') {
+      $preresult .= '<style type="text/css" >@import url('. $link .'); </style>'. "\n";
+    }
+
+  }
+
+  $result = $preresult . $result;
+  
   return $result;
 
 }
