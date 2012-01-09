@@ -139,7 +139,5 @@ $ (function () {
 
   })
 
-  //$ ("#jplayer_inspector").jPlayerInspector ({jPlayer:$("#player")});
-  
   
 })

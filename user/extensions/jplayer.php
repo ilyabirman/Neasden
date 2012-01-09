@@ -5,7 +5,7 @@ n__define_line_class (
   '(?:\[play\])(.*)'
 );
 
-n__define_group ('jplayer', '(-jplayer-)(-p-)*');
+n__define_group ('jplayer', '(-jplayer-)');
 
 function n__render_group_jplayer ($group) {
   global $_neasden_config;
@@ -30,68 +30,55 @@ function n__render_group_jplayer ($group) {
   );
   
   foreach ($group as $line) {
+  
     list ($filebasename, $alt) = explode (' ', $line['content'], 2);
-    
-    if ($line['class'] == 'jplayer') {
+    $zoneid = rand (1000, 9999);
 
-      $zoneid = rand (1000, 9999);
+    $player_html = '
 
-      $player_html = '
-
-        <blockquote>
-        <div class="jplayer" id="jplayer-ui-zone-'. $zoneid .'">
+      <div class="jplayer" id="jplayer-ui-zone-'. $zoneid .'">
+        
+        <div class="jplayer-invisible-object"></div>
+        <div class="jplayer-ui" style="display: none">
           
-          <div class="jplayer-invisible-object"></div>
-          <div class="jplayer-ui" style="display: none">
-            
-            <div class="jplayer-edge jplayer-left"></div>
-            <div class="jplayer-edge jplayer-right"></div>
-  
-            <div class="jplayer-edge jplayer-right jplayer-right-pending"></div>
-            <div class="jplayer-edge jplayer-left jplayer-play-left-played" style="display: none"></div>
-            
-            <div class="jplayer-play-mine">
-              <div class="jplayer-dynamic-bar jplayer-load-bar"></div>
-              <div class="jplayer-dynamic-bar jplayer-play-bar"></div>
-  
-              <div class="jplayer-load-bar-end"></div>
-              <div class="jplayer-play-lift">
-                <div class="jplayer-buffering" style="display: none"></div>
-              </div>
-            </div>
-            
-            <div class="jplayer-control jplayer-play"></div>
-            <div class="jplayer-control jplayer-pause" style="display: none"></div>
-            
-            <div class="jplayer-time-info">
-              <div class="jplayer-play-time">0:00</div>
-              <div class="jplayer-total-time"></div>
-            </div>
+          <div class="jplayer-edge jplayer-left"></div>
+          <div class="jplayer-edge jplayer-right"></div>
 
+          <div class="jplayer-edge jplayer-right jplayer-right-pending"></div>
+          <div class="jplayer-edge jplayer-left jplayer-play-left-played" style="display: none"></div>
+          
+          <div class="jplayer-play-mine">
+            <div class="jplayer-dynamic-bar jplayer-load-bar"></div>
+            <div class="jplayer-dynamic-bar jplayer-play-bar"></div>
+
+            <div class="jplayer-load-bar-end"></div>
+            <div class="jplayer-play-lift">
+              <div class="jplayer-buffering" style="display: none"></div>
+            </div>
+          </div>
+          
+          <div class="jplayer-control jplayer-play"></div>
+          <div class="jplayer-control jplayer-pause" style="display: none"></div>
+          
+          <div class="jplayer-time-info">
+            <div class="jplayer-play-time">0:00</div>
+            <div class="jplayer-total-time"></div>
           </div>
 
-          <a class="jplayer-audio-source" href="'. $line['class-data'][1] .'" title="'. $downloadstr .'"></a>
-          <a class="jplayer-swf-source" href="user/neasden/extensions/jplayer/Jplayer.swf"></a>
-          
-          
         </div>
-        <div id="jplayer_inspector"></div>
-        </blockquote>
-      
-      '."\n";
-      
-      $player_html = n__save_tag ($player_html);
 
-      $result .= $player_html;
-      
-    } else {
-      if (!$p) {
-        $p = true;
-        $result .= '<p>' . $filebasename;
-      } else {
-        $result .= '<br />' . "\n" . $filebasename;
-      }
-    }
+        <a class="jplayer-audio-source" href="'. $line['class-data'][1] .'" title="'. $downloadstr .'"></a>
+        <a class="jplayer-swf-source" href="user/neasden/extensions/jplayer/Jplayer.swf"></a>
+        
+        
+      </div>
+    
+    '."\n";
+    
+    $player_html = n__save_tag ($player_html);
+
+    $result .= $player_html;
+    
   }
 
   if ($p) $result .= '</p>'."\n";
