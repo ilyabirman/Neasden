@@ -69,6 +69,8 @@ $_neasden_config = array (
     '&ldquo;' => '“',
     '&rdquo;' => '”',
   ),
+  
+  'generic-object-css-class' => 'txt-generic-object',
 
   'extensions' => array (
     'lists' => array (
