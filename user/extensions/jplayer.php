@@ -11,6 +11,9 @@ function n__render_group_jplayer ($group) {
   global $_neasden_config;
 
   $myconf = $_neasden_config['extensions']['jplayer'];
+
+  $css_class = $_neasden_config['generic-object-css-class'];
+  if (@$myconf['css-class']) $css_class = @$myconf['css-class'];
   
   $downloadstr = 'Download';
   if ($_neasden_config['language'] == 'ru') $downloadstr = 'Скачать';
@@ -22,7 +25,7 @@ function n__render_group_jplayer ($group) {
   n__require_link ($_neasden_config['__overload'] .'extensions/jplayer/player.css');
 
   $result = (
-    '<div class="'. $myconf['css-class'] .'"'.
+    '<div class="'. $css_class .'"'.
     '>'."\n"
   );
   
@@ -30,20 +33,6 @@ function n__render_group_jplayer ($group) {
     list ($filebasename, $alt) = explode (' ', $line['content'], 2);
     
     if ($line['class'] == 'jplayer') {
-      /*
-      $result .= $line['class-data'][1];
-
-      n__resource_detected ($filebasename);
-      
-      $filename = $myconf['folder'] . $filebasename;
-      $size = getimagesize ($filename);
-      list ($width, $height) = $size;
-
-      if ($width > $myconf['max-width']) {
-        $height = $height * ($myconf['max-width'] / $width);
-        $width = $myconf['max-width'];
-      }
-      */
 
       $zoneid = rand (1000, 9999);
 
@@ -92,47 +81,6 @@ function n__render_group_jplayer ($group) {
       '."\n";
       
       $player_html = n__save_tag ($player_html);
-
-      $result .= $player_html;
-      
-    } else {
-      if (!$p) {
-        $p = true;
-        $result .= '<p>' . $filebasename;
-      } else {
-        $result .= '<br />' . "\n" . $filebasename;
-      }
-    }
-  }
-
-  if ($p) $result .= '</p>'."\n";
-
-  $result .= '</div>'."\n";
-
-  return $result;
-  
-}
-
-
-
-?>le="repeat">repeat</a></li>
-                  <li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off" style="display: none; ">repeat off</a></li>
-                </ul>
-              </div>
-              <div class="jp-title">
-                <ul>
-                  <li>Cro Magnon Man</li>
-                </ul>
-              </div>
-              <div class="jp-no-solution" style="display: none; ">
-                <span>Update Required</span>
-                To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-              </div>
-            </div>
-          </div>
-          <div id="jplayer_inspector"></div>
-      '.
-      $script_sacred. "\n";
 
       $result .= $player_html;
       

@@ -7,12 +7,6 @@ $_neasden_config = array (
     'jplayer',
   ),
 
-  'extensions' => array (
-    'jplayer' => array (
-      'css-class' => 'txt-audio',
-    ),
-  ),
-
 );
 
 
