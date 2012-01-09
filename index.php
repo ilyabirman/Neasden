@@ -28,10 +28,10 @@ function stopwatch () {
 
 $stopwatch = stopwatch ();
 //for ($i = 0; $i < 100; $i ++) {
-  $res = neasden ($text, '', '');//, 'comments');
+  $n = neasden ($text, '', '');//, 'comments');
+  //$res = $n['result'];
+  $res = $n;
 //}
-
-#print_r ($res);
 
 $stopwatch = stopwatch () - $stopwatch;
 
@@ -40,9 +40,7 @@ $stopwatch = stopwatch () - $stopwatch;
 <html>
 <head>
   <link rel="stylesheet" href="style.css" />
-  <link href="fotorama.css" type="text/css" rel="stylesheet">
   <script src="js/jquery.js" type="text/javascript"></script>
-  <script src="js/fotorama.js" type="text/javascript"></script>
   <script src="js/scaleimage.js"></script>
 </head>
 <body>
@@ -61,6 +59,11 @@ $stopwatch = stopwatch () - $stopwatch;
 <td><?= $res ?></td>
 </tr>
 </table>
+
+<pre>
+Resources:
+<?# print_r ($n['resources']); ?>
+</pre>
 
 </body>
 </html>
