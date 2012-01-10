@@ -9,14 +9,14 @@
 .jplayer-audio-source {
   position: absolute;
   display: block;
-  width: 14px; height: 14px;
-  margin: 0 -8px;
+  width: 9px; height: 10px;
+  margin: 0 -5px;
   background: url('i/download.png'); 
-  left: 0; top: 12px;
+  left: 0; top: 15px;
 }
 .jplayer-audio-source-shifted {
   left: auto;
-  right: -24px; top: 12px;
+  right: -48px;
 }
 .jplayer-ui {
   width: 100%; height: 100%;
@@ -80,6 +80,9 @@
   left: -24px; top: 15px; 
   width: 24px; height: 25px;
   margin: -8px;
+  
+  left: auto; right: -24px;
+
   cursor: pointer; cursor: hand;
 }
 .jplayer-play {
@@ -92,13 +95,20 @@
   width: 100%;
   top: 32px;
   position: absolute;
+  /*
   font-size: 9px;
   font-family: 'Verdana';
-  color: #000;
+  */
+  font-size: 85%;
   text-shadow: 0px 1px 0px #fff;
 }
 .jplayer-play-time {
   left: -8px;
+}
+.jplayer-name {
+  left: 0;
+  width: 100%;
+  text-align: center;
 }
 .jplayer-total-time {
   right: -8px;

@@ -31,7 +31,7 @@ function n__render_group_jplayer ($group) {
   
   foreach ($group as $line) {
   
-    list ($filebasename, $alt) = explode (' ', $line['content'], 2);
+    list ($href, $alt) = explode (' ', trim ($line['class-data'][1]), 2);
     $zoneid = rand (1000, 9999);
 
     $player_html = '
@@ -61,13 +61,14 @@ function n__render_group_jplayer ($group) {
           <div class="jplayer-control jplayer-pause" style="display: none"></div>
           
           <div class="jplayer-time-info">
-            <div class="jplayer-play-time">0:00</div>
+            <div class="jplayer-play-time"></div>
+            <div class="jplayer-name">'. $alt .'</div>
             <div class="jplayer-total-time"></div>
           </div>
 
         </div>
 
-        <a class="jplayer-audio-source" href="'. $line['class-data'][1] .'" title="'. $downloadstr .'"></a>
+        <a class="jplayer-audio-source" href="'. $href .'" title="'. $downloadstr .'"></a>
         <a class="jplayer-swf-source" href="user/neasden/extensions/jplayer/Jplayer.swf"></a>
         
         

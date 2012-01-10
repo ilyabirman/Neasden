@@ -90,6 +90,8 @@ $ (function () {
       ready: function (event) {
         $ ('.jplayer .jplayer-audio-source').addClass ('jplayer-audio-source-shifted')
         $ ('.jplayer .jplayer-ui').show ()
+        //exacttotaltime = exacttotaltime || (event.jPlayer.status.seekPercent == 100)
+        //jposition (currentCssSelectorAncestor, 0, 0)
         var me = this
         var mousedown = false
         $ (me).jPlayer ("setMedia", {
@@ -118,7 +120,7 @@ $ (function () {
       timeupdate: function (event) {
   
         loadPercent = event.jPlayer.status.seekPercent
-        exacttotaltime = (event.jPlayer.status.seekPercent == 100)
+        exacttotaltime = exacttotaltime || (event.jPlayer.status.seekPercent == 100)
         totaltime = event.jPlayer.status.duration / (loadPercent / 100)
         if (isNaN (totaltime)) totaltime = 0
              
