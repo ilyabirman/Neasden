@@ -28,7 +28,7 @@
   .txt-table { margin: 0 0 .7em 0; border-collapse: collapse }
   .txt-table td { border: #ccc solid; border: 1px 0; padding: .35em 1em .35em 0 }
 
-  .txt-video { margin-bottom: .7em }
+  .txt-generic-object { margin-bottom: .7em }
 
   ul li, ol li { margin: 0 0 .35em 0 }
   td { padding: 0 1em 0 0 }

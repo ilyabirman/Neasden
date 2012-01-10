@@ -1,4 +1,6 @@
-[play] http://promodj.ru/download/2560710/
+[play] http://promodj.ru/download/2560710/ Микс такой-то
+
+Не должно быть бага: Грубер ((http://daringfireball.net/2011/09/to_the_future всё//написал)).
 
 Грубер ((http://daringfireball.net/2011/09/to_the_future всё написал)). (Грубер ((http://daringfireball.net/2011/09/to_the_future всё написал))). Грубер (((http://daringfireball.net/2011/09/to_the_future всё написал)).) Грубер (((http://daringfireball.net/2011/09/to_the_future всё написал))).
 
