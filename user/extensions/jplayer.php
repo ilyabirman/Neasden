@@ -49,7 +49,7 @@ function n__render_group_jplayer ($group) {
             <div class="jplayer-load-bar-left jplayer-hidden" style="display: none"></div>
             <div class="jplayer-load-bar-right jplayer-hidden" style="display: none"></div>
             <div class="jplayer-load-bar jplayer-hidden" style="display: none"></div>
-            <div class="jplayer-mine-left1 jplayer-play-bar-left" style="display: none"></div>
+            <div class="jplayer-play-bar-left" style="display: none"></div>
             <div class="jplayer-play-bar"></div>
             <div class="jplayer-play-lift jplayer-hidden" style="display: none">
               <div class="jplayer-buffering" style="display: none"></div>
