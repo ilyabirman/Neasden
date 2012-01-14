@@ -2,7 +2,7 @@ $ (function () {
 // вот это всё мегалевак, эти переменные должны быть раздельные для каждого плеера, присутствующего на странице:  
   var desiredpos = -1
   var currentpos = -1
-  var desiredmorethancurrent = 0
+  var desiredmorethancurrent = 1
   var movetimeout
   var totaltime = 0
   var loadpercent = 0
@@ -12,7 +12,8 @@ $ (function () {
   var exacttotaltime = 0
   var isplaying = 0
   
-  fmttime = function (milliseconds) {
+  var fmttime = function (milliseconds) {
+    var ptime, sec, min, heu
     ptime = Math.round (milliseconds / 1000)
     sec = ptime % 60
     min = ((ptime - sec) % 3600) / 60
@@ -24,9 +25,9 @@ $ (function () {
   
   jposition = function (cssSelectorAncestor, playpx, playedTime) {
     if (playpx > 0) {
-      $ (cssSelectorAncestor + ' .jplayer-play-left-played').show () 
+      $ (cssSelectorAncestor + ' .jplayer-play-bar-left').show () 
     } else {
-      $ (cssSelectorAncestor + ' .jplayer-play-left-played').hide () 
+      $ (cssSelectorAncestor + ' .jplayer-play-bar-left').hide () 
     }
     $ (cssSelectorAncestor + ' .jplayer-play-lift').css ('left', playpx + 'px')
     $ (cssSelectorAncestor + ' .jplayer-play-bar').css ('width', playpx + 'px')
@@ -53,7 +54,7 @@ $ (function () {
 
     loadpx2 = ((loadpx > playpx) ? loadpx : playpx)
     $ (cssSelectorAncestor + ' .jplayer-load-bar').css ('width', loadpx2 + 'px')
-    $ (cssSelectorAncestor + ' .jplayer-load-bar-end').css ('left', loadpx2 + 'px')
+    $ (cssSelectorAncestor + ' .jplayer-load-bar-right').css ('left', loadpx2 + 'px')
 
   }
 
@@ -61,13 +62,12 @@ $ (function () {
   $ ('.jplayer .jplayer-audio-source').addClass ('jplayer-audio-source-shifted')
   $ ('.jplayer .jplayer-ui').show ()
   $ ('.jplayer .jplayer-load-bar').css ('width', '200px')
-  $ ('.jplayer .jplayer-load-bar-end').css ('left', '200px')
+  $ ('.jplayer .jplayer-load-bar-right').css ('left', '200px')
   jposition ('',50, 50);
   return;
 */
   
   jmoveto = function (cssSelectorAncestor, player, movepx) {
-
     maxWidth = $ (cssSelectorAncestor + ' .jplayer-progress-area').width ()
     loadWidth = $ (cssSelectorAncestor + ' .jplayer-load-bar').width ()
     limit = maxWidth
@@ -79,12 +79,17 @@ $ (function () {
     if (limit == 0) playhead = 0
     jposition (cssSelectorAncestor, movepx, totaltime*playhead)
     desiredpos = Math.ceil (movepx)
-    desiredmorethancurrent = (desiredpos > currentpos)
-    if (movetimeout) clearTimeout (movetimeout)
-    movetimeout = setTimeout (function () {
-      $ (player).jPlayer ('play')
-      $ (player).jPlayer ('playHead', playheadSeekable*100)
-    }, 100)
+    desiredmorethancurrent = (desiredpos >= currentpos)
+    //alert (currentpos)
+    $ (cssSelectorAncestor + ' .jplayer-buffering').fadeTo (1, 1)
+    if ($ (player).data (movetimeout)) clearTimeout (movetimeout)
+    $ (player).data (
+      movetimeout,
+      setTimeout (function () {
+        $ (player).jPlayer ('play')
+        $ (player).jPlayer ('playHead', playheadSeekable*100)
+      }, 100)
+    )
     return false
   }
   
@@ -107,19 +112,17 @@ $ (function () {
       //warningAlerts: true,
       ready: function (event) {
         $ ('.jplayer .jplayer-audio-source').addClass ('jplayer-audio-source-shifted')
-        $ ('.jplayer .jplayer-ui').show ()
-        //exacttotaltime = exacttotaltime || (event.jPlayer.status.seekPercent == 100)
-        //jposition (currentCssSelectorAncestor, 0, 0)
+        $ ('.jplayer .jplayer-hidden').show ()
         var me = this
         var mousedown = false
         $ (me).jPlayer ("setMedia", {
           mp3: $ (currentCssSelectorAncestor + ' .jplayer-audio-source').attr ('href'),
         })
-        $ (currentCssSelectorAncestor + ' .jplayer-play-mine').mousedown (function (e) {
+        $ (currentCssSelectorAncestor + ' .jplayer-mine').mousedown (function (e) {
           mousedown = true;
           e.stopPropagation ()
           e.preventDefault ()
-          return jmoveto (currentCssSelectorAncestor, me, e.pageX - $ (currentCssSelectorAncestor + ' .jplayer-play-mine').offset ().left)
+          return jmoveto (currentCssSelectorAncestor, me, e.pageX - $ (currentCssSelectorAncestor + ' .jplayer-mine').offset ().left)
         })
         $ (document.body).mouseup (function () { 
           mousedown = false
@@ -128,13 +131,10 @@ $ (function () {
           if (mousedown) {
             e.stopPropagation ()
             e.preventDefault ()
-            return jmoveto (currentCssSelectorAncestor, me, e.pageX - $ (currentCssSelectorAncestor + ' .jplayer-play-mine').offset ().left)
+            return jmoveto (currentCssSelectorAncestor, me, e.pageX - $ (currentCssSelectorAncestor + ' .jplayer-mine').offset ().left)
           }
         })
       },
-      seeking: function (event) { $ (currentCssSelectorAncestor + ' .jplayer-buffering').fadeTo (1, 1) },
-      seeked: function (event) {  $ (currentCssSelectorAncestor + ' .jplayer-buffering').fadeTo (1000, 0) },
-//      play: function (event) { $ (currentCssSelectorAncestor + ' .jplayer-buffering').hide () },
       play: function (event) { isplaying = 1 },
       timeupdate: function (event) {
   
@@ -149,7 +149,12 @@ $ (function () {
         loadpx = Math.round ((loadPercent)/100*maxWidth)
         playpx = Math.round (event.jPlayer.status.currentTime/totaltime*(maxWidth))
          
-        //document.title = 'desired = ' + desiredpos + ' play = ' + playpx
+        $ (currentCssSelectorAncestor + ' .jplayer-name').html (
+          'now = ' + event.jPlayer.status.currentTime + '<br />' +
+          'desired = ' + desiredpos + '<br />' +
+          'play = ' + playpx + '<br />' +
+          'dmore = '  + desiredmorethancurrent
+        )
         
         if (
           (desiredpos < 0) ||
@@ -159,10 +164,12 @@ $ (function () {
           var curtime = -1
           if (isplaying) curtime = event.jPlayer.status.currentTime
           jposition (currentCssSelectorAncestor, playpx, curtime)
+          $ (currentCssSelectorAncestor + ' .jplayer-buffering').fadeTo (1000, 0)
           desiredpos = -1
         }
         
         currentpos = playpx
+        if (isNaN (currentpos)) currentpos = -1
         
       }
     })
