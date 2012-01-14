@@ -30,7 +30,8 @@ function n__render_group_fotorama ($group) {
   );
   
   foreach ($group as $line) {
-    list ($filebasename, $alt) = explode (' ', $line['content'], 2);
+    list ($filebasename, $alt) = explode (' ', $line['content'].' ', 2);
+    $alt = trim ($alt);
     
     if ($line['class'] == 'picture') {
 
