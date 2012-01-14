@@ -5,11 +5,6 @@ $ (function () {
   var desiredmorethancurrent = 1
   var totaltime = 0
   var loadpercent = 0
-  var vol = 2
-  var loadpx = 0
-  var lasttime = -1
-  var exacttotaltime = 0
-  var isplaying = 0
   
   var fmttime = function (milliseconds) {
     var ptime, sec, min, heu
@@ -20,6 +15,20 @@ $ (function () {
     if (sec < 10) sec = '0' + sec
     if (heu && (min < 10)) min = '0' + min
     return (heu? (heu + ':') : '') + min + ':' + sec
+  }
+  
+  var forceLimit = function (value, atleast, nomore) {
+    return (Math.min (Math.max (value, atleast), nomore))
+  }
+  
+  var updateLoadBar = function (playerSelector, seekPercent) {
+        
+    var maxWidth = $ (playerSelector).find ('.jplayer-progress-area').width ()
+    var pixels = Math.floor (Math.min (100, seekPercent) / 100 * maxWidth)
+
+    $ (playerSelector).find ('.jplayer-load-bar').css ('width', pixels + 'px')
+    $ (playerSelector).find ('.jplayer-load-bar-right').css ('left', pixels + 'px')
+    
   }
   
   jposition = function (cssSelectorAncestor, playpx, playedTime) {
@@ -38,7 +47,7 @@ $ (function () {
 
     totaltimetext = ''
     if (totaltime > 0) {
-      if (exacttotaltime) {
+      if ($ (cssSelectorAncestor).data ('isExactTotalTime')) {
         totaltimetext = fmttime (totaltime * 1000)
       } else {
         var min = totaltime / 60
@@ -51,9 +60,6 @@ $ (function () {
     $ (cssSelectorAncestor + ' .jplayer-play-time').text (playtimetext)
     $ (cssSelectorAncestor + ' .jplayer-total-time').text (totaltimetext)
 
-    loadpx2 = ((loadpx > playpx) ? loadpx : playpx)
-    $ (cssSelectorAncestor + ' .jplayer-load-bar').css ('width', loadpx2 + 'px')
-    $ (cssSelectorAncestor + ' .jplayer-load-bar-right').css ('left', loadpx2 + 'px')
 
   }
 
@@ -66,98 +72,112 @@ $ (function () {
   return;
 */
   
-  jmoveto = function (cssSelectorAncestor, player, movepx) {
-    maxWidth = $ (cssSelectorAncestor + ' .jplayer-progress-area').width ()
-    loadWidth = $ (cssSelectorAncestor + ' .jplayer-load-bar').width ()
-    limit = maxWidth
-    if ($ (player).jPlayer ('solution', 'flash')) limit = loadWidth
-    if (movepx < 0) movepx = 0
-    if (movepx > limit) movepx = limit
-    playhead = movepx/maxWidth
-    playheadSeekable = movepx/loadWidth
-    if (limit == 0) playhead = 0
-    jposition (cssSelectorAncestor, movepx, totaltime*playhead)
-    desiredpos = Math.ceil (movepx)
+  var willSeekTo = function (playerSelector, playerObject, pixels) {
+
+    var maxWidth = $ (playerSelector).find ('.jplayer-progress-area').width ()
+    var loadWidth = $ (playerSelector).find ('.jplayer-load-bar').width ()
+    
+    pixels = forceLimit (pixels, 0, loadWidth)
+    playhead = pixels/maxWidth
+    playheadSeekable = pixels/loadWidth
+    if (loadWidth == 0) playhead = 0
+    
+    jposition (playerSelector, pixels, totaltime*playhead)
+    desiredpos = Math.floor (pixels)
     desiredmorethancurrent = (desiredpos >= currentpos)
-    //alert (currentpos)
-    $ (cssSelectorAncestor + ' .jplayer-buffering').fadeTo (1, 1)
-    $ (player).jPlayer ('play')
-    $ (player).jPlayer ('playHead', playheadSeekable*100)
+    $ (playerSelector).find ('.jplayer-buffering').fadeTo (1, 1)
+    $ (playerObject).jPlayer ('play')
+    $ (playerObject).jPlayer ('playHead', playheadSeekable*100)
+    
     return false
+    
   }
   
   $ (".jplayer").each (function () {
 
-    var currentCssSelectorAncestor = '#' + this.id
+    var thisSelector = '#' + this.id
 
-    $ (currentCssSelectorAncestor + ' .jplayer-invisible-object').jPlayer ({
-      swfPath: $ (currentCssSelectorAncestor + ' .jplayer-swf-source').attr ('href'),
+    $ (thisSelector + ' .jplayer-invisible-object').jPlayer ({
+      
+      swfPath: $ (thisSelector + ' .jplayer-swf-source').attr ('href'),
       preload: 'metadata',
       volume: 100,
-      cssSelectorAncestor: currentCssSelectorAncestor,
+      
+      cssSelectorAncestor: thisSelector,
       cssSelector: {
         play: '.jplayer-play',
         pause: '.jplayer-pause',
       },
+      
       solution: 'html,flash',
       supplied: 'mp3',
-      //errorAlerts: true,
-      //warningAlerts: true,
+      
+      errorAlerts: false,
+      
       ready: function (event) {
-        $ ('.jplayer .jplayer-audio-source').addClass ('jplayer-audio-source-shifted')
-        $ ('.jplayer .jplayer-hidden').show ()
+        
         var me = this
-        var mousedown = false
-        $ (me).jPlayer ("setMedia", {
-          mp3: $ (currentCssSelectorAncestor + ' .jplayer-audio-source').attr ('href'),
+        var isMouseDown = false
+        
+        $ ('.jplayer .jplayer-hidden').show ()
+        
+        $ (this).jPlayer ("setMedia", {
+          mp3: $ (thisSelector + ' .jplayer-audio-source').attr ('href'),
         })
-        $ (currentCssSelectorAncestor + ' .jplayer-mine').mousedown (function (e) {
-          mousedown = true;
+        
+        $ (thisSelector).find ('.jplayer-mine').mousedown (function (e) {
+          isMouseDown = true;
           e.stopPropagation ()
           e.preventDefault ()
-          return jmoveto (currentCssSelectorAncestor, me, e.pageX - $ (currentCssSelectorAncestor + ' .jplayer-mine').offset ().left)
+          return willSeekTo (thisSelector, me, e.pageX - $ (thisSelector + ' .jplayer-mine').offset ().left)
         })
-        $ (document.body).mouseup (function () { 
-          mousedown = false
-        })
+        
+        $ (document.body).mouseup (function () { isMouseDown = false })
+        
         $ (document.body).mousemove (function (e) {
-          if (mousedown) {
+          if (isMouseDown) {
             e.stopPropagation ()
             e.preventDefault ()
-            return jmoveto (currentCssSelectorAncestor, me, e.pageX - $ (currentCssSelectorAncestor + ' .jplayer-mine').offset ().left)
+            return willSeekTo (thisSelector, me, e.pageX - $ (thisSelector + ' .jplayer-mine').offset ().left)
           }
         })
+        
       },
-      play: function (event) { isplaying = 1 },
+      
+      play: function (event) { $ (this).data ('isDirty', 1) },
+      
+      progress: function (event) { updateLoadBar (thisSelector, event.jPlayer.status.seekPercent) },
+      
       timeupdate: function (event) {
   
+        updateLoadBar (thisSelector, event.jPlayer.status.seekPercent)
+        
         loadPercent = event.jPlayer.status.seekPercent
-        exacttotaltime = exacttotaltime || (event.jPlayer.status.seekPercent == 100)
+        if (loadPercent > 100) loadPercent = 100
+        $ (thisSelector).data ('isExactTotalTime', $ (this).isExactTotalTime || (event.jPlayer.status.seekPercent == 100))
         totaltime = event.jPlayer.status.duration / (loadPercent / 100)
         if (isNaN (totaltime)) totaltime = 0
              
-        maxWidth = $ (currentCssSelectorAncestor + ' .jplayer-progress-area').width ()
+        maxWidth = $ (thisSelector + ' .jplayer-progress-area').width ()
     
-        if (loadPercent > 100) loadPercent = 100
-        loadpx = Math.round ((loadPercent)/100*maxWidth)
-        playpx = Math.round (event.jPlayer.status.currentTime/totaltime*(maxWidth))
+        playpx = Math.floor (event.jPlayer.status.currentTime/totaltime*(maxWidth))
          
-        $ (currentCssSelectorAncestor + ' .jplayer-name').html (
+        $ (thisSelector + ' .jplayer-name').html (
           'now = ' + event.jPlayer.status.currentTime + '<br />' +
           'desired = ' + desiredpos + '<br />' +
           'play = ' + playpx + '<br />' +
           'dmore = '  + desiredmorethancurrent
         )
-        
+                
         if (
           (desiredpos < 0) ||
           ((desiredmorethancurrent) && (playpx >= desiredpos)) ||
           ((!desiredmorethancurrent) && (playpx < currentpos))
         ) {
           var curtime = -1
-          if (isplaying) curtime = event.jPlayer.status.currentTime
-          jposition (currentCssSelectorAncestor, playpx, curtime)
-          $ (currentCssSelectorAncestor + ' .jplayer-buffering').fadeTo (1000, 0)
+          if ($ (this).data ('isDirty')) curtime = event.jPlayer.status.currentTime
+          jposition (thisSelector, playpx, curtime)
+          $ (thisSelector + ' .jplayer-buffering').fadeTo (1000, 0)
           desiredpos = -1
         }
         

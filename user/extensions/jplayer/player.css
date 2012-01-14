@@ -12,9 +12,16 @@
 .jplayer-progress-area * {
   position: absolute;
 }
-.jplayer-audio-source-shifted {
-  left: auto;
-  right: -48px;
+.jplayer-mine-left,
+.jplayer-mine-right,
+.jplayer-mine {
+	border-top: 1px solid #d0d0d0;
+	border-bottom: 1px solid #ffffff;
+	background-image: linear-gradient(bottom, rgb(224,224,224) 7%, rgb(247,247,247) 7%, rgb(247,247,247) 93%, rgb(255,255,255) 93%);
+	background-image: -o-linear-gradient(bottom, rgb(224,224,224) 7%, rgb(247,247,247) 7%, rgb(247,247,247) 93%, rgb(255,255,255) 93%);
+	background-image: -moz-linear-gradient(bottom, rgb(224,224,224) 7%, rgb(247,247,247) 7%, rgb(247,247,247) 93%, rgb(255,255,255) 93%);
+	background-image: -webkit-linear-gradient(bottom, rgb(224,224,224) 7%, rgb(247,247,247) 7%, rgb(247,247,247) 93%, rgb(255,255,255) 93%);
+	background-image: -ms-linear-gradient(bottom, rgb(224,224,224) 7%, rgb(247,247,247) 7%, rgb(247,247,247) 93%, rgb(255,255,255) 93%);  
 }
 .jplayer-load-bar-left,
 .jplayer-load-bar,
@@ -26,18 +33,6 @@
 	background-image: -moz-linear-gradient(bottom, rgb(242,240,229) 0%, rgb(231,229,217) 67%, rgb(188,186,173) 100%);
 	background-image: -webkit-linear-gradient(bottom, rgb(242,240,229) 0%, rgb(231,229,217) 67%, rgb(188,186,173) 100%);
 	background-image: -ms-linear-gradient(bottom, rgb(242,240,229) 0%, rgb(231,229,217) 67%, rgb(188,186,173) 100%);
-}
-
-.jplayer-mine-left,
-.jplayer-mine-right,
-.jplayer-mine {
-	border-top: 1px solid #c0c0c0;
-	border-bottom: 1px solid #ffffff;
-	background-image: linear-gradient(bottom, rgb(221,221,221) 7%, rgb(247,247,247) 7%, rgb(247,247,247) 93%, rgb(254,254,254) 93%);
-	background-image: -o-linear-gradient(bottom, rgb(221,221,221) 7%, rgb(247,247,247) 7%, rgb(247,247,247) 93%, rgb(254,254,254) 93%);
-	background-image: -moz-linear-gradient(bottom, rgb(221,221,221) 7%, rgb(247,247,247) 7%, rgb(247,247,247) 93%, rgb(254,254,254) 93%);
-	background-image: -webkit-linear-gradient(bottom, rgb(221,221,221) 7%, rgb(247,247,247) 7%, rgb(247,247,247) 93%, rgb(254,254,254) 93%);
-	background-image: -ms-linear-gradient(bottom, rgb(221,221,221) 7%, rgb(247,247,247) 7%, rgb(247,247,247) 93%, rgb(254,254,254) 93%);  
 }
 
 .jplayer-mine-left,
