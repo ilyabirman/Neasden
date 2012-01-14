@@ -116,7 +116,9 @@
   text-shadow: 0px 1px 0px #fff;
 }
 .jplayer-play-control {
-  float: left;
+  NO__float: left;
+  position: absolute;
+  left: 0;
   width: 16px; height: 16px;
   margin-right: 8px;
   cursor: pointer; cursor: hand;
@@ -136,7 +138,9 @@
   background: url('i/playing.png') center center no-repeat;
 }
 .jplayer-audio-source {
-  float: right;
+  NO__float: right;
+  position: absolute;
+  right: 0;
   width: 16px; height: 16px;
   margin-left: 8px;
   background: url('i/download.png') center center no-repeat;
@@ -148,13 +152,17 @@
   height: 100%;
 }
 .jplayer-play-time {
-  float: left;
+  NO__float: left;
+  position: absolute;
+  left: 24px;
   text-align: left;
 }
 .jplayer-total-time {
-  float: right;
+  NO__float: right;
+  position: absolute;
+  right: 24px;
   text-align: right;
 }
 .jplayer-name {
-  margin: 0 100px;
+  margin: 0 104px;
 }
