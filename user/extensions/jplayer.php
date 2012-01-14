@@ -63,8 +63,10 @@ function n__render_group_jplayer ($group) {
 
           <div class="jplayer-play-control">
             <div class="jplayer-unavailable jplayer-to-hide"></div>
-            <div class="jplayer-play" style="display: none"></div>
-            <div class="jplayer-pause" style="display: none"></div>
+            <div class="jplayer-hidden" style="display: none">
+              <div class="jplayer-play"></div>
+              <div class="jplayer-pause" style="display: none"></div>
+            </div>
           </div>
             
           <div class="jplayer-play-time"></div>

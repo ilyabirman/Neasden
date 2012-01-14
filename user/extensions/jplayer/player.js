@@ -1,5 +1,9 @@
 $ (function () {
+  
+  var stallCheckTimeouts = []
+  
 // вот это всё мегалевак, эти переменные должны быть раздельные для каждого плеера, присутствующего на странице:  
+
   var currentpos = -1
   var desiredmorethancurrent = 1
   var totaltime = 0
@@ -40,7 +44,7 @@ $ (function () {
     } else {
       $ (cssSelectorAncestor + ' .jplayer-play-bar-left').hide () 
     }
-    //$ (cssSelectorAncestor + ' .jplayer-play-lift').css ('left', playpx + 'px')
+    $ (cssSelectorAncestor + ' .jplayer-play-lift').css ('left', playpx + 'px')
     $ (cssSelectorAncestor + ' .jplayer-play-bar').css ('width', playpx + 'px')
     
     playtimetext = ''
@@ -75,6 +79,34 @@ $ (function () {
   return;
   */
   
+  var checkIfReallyPlaying = function (playerSelector, playerObject) {
+    
+    if ($ (playerObject).data ('currentTime') == $ (playerObject).data ('lastCurrentTime')) {
+      
+document.title = Math.random () + ' eq'
+      $ (playerObject).data ('isStalled', 1)
+      $ (playerSelector).find ('.jplayer-buffering').stop ().fadeTo (1, 1)
+      if (typeof (stallCheckTimeouts[playerSelector]) !== 'undefined') {
+        clearTimeout (stallCheckTimeouts[playerSelector])
+      }
+      stallCheckTimeouts[playerSelector] = (
+        setTimeout (function () { checkIfReallyPlaying (playerSelector, playerObject) }, 1000)
+      )
+      
+    } else {
+      
+document.title = Math.random () + ' !eq'
+      if ($ (playerObject).data ('isStalled')) {
+        $ (playerSelector).find ('.jplayer-buffering').stop ().fadeTo (333, 0)
+        $ (playerObject).data ('isStalled', 0)
+      }
+      
+    }
+    
+    $ (playerObject).data ('lastCurrentTime', $ (playerObject).data ('currentTime'))
+    
+  }
+  
   var willSeekTo = function (playerSelector, playerObject, pixels) {
 
     var maxWidth = $ (playerSelector).find ('.jplayer-progress-area').width ()
@@ -89,9 +121,10 @@ $ (function () {
     $ (playerObject).data ('desiredPosition', Math.floor (pixels))
     desiredmorethancurrent = ($ (playerObject).data ('desiredPosition') >= currentpos)
     
-    $ (playerSelector).find ('.jplayer-buffering').fadeTo (1, 1)
+    //$ (playerSelector).find ('.jplayer-buffering').stop ().fadeTo (1, 1)
     $ (playerObject).jPlayer ('play')
     $ (playerObject).jPlayer ('playHead', playheadSeekable*100)
+    checkIfReallyPlaying (playerSelector, playerObject)
     
     return false
     
@@ -151,9 +184,16 @@ $ (function () {
       
       play: function (event) { $ (this).data ('isDirty', 1) },
       
-      progress: function (event) { updateLoadBar (thisSelector, event.jPlayer.status.seekPercent) },
+      progress: function (event) { 
+        
+        updateLoadBar (thisSelector, event.jPlayer.status.seekPercent)
+      
+      },
       
       timeupdate: function (event) {
+        
+        checkIfReallyPlaying (thisSelector, this)
+        $ (this).data ('currentTime', event.jPlayer.status.currentTime)
   
         updateLoadBar (thisSelector, event.jPlayer.status.seekPercent)
         
@@ -164,6 +204,7 @@ $ (function () {
         if (isNaN (totaltime)) totaltime = 0
              
         maxWidth = $ (thisSelector + ' .jplayer-progress-area').width ()
+
     
         playpx = Math.floor (event.jPlayer.status.currentTime/totaltime*(maxWidth))
          
@@ -181,9 +222,9 @@ $ (function () {
         ) {
           var curtime = -1
           if ($ (this).data ('isDirty')) curtime = event.jPlayer.status.currentTime
+          //$ (thisSelector + ' .jplayer-buffering').stop ().fadeTo (333, 0)
           jposition (thisSelector, playpx, curtime)
-          $ (thisSelector + ' .jplayer-buffering').fadeTo (1000, 0)
-          $ (this).data ('desiredPosition') = -1
+          $ (this).data ('desiredPosition', -1)
         }
         
         currentpos = playpx
