@@ -40,7 +40,7 @@ $ (function () {
     } else {
       $ (cssSelectorAncestor + ' .jplayer-play-bar-left').hide () 
     }
-    $ (cssSelectorAncestor + ' .jplayer-play-lift').css ('left', playpx + 'px')
+    //$ (cssSelectorAncestor + ' .jplayer-play-lift').css ('left', playpx + 'px')
     $ (cssSelectorAncestor + ' .jplayer-play-bar').css ('width', playpx + 'px')
     
     playtimetext = ''
@@ -124,6 +124,7 @@ $ (function () {
         var isMouseDown = false
         
         $ ('.jplayer .jplayer-hidden').show ()
+        $ ('.jplayer .jplayer-to-hide').hide ()
         
         $ (this).jPlayer ("setMedia", {
           mp3: $ (thisSelector + ' .jplayer-audio-source').attr ('href'),

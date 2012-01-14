@@ -123,20 +123,24 @@
   width: 20px; height: 16px;
   cursor: pointer; cursor: hand;
 }
+.jplayer-unavailable,
 .jplayer-play,
 .jplayer-pause {
-  width: 8px; height: 100%;
+  width: 16px; height: 100%;
+}
+.jplayer-unavailable {
+  background: url('i/unavailable.png') center center no-repeat;
 }
 .jplayer-play {
-  background: url('i/paused.png') left center no-repeat;
+  background: url('i/paused.png') center center no-repeat;
 }
 .jplayer-pause {
-  background: url('i/playing.png') left center no-repeat;
+  background: url('i/playing.png') center center no-repeat;
 }
 .jplayer-audio-source {
   float: right;
-  width: 20px; height: 16px;
-  background: url('i/download.png') right center no-repeat;
+  width: 16px; height: 16px;
+  background: url('i/download.png') center center no-repeat;
 }
 .jplayer-play-time,
 .jplayer-total-time {
