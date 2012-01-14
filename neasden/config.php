@@ -20,6 +20,7 @@ $_neasden_config = array (
     'pictures',
     'youtube',
     'vimeo',
+    'jplayer',
   ),
   
   'opaque-elements' => array (
