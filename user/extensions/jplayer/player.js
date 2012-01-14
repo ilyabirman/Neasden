@@ -38,8 +38,8 @@ $ (function () {
       }
     }
 
-    $ (playerSelector + ' .jplayer-play-time').text (playtimetext)
-    $ (playerSelector + ' .jplayer-total-time').text (totaltimetext)
+    $ (playerSelector).find ('.jplayer-play-time').text (playtimetext)
+    $ (playerSelector).find ('.jplayer-total-time').text (totaltimetext)
     
   }
   
@@ -57,12 +57,12 @@ $ (function () {
   var updatePlayBar = function (playerSelector, pixels) {
     
     if (pixels > 0) {
-      $ (playerSelector + ' .jplayer-play-bar-left').show () 
+      $ (playerSelector).find ('.jplayer-play-bar-left').show () 
     } else {
-      $ (playerSelector + ' .jplayer-play-bar-left').hide () 
+      $ (playerSelector).find ('.jplayer-play-bar-left').hide () 
     }
-    $ (playerSelector + ' .jplayer-play-lift').css ('left', pixels + 'px')
-    $ (playerSelector + ' .jplayer-play-bar').css ('width', pixels + 'px')
+    $ (playerSelector).find ('.jplayer-play-lift').css ('left', pixels + 'px')
+    $ (playerSelector).find ('.jplayer-play-bar').css ('width', pixels + 'px')
 
   }
 
@@ -104,9 +104,9 @@ $ (function () {
 
     var thisSelector = '#' + this.id
 
-    $ (thisSelector + ' .jplayer-invisible-object').jPlayer ({
+    $ (thisSelector).find ('.jplayer-invisible-object').jPlayer ({
       
-      swfPath: $ (thisSelector + ' .jplayer-swf-source').attr ('href'),
+      swfPath: $ (thisSelector).find ('.jplayer-swf-source').attr ('href'),
       preload: 'metadata',
       volume: 100,
       
@@ -130,14 +130,14 @@ $ (function () {
         $ ('.jplayer .jplayer-to-hide').hide ()
         
         $ (this).jPlayer ("setMedia", {
-          mp3: $ (thisSelector + ' .jplayer-audio-source').attr ('href'),
+          mp3: $ (thisSelector).find ('.jplayer-audio-source').attr ('href'),
         })
         
         $ (thisSelector).find ('.jplayer-mine').mousedown (function (e) {
           isMouseDown = true;
           e.stopPropagation ()
           e.preventDefault ()
-          return willSeekTo (thisSelector, me, e.pageX - $ (thisSelector + ' .jplayer-mine').offset ().left)
+          return willSeekTo (thisSelector, me, e.pageX - $ (thisSelector).find ('.jplayer-mine').offset ().left)
         })
         
         $ (document.body).mouseup (function () { isMouseDown = false })
@@ -146,7 +146,7 @@ $ (function () {
           if (isMouseDown) {
             e.stopPropagation ()
             e.preventDefault ()
-            return willSeekTo (thisSelector, me, e.pageX - $ (thisSelector + ' .jplayer-mine').offset ().left)
+            return willSeekTo (thisSelector, me, e.pageX - $ (thisSelector).find ('.jplayer-mine').offset ().left)
           }
         })
         
@@ -164,7 +164,7 @@ $ (function () {
         
         updateLoadBar (thisSelector, event.jPlayer.status.seekPercent)
         
-        var maxWidth = $ (thisSelector + ' .jplayer-progress-area').width ()
+        var maxWidth = $ (thisSelector).find ('.jplayer-progress-area').width ()
         var playpx = Math.floor (event.jPlayer.status.currentTime / $ (thisSelector).data ('totalTime') * (maxWidth))
         
         if (event.jPlayer.status.seekPercent >= 100) {
