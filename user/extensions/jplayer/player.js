@@ -1,24 +1,27 @@
 $ (function () {
 // вот это всё мегалевак, эти переменные должны быть раздельные для каждого плеера, присутствующего на странице:  
-  var desiredpos = -1
   var currentpos = -1
   var desiredmorethancurrent = 1
   var totaltime = 0
   var loadpercent = 0
   
-  var fmttime = function (milliseconds) {
-    var ptime, sec, min, heu
-    ptime = Math.round (milliseconds / 1000)
-    sec = ptime % 60
-    min = ((ptime - sec) % 3600) / 60
-    heu = (ptime - sec - (min * 60)) / 3600
+  var formatTime = function (seconds) {
+    
+    var sec = Math.round (seconds) % 60
+    var min = ((Math.round (seconds) - sec) % 3600) / 60
+    var heu = (Math.round (seconds) - sec - (min * 60)) / 3600
+    
     if (sec < 10) sec = '0' + sec
     if (heu && (min < 10)) min = '0' + min
+    
     return (heu? (heu + ':') : '') + min + ':' + sec
+    
   }
   
   var forceLimit = function (value, atleast, nomore) {
+    
     return (Math.min (Math.max (value, atleast), nomore))
+    
   }
   
   var updateLoadBar = function (playerSelector, seekPercent) {
@@ -42,18 +45,18 @@ $ (function () {
     
     playtimetext = ''
     if (playedTime >= 0) {
-      playtimetext = fmttime (playedTime * 1000)
+      playtimetext = formatTime (playedTime)
     }
 
     totaltimetext = ''
     if (totaltime > 0) {
       if ($ (cssSelectorAncestor).data ('isExactTotalTime')) {
-        totaltimetext = fmttime (totaltime * 1000)
+        totaltimetext = formatTime (totaltime)
       } else {
         var min = totaltime / 60
         var d = (Math.log (min) / Math.log (10))
         min = Math.round (Math.pow (10, Math.round (d*10)/10))
-        totaltimetext = '~ ' + fmttime (min * 60 * 1000)
+        totaltimetext = '~ ' + formatTime (min * 60)
       }
     }
 
@@ -63,14 +66,14 @@ $ (function () {
 
   }
 
-/*
+  /*
   $ ('.jplayer .jplayer-audio-source').addClass ('jplayer-audio-source-shifted')
   $ ('.jplayer .jplayer-ui').show ()
   $ ('.jplayer .jplayer-load-bar').css ('width', '200px')
   $ ('.jplayer .jplayer-load-bar-right').css ('left', '200px')
   jposition ('',50, 50);
   return;
-*/
+  */
   
   var willSeekTo = function (playerSelector, playerObject, pixels) {
 
@@ -83,8 +86,9 @@ $ (function () {
     if (loadWidth == 0) playhead = 0
     
     jposition (playerSelector, pixels, totaltime*playhead)
-    desiredpos = Math.floor (pixels)
-    desiredmorethancurrent = (desiredpos >= currentpos)
+    $ (playerObject).data ('desiredPosition', Math.floor (pixels))
+    desiredmorethancurrent = ($ (playerObject).data ('desiredPosition') >= currentpos)
+    
     $ (playerSelector).find ('.jplayer-buffering').fadeTo (1, 1)
     $ (playerObject).jPlayer ('play')
     $ (playerObject).jPlayer ('playHead', playheadSeekable*100)
@@ -164,21 +168,21 @@ $ (function () {
          
         $ (thisSelector + ' .jplayer-name').html (
           'now = ' + event.jPlayer.status.currentTime + '<br />' +
-          'desired = ' + desiredpos + '<br />' +
+          'desired = ' + $ (this).data ('desiredPosition') + '<br />' +
           'play = ' + playpx + '<br />' +
           'dmore = '  + desiredmorethancurrent
         )
                 
         if (
-          (desiredpos < 0) ||
-          ((desiredmorethancurrent) && (playpx >= desiredpos)) ||
+          ($ (this).data ('desiredPosition') < 0) ||
+          ((desiredmorethancurrent) && (playpx >= $ (this).data ('desiredPosition'))) ||
           ((!desiredmorethancurrent) && (playpx < currentpos))
         ) {
           var curtime = -1
           if ($ (this).data ('isDirty')) curtime = event.jPlayer.status.currentTime
           jposition (thisSelector, playpx, curtime)
           $ (thisSelector + ' .jplayer-buffering').fadeTo (1000, 0)
-          desiredpos = -1
+          $ (this).data ('desiredPosition') = -1
         }
         
         currentpos = playpx
