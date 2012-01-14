@@ -13,12 +13,6 @@ $ (function () {
     
   }
   
-  var forceLimit = function (value, atleast, nomore) {
-    
-    return (Math.min (Math.max (value, atleast), nomore))
-    
-  }
-  
   var updateTimeDisplay = function (playerSelector, playedTime) {
     
     var playtimetext = '', totaltimetext = ''
@@ -80,7 +74,7 @@ $ (function () {
 
     var maxWidth = $ (playerSelector).find ('.jplayer-progress-area').width ()
     var loadWidth = $ (playerSelector).find ('.jplayer-load-bar').width ()
-    var pixels = forceLimit (tryPixels, 0, loadWidth)
+    var pixels = Math.min (Math.max (tryPixels, 0), loadWidth)
     var playhead = pixels/maxWidth
     var playheadSeekable = pixels/loadWidth
     
