@@ -5,6 +5,9 @@
 .jplayer,
 .jplayer * {
   line-height: 1.4em;
+  box-sizing: content-box;
+ -moz-box-sizing: content-box;
+ -webkit-box-sizing: content-box;
 }
 .jplayer-progress-area {
   height: 15px;
