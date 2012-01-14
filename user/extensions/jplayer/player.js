@@ -3,7 +3,6 @@ $ (function () {
   var desiredpos = -1
   var currentpos = -1
   var desiredmorethancurrent = 1
-  var movetimeout
   var totaltime = 0
   var loadpercent = 0
   var vol = 2
@@ -82,14 +81,8 @@ $ (function () {
     desiredmorethancurrent = (desiredpos >= currentpos)
     //alert (currentpos)
     $ (cssSelectorAncestor + ' .jplayer-buffering').fadeTo (1, 1)
-    if ($ (player).data (movetimeout)) clearTimeout (movetimeout)
-    $ (player).data (
-      movetimeout,
-      setTimeout (function () {
-        $ (player).jPlayer ('play')
-        $ (player).jPlayer ('playHead', playheadSeekable*100)
-      }, 100)
-    )
+    $ (player).jPlayer ('play')
+    $ (player).jPlayer ('playHead', playheadSeekable*100)
     return false
   }
   
