@@ -1,10 +1,5 @@
 $ (function () {
-  
-// вот это всё мегалевак, эти переменные должны быть раздельные для каждого плеера, присутствующего на странице:  
 
-  var totaltime = 0
-  var loadpercent = 0
-  
   var formatTime = function (seconds) {
     
     var sec = Math.round (seconds) % 60
@@ -49,11 +44,11 @@ $ (function () {
     }
 
     totaltimetext = ''
-    if (totaltime > 0) {
+    if ($ (cssSelectorAncestor).data ('totalTime') > 0) {
       if ($ (cssSelectorAncestor).data ('isExactTotalTime')) {
-        totaltimetext = formatTime (totaltime)
+        totaltimetext = formatTime ($ (cssSelectorAncestor).data ('totalTime'))
       } else {
-        var min = totaltime / 60
+        var min = $ (cssSelectorAncestor).data ('totalTime') / 60
         var d = (Math.log (min) / Math.log (10))
         min = Math.round (Math.pow (10, Math.round (d*10)/10))
         totaltimetext = '~ ' + formatTime (min * 60)
@@ -86,10 +81,9 @@ $ (function () {
     if (loadWidth == 0) playhead = 0
     
     $ (playerSelector).find ('.jplayer-buffering').stop ().fadeTo (1, 1)
-    //$ (playerSelector).find ('.jplayer-buffering').show ()
 
-    jposition (playerSelector, pixels, totaltime*playhead)
-    $ (playerObject).data ('wantSeekToTime', totaltime*playhead)
+    jposition (playerSelector, pixels, $ (playerSelector).data ('totalTime') * playhead)
+    $ (playerObject).data ('wantSeekToTime', $ (playerSelector).data ('totalTime') * playhead)
     
     $ (playerObject).jPlayer ('play')
     $ (playerObject).jPlayer ('playHead', playheadSeekable*100)
@@ -160,28 +154,28 @@ $ (function () {
       
       timeupdate: function (event) {
         
-        var playpx
-  
         updateLoadBar (thisSelector, event.jPlayer.status.seekPercent)
         
-        loadPercent = event.jPlayer.status.seekPercent
-        if (loadPercent > 100) loadPercent = 100
-        $ (thisSelector).data ('isExactTotalTime', $ (this).isExactTotalTime || (event.jPlayer.status.seekPercent == 100))
-        totaltime = event.jPlayer.status.duration / (loadPercent / 100)
-        if (isNaN (totaltime)) totaltime = 0
-             
-        maxWidth = $ (thisSelector + ' .jplayer-progress-area').width ()
-
-        playpx = Math.floor (event.jPlayer.status.currentTime/totaltime*(maxWidth))
+        var maxWidth = $ (thisSelector + ' .jplayer-progress-area').width ()
+        var playpx = Math.floor (event.jPlayer.status.currentTime / $ (thisSelector).data ('totalTime') * (maxWidth))
+        
+        if (event.jPlayer.status.seekPercent >= 100) {
+          $ (thisSelector).data ('isExactTotalTime', true)
+          $ (thisSelector).data ('totalTime', event.jPlayer.status.duration)
+        } else if (event.jPlayer.status.seekPercent > 0) {
+          $ (thisSelector).data ('totalTime', event.jPlayer.status.duration / event.jPlayer.status.seekPercent * 100)
+        } else {
+          $ (thisSelector).data ('totalTime', 0)
+        }
+        
                 
         if (
-          ($ (this).data ('wantSeekToTime') < 0) ||
+          (! ($ (this).data ('wantSeekToTime') >= 0)) ||
           (event.jPlayer.status.currentTime - $ (this).data ('wantSeekToTime')) >= .33
         ) {
           var curtime = -1
           if ($ (this).data ('isDirty')) curtime = event.jPlayer.status.currentTime
           $ (thisSelector).find ('.jplayer-buffering').stop ().fadeTo (333, 0)
-          //$ (thisSelector).find ('.jplayer-buffering').hide ()
           jposition (thisSelector, playpx, curtime)
           $ (this).data ('wantSeekToTime', -1)
         }
@@ -194,7 +188,7 @@ $ (function () {
           'playpx = ' + playpx + '<br />' +
           ''
         )
-        */
+        //*/
       
       }
     })
