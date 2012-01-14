@@ -1,11 +1,8 @@
 $ (function () {
   
-  var stallCheckTimeouts = []
-  
 // вот это всё мегалевак, эти переменные должны быть раздельные для каждого плеера, присутствующего на странице:  
 
   var currentpos = -1
-  var desiredmorethancurrent = 1
   var totaltime = 0
   var loadpercent = 0
   
@@ -79,34 +76,6 @@ $ (function () {
   return;
   */
   
-  var checkIfReallyPlaying = function (playerSelector, playerObject) {
-    
-    if ($ (playerObject).data ('currentTime') == $ (playerObject).data ('lastCurrentTime')) {
-      
-document.title = Math.random () + ' eq'
-      $ (playerObject).data ('isStalled', 1)
-      $ (playerSelector).find ('.jplayer-buffering').stop ().fadeTo (1, 1)
-      if (typeof (stallCheckTimeouts[playerSelector]) !== 'undefined') {
-        clearTimeout (stallCheckTimeouts[playerSelector])
-      }
-      stallCheckTimeouts[playerSelector] = (
-        setTimeout (function () { checkIfReallyPlaying (playerSelector, playerObject) }, 1000)
-      )
-      
-    } else {
-      
-document.title = Math.random () + ' !eq'
-      if ($ (playerObject).data ('isStalled')) {
-        $ (playerSelector).find ('.jplayer-buffering').stop ().fadeTo (333, 0)
-        $ (playerObject).data ('isStalled', 0)
-      }
-      
-    }
-    
-    $ (playerObject).data ('lastCurrentTime', $ (playerObject).data ('currentTime'))
-    
-  }
-  
   var willSeekTo = function (playerSelector, playerObject, pixels) {
 
     var maxWidth = $ (playerSelector).find ('.jplayer-progress-area').width ()
@@ -117,14 +86,14 @@ document.title = Math.random () + ' !eq'
     playheadSeekable = pixels/loadWidth
     if (loadWidth == 0) playhead = 0
     
+    $ (playerSelector).find ('.jplayer-buffering').stop ().fadeTo (1, 1)
+
     jposition (playerSelector, pixels, totaltime*playhead)
     $ (playerObject).data ('desiredPosition', Math.floor (pixels))
-    desiredmorethancurrent = ($ (playerObject).data ('desiredPosition') >= currentpos)
+    $ (playerObject).data ('desiredLater', $ (playerObject).data ('desiredPosition') >= currentpos)
     
-    //$ (playerSelector).find ('.jplayer-buffering').stop ().fadeTo (1, 1)
     $ (playerObject).jPlayer ('play')
     $ (playerObject).jPlayer ('playHead', playheadSeekable*100)
-    checkIfReallyPlaying (playerSelector, playerObject)
     
     return false
     
@@ -192,8 +161,6 @@ document.title = Math.random () + ' !eq'
       
       timeupdate: function (event) {
         
-        checkIfReallyPlaying (thisSelector, this)
-        $ (this).data ('currentTime', event.jPlayer.status.currentTime)
   
         updateLoadBar (thisSelector, event.jPlayer.status.seekPercent)
         
@@ -208,21 +175,21 @@ document.title = Math.random () + ' !eq'
     
         playpx = Math.floor (event.jPlayer.status.currentTime/totaltime*(maxWidth))
          
-        $ (thisSelector + ' .jplayer-name').html (
+        $ (thisSelector).find ('.jplayer-name').html (
           'now = ' + event.jPlayer.status.currentTime + '<br />' +
           'desired = ' + $ (this).data ('desiredPosition') + '<br />' +
           'play = ' + playpx + '<br />' +
-          'dmore = '  + desiredmorethancurrent
+          'dmore = '  + $ (this).data ('desiredLater')
         )
                 
         if (
           ($ (this).data ('desiredPosition') < 0) ||
-          ((desiredmorethancurrent) && (playpx >= $ (this).data ('desiredPosition'))) ||
-          ((!desiredmorethancurrent) && (playpx < currentpos))
+          (($ (this).data ('desiredLater')) && (playpx >= $ (this).data ('desiredPosition'))) ||
+          ((!$ (this).data ('desiredLater')) && (playpx < currentpos))
         ) {
           var curtime = -1
           if ($ (this).data ('isDirty')) curtime = event.jPlayer.status.currentTime
-          //$ (thisSelector + ' .jplayer-buffering').stop ().fadeTo (333, 0)
+          $ (thisSelector).find ('.jplayer-buffering').stop ().fadeTo (333, 0)
           jposition (thisSelector, playpx, curtime)
           $ (this).data ('desiredPosition', -1)
         }
