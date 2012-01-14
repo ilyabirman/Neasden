@@ -1,6 +1,8 @@
 $ (function () {
-  
+// вот это всё мегалевак, эти переменные должны быть раздельные для каждого плеера, присутствующего на странице:  
   var desiredpos = -1
+  var currentpos = -1
+  var desiredmorethancurrent = 0
   var movetimeout
   var totaltime = 0
   var loadpercent = 0
@@ -8,6 +10,7 @@ $ (function () {
   var loadpx = 0
   var lasttime = -1
   var exacttotaltime = 0
+  var isplaying = 0
   
   fmttime = function (milliseconds) {
     ptime = Math.round (milliseconds / 1000)
@@ -27,6 +30,11 @@ $ (function () {
     }
     $ (cssSelectorAncestor + ' .jplayer-play-lift').css ('left', playpx + 'px')
     $ (cssSelectorAncestor + ' .jplayer-play-bar').css ('width', playpx + 'px')
+    
+    playtimetext = ''
+    if (playedTime >= 0) {
+      playtimetext = fmttime (playedTime * 1000)
+    }
 
     totaltimetext = ''
     if (totaltime > 0) {
@@ -40,7 +48,7 @@ $ (function () {
       }
     }
 
-    $ (cssSelectorAncestor + ' .jplayer-play-time').text (fmttime (playedTime * 1000))
+    $ (cssSelectorAncestor + ' .jplayer-play-time').text (playtimetext)
     $ (cssSelectorAncestor + ' .jplayer-total-time').text (totaltimetext)
 
     loadpx2 = ((loadpx > playpx) ? loadpx : playpx)
@@ -71,6 +79,7 @@ $ (function () {
     if (limit == 0) playhead = 0
     jposition (cssSelectorAncestor, movepx, totaltime*playhead)
     desiredpos = Math.ceil (movepx)
+    desiredmorethancurrent = (desiredpos > currentpos)
     if (movetimeout) clearTimeout (movetimeout)
     movetimeout = setTimeout (function () {
       $ (player).jPlayer ('play')
@@ -123,9 +132,10 @@ $ (function () {
           }
         })
       },
-      seeking: function (event) { $ (currentCssSelectorAncestor + ' .jplayer-buffering').show () },
-      seeked: function (event) {  $ (currentCssSelectorAncestor + ' .jplayer-buffering').hide () },
-      playing: function (event) { $ (currentCssSelectorAncestor + ' .jplayer-buffering').hide () },
+      seeking: function (event) { $ (currentCssSelectorAncestor + ' .jplayer-buffering').fadeTo (1, 1) },
+      seeked: function (event) {  $ (currentCssSelectorAncestor + ' .jplayer-buffering').fadeTo (1000, 0) },
+//      play: function (event) { $ (currentCssSelectorAncestor + ' .jplayer-buffering').hide () },
+      play: function (event) { isplaying = 1 },
       timeupdate: function (event) {
   
         loadPercent = event.jPlayer.status.seekPercent
@@ -139,12 +149,21 @@ $ (function () {
         loadpx = Math.round ((loadPercent)/100*maxWidth)
         playpx = Math.round (event.jPlayer.status.currentTime/totaltime*(maxWidth))
          
-        // document.title = 'desired = ' + desiredpos + ' play = ' + playpx
+        //document.title = 'desired = ' + desiredpos + ' play = ' + playpx
         
-        if ((desiredpos < 0) || (playpx == desiredpos)) {
-          jposition (currentCssSelectorAncestor, playpx, event.jPlayer.status.currentTime)
+        if (
+          (desiredpos < 0) ||
+          ((desiredmorethancurrent) && (playpx >= desiredpos)) ||
+          ((!desiredmorethancurrent) && (playpx < currentpos))
+        ) {
+          var curtime = -1
+          if (isplaying) curtime = event.jPlayer.status.currentTime
+          jposition (currentCssSelectorAncestor, playpx, curtime)
           desiredpos = -1
         }
+        
+        currentpos = playpx
+        
       }
     })
 

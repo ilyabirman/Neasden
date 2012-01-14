@@ -1,14 +1,13 @@
 .jplayer {
   width: 100%;
   position: relative;
-  margin: 50px 0;
 }
 .jplayer-progress-area {
   height: 15px;
-  margin: 0 8px 8px 8px;
+  margin: 0 8px .375em 8px;
   position: relative;
 	border-radius: 8px;
-  box-shadow: 0 4px 12px #f0f0f0;
+  box-shadow: 0 2px 16px #f0f0f0;
 }
 .jplayer-progress-area * {
   position: absolute;
@@ -22,11 +21,11 @@
 .jplayer-load-bar-end {
 	border-top: 1px solid #a0a0a0;
 	border-bottom: 1px solid #ffffff;
-	background-image: linear-gradient(bottom, rgb(242,240,229) 0%, rgb(231,229,217) 75%, rgb(188,186,173) 100%);
-	background-image: -o-linear-gradient(bottom, rgb(242,240,229) 0%, rgb(231,229,217) 75%, rgb(188,186,173) 100%);
-	background-image: -moz-linear-gradient(bottom, rgb(242,240,229) 0%, rgb(231,229,217) 75%, rgb(188,186,173) 100%);
-	background-image: -webkit-linear-gradient(bottom, rgb(242,240,229) 0%, rgb(231,229,217) 75%, rgb(188,186,173) 100%);
-	background-image: -ms-linear-gradient(bottom, rgb(242,240,229) 0%, rgb(231,229,217) 75%, rgb(188,186,173) 100%);
+	background-image: linear-gradient(bottom, rgb(242,240,229) 0%, rgb(231,229,217) 67%, rgb(188,186,173) 100%);
+	background-image: -o-linear-gradient(bottom, rgb(242,240,229) 0%, rgb(231,229,217) 67%, rgb(188,186,173) 100%);
+	background-image: -moz-linear-gradient(bottom, rgb(242,240,229) 0%, rgb(231,229,217) 67%, rgb(188,186,173) 100%);
+	background-image: -webkit-linear-gradient(bottom, rgb(242,240,229) 0%, rgb(231,229,217) 67%, rgb(188,186,173) 100%);
+	background-image: -ms-linear-gradient(bottom, rgb(242,240,229) 0%, rgb(231,229,217) 67%, rgb(188,186,173) 100%);
 }
 
 .jplayer-right,
@@ -49,7 +48,7 @@
 }
 .jplayer-load-bar-end {
   top: -1px;
-  margin: 0 -8px;
+  margin: 0 -7.5px;
 }
 
 .jplayer-left { left: -8px }
@@ -70,11 +69,11 @@
 .jplayer-play-left-played {
 	border-top: 1px solid #024694;
 	border-bottom: 1px solid #ffffff;
-	background-image: linear-gradient(bottom, rgb(0,185,241) 0%, rgb(0,153,242) 75%, rgb(0,105,242) 100%);
-	background-image: -o-linear-gradient(bottom, rgb(0,185,241) 0%, rgb(0,153,242) 75%, rgb(0,105,242) 100%);
-	background-image: -moz-linear-gradient(bottom, rgb(0,185,241) 0%, rgb(0,153,242) 75%, rgb(0,105,242) 100%);
-	background-image: -webkit-linear-gradient(bottom, rgb(0,185,241) 0%, rgb(0,153,242) 75%, rgb(0,105,242) 100%);
-	background-image: -ms-linear-gradient(bottom, rgb(0,185,241) 0%, rgb(0,153,242) 75%, rgb(0,105,242) 100%);
+	background-image: linear-gradient(bottom, rgb(0,185,241) 0%, rgb(0,153,242) 67%, rgb(0,105,242) 100%);
+	background-image: -o-linear-gradient(bottom, rgb(0,185,241) 0%, rgb(0,153,242) 67%, rgb(0,105,242) 100%);
+	background-image: -moz-linear-gradient(bottom, rgb(0,185,241) 0%, rgb(0,153,242) 67%, rgb(0,105,242) 100%);
+	background-image: -webkit-linear-gradient(bottom, rgb(0,185,241) 0%, rgb(0,153,242) 67%, rgb(0,105,242) 100%);
+	background-image: -ms-linear-gradient(bottom, rgb(0,185,241) 0%, rgb(0,153,242) 67%, rgb(0,105,242) 100%);
 	
 }
 .jplayer-load-bar {
