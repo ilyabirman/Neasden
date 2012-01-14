@@ -120,9 +120,8 @@
   text-shadow: 0px 1px 0px #fff;
 }
 .jplayer-play-control {
-  NO__float: left;
   position: absolute;
-  left: 0;
+  left: -4px;
   width: 16px; height: 16px;
   margin-right: 8px;
   cursor: pointer; cursor: hand;
@@ -130,7 +129,7 @@
 .jplayer-unavailable,
 .jplayer-play,
 .jplayer-pause {
-  width: 16px; height: 100%;
+  width: 16px; height: 16px;
 }
 .jplayer-unavailable {
   background: url('i/unavailable.png') center center no-repeat;
@@ -142,9 +141,8 @@
   background: url('i/playing.png') center center no-repeat;
 }
 .jplayer-audio-source {
-  NO__float: right;
   position: absolute;
-  right: 0;
+  right: -4px;
   width: 16px; height: 16px;
   margin-left: 8px;
   background: url('i/download.png') center center no-repeat;
@@ -156,18 +154,16 @@
   height: 100%;
 }
 .jplayer-play-time {
-  NO__float: left;
   position: absolute;
-  left: 24px;
+  left: 20px;
   text-align: left;
 }
 .jplayer-total-time {
-  NO__float: right;
   position: absolute;
-  right: 24px;
+  right: 20px;
   text-align: right;
 }
 .jplayer-name {
-  margin: 0 104px;
+  margin: 0 100px;
   min-height: 1.4em;
 }
