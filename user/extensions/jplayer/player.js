@@ -2,7 +2,6 @@ $ (function () {
   
 // вот это всё мегалевак, эти переменные должны быть раздельные для каждого плеера, присутствующего на странице:  
 
-  var currentpos = -1
   var totaltime = 0
   var loadpercent = 0
   
@@ -87,10 +86,10 @@ $ (function () {
     if (loadWidth == 0) playhead = 0
     
     $ (playerSelector).find ('.jplayer-buffering').stop ().fadeTo (1, 1)
+    //$ (playerSelector).find ('.jplayer-buffering').show ()
 
     jposition (playerSelector, pixels, totaltime*playhead)
-    $ (playerObject).data ('desiredPosition', Math.floor (pixels))
-    $ (playerObject).data ('desiredLater', $ (playerObject).data ('desiredPosition') >= currentpos)
+    $ (playerObject).data ('wantSeekToTime', totaltime*playhead)
     
     $ (playerObject).jPlayer ('play')
     $ (playerObject).jPlayer ('playHead', playheadSeekable*100)
@@ -161,6 +160,7 @@ $ (function () {
       
       timeupdate: function (event) {
         
+        var playpx
   
         updateLoadBar (thisSelector, event.jPlayer.status.seekPercent)
         
@@ -172,31 +172,30 @@ $ (function () {
              
         maxWidth = $ (thisSelector + ' .jplayer-progress-area').width ()
 
-    
         playpx = Math.floor (event.jPlayer.status.currentTime/totaltime*(maxWidth))
-         
-        $ (thisSelector).find ('.jplayer-name').html (
-          'now = ' + event.jPlayer.status.currentTime + '<br />' +
-          'desired = ' + $ (this).data ('desiredPosition') + '<br />' +
-          'play = ' + playpx + '<br />' +
-          'dmore = '  + $ (this).data ('desiredLater')
-        )
                 
         if (
-          ($ (this).data ('desiredPosition') < 0) ||
-          (($ (this).data ('desiredLater')) && (playpx >= $ (this).data ('desiredPosition'))) ||
-          ((!$ (this).data ('desiredLater')) && (playpx < currentpos))
+          ($ (this).data ('wantSeekToTime') < 0) ||
+          (event.jPlayer.status.currentTime - $ (this).data ('wantSeekToTime')) >= .33
         ) {
           var curtime = -1
           if ($ (this).data ('isDirty')) curtime = event.jPlayer.status.currentTime
           $ (thisSelector).find ('.jplayer-buffering').stop ().fadeTo (333, 0)
+          //$ (thisSelector).find ('.jplayer-buffering').hide ()
           jposition (thisSelector, playpx, curtime)
-          $ (this).data ('desiredPosition', -1)
+          $ (this).data ('wantSeekToTime', -1)
         }
         
-        currentpos = playpx
-        if (isNaN (currentpos)) currentpos = -1
-        
+        /*
+        $ (thisSelector).find ('.jplayer-name').html (
+          'now = ' + event.jPlayer.status.currentTime + '<br />' +
+          'wantSeekToTime = ' + $ (this).data ('wantSeekToTime') + '<br />' +
+          'wantSeekForward = '  + $ (this).data ('wantSeekForward') + '<br />' +
+          'playpx = ' + playpx + '<br />' +
+          ''
+        )
+        */
+      
       }
     })
 
