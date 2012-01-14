@@ -1,16 +1,16 @@
 <?
 
 n__define_line_class (
-  'jplayer',
+  'audio',
   '(?:\[play\])(.*)'
 );
 
-n__define_group ('jplayer', '(-jplayer-)');
+n__define_group ('audio', '(-audio-)');
 
-function n__render_group_jplayer ($group) {
+function n__render_group_audio ($group) {
   global $_neasden_config;
 
-  $myconf = @$_neasden_config['extensions']['jplayer'];
+  $myconf = @$_neasden_config['extensions']['audio'];
 
   $css_class = $_neasden_config['generic-object-css-class'];
   if (@$myconf['css-class']) $css_class = @$myconf['css-class'];
@@ -19,10 +19,13 @@ function n__render_group_jplayer ($group) {
   if ($_neasden_config['language'] == 'ru') $downloadstr = 'Скачать';
 
   $p = false;
+  
+  //$mypath = $_neasden_config['__overload'];
+  $mypath = 'neasden/';
 
-  n__require_link ($_neasden_config['__overload'] .'extensions/jplayer/player.js');
-  n__require_link ($_neasden_config['__overload'] .'extensions/jplayer/jquery.jplayer.min.js');
-  n__require_link ($_neasden_config['__overload'] .'extensions/jplayer/player.css');
+  n__require_link ($mypath .'extensions/audio/player.js');
+  n__require_link ($mypath .'extensions/audio/jquery.jplayer.min.js');
+  n__require_link ($mypath .'extensions/audio/player.css');
 
   $result = (
     '<div class="'. $css_class .'"'.
@@ -40,7 +43,7 @@ function n__render_group_jplayer ($group) {
         
         <div class="jplayer-invisible-object"></div>
         
-        <a class="jplayer-swf-source" href="'. $_neasden_config['__overload'] .'/extensions/jplayer/Jplayer.swf"></a>
+        <a class="jplayer-swf-source" href="'. $mypath .'/extensions/audio/Jplayer.swf"></a>
         
         <div class="jplayer-progress-area">
           <div class="jplayer-mine-left"></div>
