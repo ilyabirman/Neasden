@@ -1,5 +1,5 @@
 $ (function () {
-
+  
   var desiredpos = -1
   var movetimeout
   var totaltime = 0
@@ -48,10 +48,19 @@ $ (function () {
     $ (cssSelectorAncestor + ' .jplayer-load-bar-end').css ('left', loadpx2 + 'px')
 
   }
+
+/*
+  $ ('.jplayer .jplayer-audio-source').addClass ('jplayer-audio-source-shifted')
+  $ ('.jplayer .jplayer-ui').show ()
+  $ ('.jplayer .jplayer-load-bar').css ('width', '200px')
+  $ ('.jplayer .jplayer-load-bar-end').css ('left', '200px')
+  jposition ('',50, 50);
+  return;
+*/
   
   jmoveto = function (cssSelectorAncestor, player, movepx) {
 
-    maxWidth = $ (cssSelectorAncestor + ' .jplayer-ui').width ()
+    maxWidth = $ (cssSelectorAncestor + ' .jplayer-progress-area').width ()
     loadWidth = $ (cssSelectorAncestor + ' .jplayer-load-bar').width ()
     limit = maxWidth
     if ($ (player).jPlayer ('solution', 'flash')) limit = loadWidth
@@ -110,7 +119,7 @@ $ (function () {
           if (mousedown) {
             e.stopPropagation ()
             e.preventDefault ()
-            return jmoveto (currentCssSelectorAncestor, me, e.pageX - $ (currentCssSelectorAncestor + ' jplayer-play-mine').offset ().left)
+            return jmoveto (currentCssSelectorAncestor, me, e.pageX - $ (currentCssSelectorAncestor + ' .jplayer-play-mine').offset ().left)
           }
         })
       },
@@ -124,7 +133,7 @@ $ (function () {
         totaltime = event.jPlayer.status.duration / (loadPercent / 100)
         if (isNaN (totaltime)) totaltime = 0
              
-        maxWidth = $ (currentCssSelectorAncestor + ' .jplayer-ui').width ()
+        maxWidth = $ (currentCssSelectorAncestor + ' .jplayer-progress-area').width ()
     
         if (loadPercent > 100) loadPercent = 100
         loadpx = Math.round ((loadPercent)/100*maxWidth)

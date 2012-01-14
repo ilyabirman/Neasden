@@ -10,7 +10,7 @@ n__define_group ('jplayer', '(-jplayer-)');
 function n__render_group_jplayer ($group) {
   global $_neasden_config;
 
-  $myconf = $_neasden_config['extensions']['jplayer'];
+  $myconf = @$_neasden_config['extensions']['jplayer'];
 
   $css_class = $_neasden_config['generic-object-css-class'];
   if (@$myconf['css-class']) $css_class = @$myconf['css-class'];
@@ -39,38 +39,38 @@ function n__render_group_jplayer ($group) {
       <div class="jplayer" id="jplayer-ui-zone-'. $zoneid .'">
         
         <div class="jplayer-invisible-object"></div>
-        <div class="jplayer-ui" style="display: none">
-          
-          <div class="jplayer-edge jplayer-left"></div>
-          <div class="jplayer-edge jplayer-right"></div>
-
-          <div class="jplayer-edge jplayer-right jplayer-right-pending"></div>
-          <div class="jplayer-edge jplayer-left jplayer-play-left-played" style="display: none"></div>
-          
+        
+        <a class="jplayer-swf-source" href="user/neasden/extensions/jplayer/Jplayer.swf"></a>
+        
+        <div class="jplayer-progress-area">
+          <div class="jplayer-left"></div>
+          <div class="jplayer-right"></div>
+          <div class="jplayer-left jplayer-play-left-played" style="display: none"></div>
           <div class="jplayer-play-mine">
-            <div class="jplayer-dynamic-bar jplayer-load-bar"></div>
-            <div class="jplayer-dynamic-bar jplayer-play-bar"></div>
-
             <div class="jplayer-load-bar-end"></div>
+            <div class="jplayer-load-bar"></div>
+            <div class="jplayer-play-bar"></div>
             <div class="jplayer-play-lift">
               <div class="jplayer-buffering" style="display: none"></div>
             </div>
           </div>
           
-          <div class="jplayer-control jplayer-play"></div>
-          <div class="jplayer-control jplayer-pause" style="display: none"></div>
-          
-          <div class="jplayer-time-info">
-            <div class="jplayer-play-time"></div>
-            <div class="jplayer-name">'. $alt .'</div>
-            <div class="jplayer-total-time"></div>
-          </div>
-
         </div>
 
-        <a class="jplayer-audio-source" href="'. $href .'" title="'. $downloadstr .'"></a>
-        <a class="jplayer-swf-source" href="user/neasden/extensions/jplayer/Jplayer.swf"></a>
-        
+        <div class="jplayer-info-area">
+          <a class="jplayer-audio-source" href="'. $href .'" title="'. $downloadstr .'"></a>
+
+          <div class="jplayer-play-control">
+            <div class="jplayer-play"></div>
+            <div class="jplayer-pause" style="display: none"></div>
+          </div>
+            
+          <div class="jplayer-play-time"></div>
+          <div class="jplayer-total-time"></div>
+          
+          <div class="jplayer-name">'. $alt .'</div>
+          
+        </div>
         
       </div>
     
