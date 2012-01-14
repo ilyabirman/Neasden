@@ -19,6 +19,30 @@ $ (function () {
     
   }
   
+  var updateTimeDisplay = function (playerSelector, playedTime) {
+    
+    var playtimetext = '', totaltimetext = ''
+    
+    if (playedTime >= 0) {
+      playtimetext = formatTime (playedTime)
+    }
+
+    if ($ (playerSelector).data ('totalTime') > 0) {
+      if ($ (playerSelector).data ('isExactTotalTime')) {
+        totaltimetext = formatTime ($ (playerSelector).data ('totalTime'))
+      } else {
+        var min = $ (playerSelector).data ('totalTime') / 60
+        var d = (Math.log (min) / Math.log (10))
+        min = Math.round (Math.pow (10, Math.round (d*10)/10))
+        totaltimetext = '~ ' + formatTime (min * 60)
+      }
+    }
+
+    $ (playerSelector + ' .jplayer-play-time').text (playtimetext)
+    $ (playerSelector + ' .jplayer-total-time').text (totaltimetext)
+    
+  }
+  
   var updateLoadBar = function (playerSelector, seekPercent) {
         
     var maxWidth = $ (playerSelector).find ('.jplayer-progress-area').width ()
@@ -29,35 +53,16 @@ $ (function () {
     
   }
   
-  jposition = function (cssSelectorAncestor, playpx, playedTime) {
-    if (playpx > 0) {
-      $ (cssSelectorAncestor + ' .jplayer-play-bar-left').show () 
-    } else {
-      $ (cssSelectorAncestor + ' .jplayer-play-bar-left').hide () 
-    }
-    $ (cssSelectorAncestor + ' .jplayer-play-lift').css ('left', playpx + 'px')
-    $ (cssSelectorAncestor + ' .jplayer-play-bar').css ('width', playpx + 'px')
+
+  var updatePlayBar = function (playerSelector, pixels) {
     
-    playtimetext = ''
-    if (playedTime >= 0) {
-      playtimetext = formatTime (playedTime)
+    if (pixels > 0) {
+      $ (playerSelector + ' .jplayer-play-bar-left').show () 
+    } else {
+      $ (playerSelector + ' .jplayer-play-bar-left').hide () 
     }
-
-    totaltimetext = ''
-    if ($ (cssSelectorAncestor).data ('totalTime') > 0) {
-      if ($ (cssSelectorAncestor).data ('isExactTotalTime')) {
-        totaltimetext = formatTime ($ (cssSelectorAncestor).data ('totalTime'))
-      } else {
-        var min = $ (cssSelectorAncestor).data ('totalTime') / 60
-        var d = (Math.log (min) / Math.log (10))
-        min = Math.round (Math.pow (10, Math.round (d*10)/10))
-        totaltimetext = '~ ' + formatTime (min * 60)
-      }
-    }
-
-    $ (cssSelectorAncestor + ' .jplayer-play-time').text (playtimetext)
-    $ (cssSelectorAncestor + ' .jplayer-total-time').text (totaltimetext)
-
+    $ (playerSelector + ' .jplayer-play-lift').css ('left', pixels + 'px')
+    $ (playerSelector + ' .jplayer-play-bar').css ('width', pixels + 'px')
 
   }
 
@@ -66,23 +71,26 @@ $ (function () {
   $ ('.jplayer .jplayer-ui').show ()
   $ ('.jplayer .jplayer-load-bar').css ('width', '200px')
   $ ('.jplayer .jplayer-load-bar-right').css ('left', '200px')
-  jposition ('',50, 50);
+  updatePlayBar ('',50);
+  updateTimeDisplay ('', 50)
   return;
   */
   
-  var willSeekTo = function (playerSelector, playerObject, pixels) {
+  var willSeekTo = function (playerSelector, playerObject, tryPixels) {
 
     var maxWidth = $ (playerSelector).find ('.jplayer-progress-area').width ()
     var loadWidth = $ (playerSelector).find ('.jplayer-load-bar').width ()
+    var pixels = forceLimit (tryPixels, 0, loadWidth)
+    var playhead = pixels/maxWidth
+    var playheadSeekable = pixels/loadWidth
     
-    pixels = forceLimit (pixels, 0, loadWidth)
-    playhead = pixels/maxWidth
-    playheadSeekable = pixels/loadWidth
-    if (loadWidth == 0) playhead = 0
+    if ((maxWidth == 0) || loadWidth == 0) playheadSeekable = playhead = 0
     
     $ (playerSelector).find ('.jplayer-buffering').stop ().fadeTo (1, 1)
 
-    jposition (playerSelector, pixels, $ (playerSelector).data ('totalTime') * playhead)
+    updatePlayBar (playerSelector, pixels)
+    updateTimeDisplay (playerSelector, $ (playerSelector).data ('totalTime') * playhead)
+    
     $ (playerObject).data ('wantSeekToTime', $ (playerSelector).data ('totalTime') * playhead)
     
     $ (playerObject).jPlayer ('play')
@@ -176,7 +184,8 @@ $ (function () {
           var curtime = -1
           if ($ (this).data ('isDirty')) curtime = event.jPlayer.status.currentTime
           $ (thisSelector).find ('.jplayer-buffering').stop ().fadeTo (333, 0)
-          jposition (thisSelector, playpx, curtime)
+          updatePlayBar (thisSelector, playpx)
+          updateTimeDisplay (thisSelector, curtime)
           $ (this).data ('wantSeekToTime', -1)
         }
         
