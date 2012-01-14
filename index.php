@@ -51,14 +51,16 @@ $stopwatch = stopwatch () - $stopwatch;
 
 <?#= '<pre>'. htmlspecialchars ($res) .'</pre>' ?>
 
+<!--
 <table>
 <tr valign="top">
-<!--
 <td width="50%"><tt><?= nl2br (htmlspecialchars ($text)) ?></tt></td>
--->
-<td><?= $res ?></td>
+<td></td>
 </tr>
 </table>
+-->
+
+<?= $res ?>
 
 <pre>
 Resources:
