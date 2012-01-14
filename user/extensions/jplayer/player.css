@@ -2,6 +2,10 @@
   width: 100%;
   position: relative;
 }
+.jplayer,
+.jplayer * {
+  line-height: 1.4em;
+}
 .jplayer-progress-area {
   height: 15px;
   margin: 0 8px .375em 8px;
@@ -165,4 +169,5 @@
 }
 .jplayer-name {
   margin: 0 104px;
+  min-height: 1.4em;
 }
