@@ -21,11 +21,13 @@ function n__render_group_audio ($group) {
   $p = false;
   
   //$mypath = $_neasden_config['__overload'];
-  $mypath = 'neasden/';
+  $mypath = __FILE__;
+  $mypath = str_replace ('/audio.php', '', $mypath);
+  $mypath = str_replace ($_SERVER['DOCUMENT_ROOT'] .'/', '', $mypath);
 
-  n__require_link ($mypath .'extensions/audio/player.js');
-  n__require_link ($mypath .'extensions/audio/jquery.jplayer.min.js');
-  n__require_link ($mypath .'extensions/audio/player.css');
+  n__require_link ($mypath .'/audio/player.js');
+  n__require_link ($mypath .'/audio/jquery.jplayer.min.js');
+  n__require_link ($mypath .'/audio/player.css');
 
   $result = (
     '<div class="'. $css_class .'"'.
@@ -43,7 +45,7 @@ function n__render_group_audio ($group) {
         
         <div class="jplayer-invisible-object"></div>
         
-        <a class="jplayer-swf-source" href="'. $mypath .'/extensions/audio/Jplayer.swf"></a>
+        <a class="jplayer-swf-source" href="'. $mypath .'/audio/Jplayer.swf"></a>
         
         <div class="jplayer-progress-area">
           <div class="jplayer-mine-left"></div>
