@@ -4,13 +4,14 @@ n__require_line_class ('picture');
 n__define_group ('fotorama', '(-picture-){2,}(-p-)*');
 
 function n__render_group_fotorama ($group) {
-  global $_neasden_config;
-  $myconf = $_neasden_config['extensions']['pictures'];
+  global $_neasden_config, $_neasden_extensions;
 
-  if (is_array (@$_neasden_config['extensions']['fotorama'])) {
+  $myconf = @$_neasden_extensions['pictures']['config'];
+
+  if (is_array (@$_neasden_extensions['fotorama']['config'])) {
     $myconf = array_merge (
       $myconf,
-      $_neasden_config['extensions']['fotorama']
+      @$_neasden_extensions['fotorama']['config']
     );
   }
 

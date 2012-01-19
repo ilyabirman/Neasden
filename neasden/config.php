@@ -65,6 +65,11 @@ $_neasden_config = array (
       'width' => 768,
       'height' => 480,
     ),
+    'vimeo' => array (
+      'css-class' => 'txt-video',
+      'width' => 768,
+      'height' => 480,
+    ),
   ),
   
 );
