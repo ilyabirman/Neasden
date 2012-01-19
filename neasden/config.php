@@ -31,27 +31,6 @@ $_neasden_config = array (
     'object', 'embed', 'iframe', 'script', 'style', 'code'
   ),
   
-  /*
-  'fragment-strengths' => array (
-
-    'code' => N_FRAG_STRENGTH_OPAQUE, // inline element
-    'pre' => N_FRAG_STRENGTH_OPAQUE,
-    'textarea' => N_FRAG_STRENGTH_OPAQUE,
-    'p' => N_FRAG_STRENGTH_OPAQUE,
-    'ul' => N_FRAG_STRENGTH_OPAQUE,
-    'ol' => N_FRAG_STRENGTH_OPAQUE,
-    'blockquote' => N_FRAG_STRENGTH_OPAQUE,
-    'li' => N_FRAG_STRENGTH_OPAQUE,
-
-    'object' => N_FRAG_STRENGTH_SACRED,
-    'embed' => N_FRAG_STRENGTH_SACRED,
-    'iframe' => N_FRAG_STRENGTH_SACRED,
-    'script' => N_FRAG_STRENGTH_SACRED,
-    'style' => N_FRAG_STRENGTH_SACRED,
-    
-  ),
-  */
-  
   'with-html' => true,
   'with-groups' => true,
   'with-typography' => true,

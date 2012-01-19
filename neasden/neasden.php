@@ -71,23 +71,22 @@ function n__init () {
     $_neasden_required_line_classes;
 
   include 'languages/'. $_neasden_config['language'] .'.php';
-
-  foreach ($_neasden_config['__extensions'] as $ext) {
-
-    $dir = rtrim (dirname (__FILE__), '/'). '/';
-    
-    if (is_file ($extfile = $dir . 'extensions/'. $ext .'.php')) {
-      #echo $extfile.'<br>';
-      include $extfile;
-    }
-    
-    if (is_file ($extfile = $_neasden_config['__overload']. 'extensions/'. $ext .'.php')) {
-      #echo $extfile.'<br>';
-      include $extfile;
-    }
-    
-  }
   
+  $dir = rtrim (dirname (__FILE__), '/'). '/';
+  $dir = str_replace ($_SERVER['DOCUMENT_ROOT'] .'/', '', $dir);
+
+  $extensions_folders = array (
+    $dir. 'extensions',
+    $_neasden_config['__overload']. 'extensions'
+  );
+
+  foreach ($extensions_folders as $extensions_folder) {
+    foreach (glob ($extensions_folder. '/*.php') as $file) {
+      #echo $file.'<br>';
+      include $file;
+    }
+  }
+
   foreach ($_neasden_required_line_classes as $class => $no_need) {
     if (!array_key_exists ($class, $_neasden_line_classes)) {
       return false;
