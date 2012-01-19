@@ -12,16 +12,6 @@ $_neasden_config = array (
       ),
     ),
   ),
-
-  '__extensions' => array (
-    'lists',
-    'hr',
-    'tables',
-    'pictures',
-    'youtube',
-    'vimeo',
-    'audio',
-  ),
   
   'opaque-elements' => array (
     'p', 'ul', 'ol', 'li', 'blockquote', 'table', 'pre', 'textarea',
