@@ -13,8 +13,9 @@ function n__detect_class_picture ($line) {
 n__define_group ('picture', '(-picture-)(-p-)*');
 
 function n__render_group_picture ($group) {
-  global $_neasden_config;
-  $myconf = $_neasden_config['extensions']['pictures'];
+  global $_neasden_config, $_neasden_extensions;
+
+  $myconf = @$_neasden_extensions['pictures']['config'];
 
   $p = false;
 

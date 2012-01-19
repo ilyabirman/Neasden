@@ -7,8 +7,9 @@ n__define_line_class (
 n__define_group ('youtube', '(-youtube-)(-p-)*');
 
 function n__render_group_youtube ($group) {
-  global $_neasden_config;
-  $myconf = $_neasden_config['extensions']['youtube'];
+  global $_neasden_config, $_neasden_extensions;
+
+  $myconf = @$_neasden_extensions['youtube']['config'];
 
   $p = false;
 
