@@ -252,12 +252,33 @@ function n__enclose_within_tagless ($text, $char, $enclosures) {
 // 
 
 function n__process_double_brackets_contents_callback ($params) {
+  global $_neasden_language;
+
   $text = @$params[1] . @$params[2] . @$params[3] . @$params[4];
   @list ($href, $text) = explode (' ', $text, 2);
-  $a_in = n__save_tag ('<a href="'. $href .'">');
-  $a_out = n__save_tag ('</a>');
   if (!@$text) $text = $href;
-  return $a_in . $text . $a_out;
+  
+  $quotes = $_neasden_language['quotes'];
+  $quotes_left = array ('"', $quotes[0], $quotes[1]);
+  $quotes_right = array ('"', $quotes[2], $quotes[3]);
+  $hang_left = mb_substr ($text, 0, 1);
+  $hang_right = mb_substr ($text, -1);
+  $quotes_should_hang = in_array ($hang_left, $quotes_left) and in_array ($hang_right, $quotes_right);
+
+  if ($quotes_should_hang)  {
+    $text = mb_substr ($text, 1, mb_strlen ($text) - 2);
+    $a_in = n__save_tag ('<a href="'. $href .'" class="nu">');
+    $u_in = n__save_tag ('<u>');
+    $u_out = n__save_tag ('</u>');
+    $a_out = n__save_tag ('</a>');
+    return $a_in . $hang_left . $u_in . $text . $u_out . $hang_right . $a_out;
+  } else {
+    $a_in = n__save_tag ('<a href="'. $href .'">');
+    $a_out = n__save_tag ('</a>');
+    if (!@$text) $text = $href;
+    return $a_in . $text . $a_out;
+  }
+  
 }
 
 
@@ -932,6 +953,9 @@ function n__format_fragments ($text) {
 
 function neasden ($text, $profile = '', $intent = '') {
   global $_default_config, $_neasden_config, $_neasden_intent, $_neasden_resources, $_neasden_links;
+  
+  $last_mb_encoding = mb_internal_encoding ();
+  mb_internal_encoding ('utf-8');
 
   $_neasden_intent = $intent; 
   $_neasden_resources = array ();
@@ -1023,6 +1047,8 @@ function neasden ($text, $profile = '', $intent = '') {
     $result = $_neasden_resources;
   }
   
+  mb_internal_encoding ($last_mb_encoding);
+
   return $result;
 
 }

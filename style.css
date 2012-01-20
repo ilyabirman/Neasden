@@ -4,6 +4,9 @@
   -webkit-box-sizing: border-box;
 }
 
+a.nu { text-decoration: none }
+a.nu u { text-decoration: underline }
+
 body { font-family: "Arial" }
 tt { font-family: "Consolas" }
 table { font-size: 1em }
