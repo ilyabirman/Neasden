@@ -191,21 +191,25 @@ function n__enclose_within_tagless ($text, $char, $enclosures) {
   if (count ($enclosures) == 3) $enclosures[3] = $enclosures[2];
 
   // obvious replacements
-  $text = preg_replace (
-    '/((^|\s|\-)'. N_RX_TAGS .')'.
-    preg_quote ($char).
-    '(?!'. N_RX_TAGS .'($|\-|\s))/m',
-    '$1$2'. $enclosures[0],
-    $text
-  );
+  if (1) {
+    $text = preg_replace (
+      '/((?:^|\s|\-)'. N_RX_TAGS .')'.
+      preg_quote ($char).
+      '(?!'. N_RX_TAGS .'($|\-|\s))/m',
+      '$1'. $enclosures[0],
+      $text
+    );
+  }
   
-  $text = preg_replace (
-    '/(?<!^|\s|\-)('. N_RX_TAGS .')'.
-    preg_quote ($char).
-    '(?='. N_RX_TAGS ."($|\-|\s))/m",
-    '$1'. $enclosures[3],
-    $text
-  );
+  if (1) {
+    $text = preg_replace (
+      '/(?<!^|\s|\-)('. N_RX_TAGS .')'.
+      preg_quote ($char).
+      '(?='. N_RX_TAGS ."(?:$|\-|\s))/m",
+      '$1'. $enclosures[3],
+      $text
+    );
+  }
 
   // remaining replacements
   if (1) {
