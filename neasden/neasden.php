@@ -73,8 +73,12 @@ function n__init () {
 
   include 'languages/'. $_neasden_config['language'] .'.php';
   
+  $host_dir = dirname ($_SERVER['PHP_SELF']); # '/meanwhile'
+  $host_dir = trim ($host_dir, '/').'/'; # 'meanwhile/'
+  if ($host_dir == '/') $host_dir = '';
+  
   $dir = rtrim (dirname (__FILE__), '/'). '/';
-  $dir = str_replace ($_SERVER['DOCUMENT_ROOT'] .'/', '', $dir);
+  $dir = str_replace ($_SERVER['DOCUMENT_ROOT'] .'/'. $host_dir, '', $dir);
 
   $extensions_folders = array (
     $dir. 'extensions',
