@@ -124,7 +124,7 @@
 }
 .jplayer-play-control {
   position: absolute;
-  left: -4px;
+  left: 0;
   width: 16px; height: 16px;
   margin-right: 8px;
   cursor: pointer; cursor: hand;
@@ -145,7 +145,7 @@
 }
 .jplayer-audio-source {
   position: absolute;
-  right: -4px;
+  right: 0;
   width: 16px; height: 16px;
   margin-left: 8px;
   background: url('i/download.png') center center no-repeat;
