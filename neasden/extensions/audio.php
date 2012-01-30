@@ -31,44 +31,18 @@ function n__render_group_audio ($group) {
   
   foreach ($group as $line) {
   
-    list ($href, $alt) = explode (' ', trim ($line['class-data'][1]), 2);
+    @list ($href, $alt) = explode (' ', trim ($line['class-data'][1]), 2);
     $zoneid = rand (1000, 9999);
 
     $player_html = '
 
       <div class="jplayer" id="jplayer-ui-zone-'. $zoneid .'">
-        
-        <div class="jplayer-invisible-object"></div>
-        
+
         <a class="jplayer-swf-source" href="'. $mypath .'/Jplayer.swf"></a>
         
-        <div class="jplayer-progress-area">
-          <div class="jplayer-mine-left"></div>
-          <div class="jplayer-mine-right"></div>
-          <div class="jplayer-mine">
-            <div class="jplayer-load-bar-left jplayer-hidden" style="display: none"></div>
-            <div class="jplayer-load-bar-right jplayer-hidden" style="display: none"></div>
-            <div class="jplayer-load-bar jplayer-hidden" style="display: none"></div>
-            <div class="jplayer-play-bar-left" style="display: none"></div>
-            <div class="jplayer-play-bar"></div>
-            <div class="jplayer-play-lift jplayer-hidden" style="display: none">
-              <div class="jplayer-buffering" style="display: none"></div>
-            </div>
-          </div>
-          
-        </div>
-
         <div class="jplayer-info-area">
           <a class="jplayer-audio-source" href="'. $href .'" title="'. $downloadstr .'"></a>
-
-          <div class="jplayer-play-control">
-            <div class="jplayer-unavailable jplayer-to-hide"></div>
-            <div class="jplayer-hidden" style="display: none">
-              <div class="jplayer-play"></div>
-              <div class="jplayer-pause" style="display: none"></div>
-            </div>
-          </div>
-            
+          <div class="jplayer-play-control"></div>
           <div class="jplayer-play-time"></div>
           <div class="jplayer-total-time"></div>
           

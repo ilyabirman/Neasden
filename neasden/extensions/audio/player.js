@@ -95,9 +95,42 @@ $ (function () {
   }
   
   $ (".jplayer").each (function () {
-
     var thisSelector = '#' + this.id
 
+    $ (thisSelector).append (
+      $ ('<div class="jplayer-invisible-object"></div>'),
+      $ ('<div class="jplayer-progress-area"></div>')
+    )
+    
+    // progress area
+    $ (thisSelector).find ('.jplayer-progress-area').append (
+      $ ('<div class="jplayer-mine-left"></div>'),
+      $ ('<div class="jplayer-mine-right"></div>'),
+      $ ('<div class="jplayer-mine"></div>')
+    )
+    $ (thisSelector).find ('.jplayer-mine').append (
+      $ ('<div class="jplayer-load-bar-left jplayer-hidden" style="display: none"></div>'),
+      $ ('<div class="jplayer-load-bar-right jplayer-hidden" style="display: none"></div>'),
+      $ ('<div class="jplayer-load-bar jplayer-hidden" style="display: none"></div>'),
+      $ ('<div class="jplayer-play-bar-left" style="display: none"></div>'),
+      $ ('<div class="jplayer-play-bar"></div>'),
+      $ ('<div class="jplayer-play-lift jplayer-hidden" style="display: none">')
+    )
+    $ (thisSelector).find ('.jplayer-play-lift').append (
+      $ ('<div class="jplayer-buffering" style="display: none"></div>')
+    )
+   
+    // info area
+    $ (thisSelector).find ('.jplayer-play-control').append (
+      $ ('<div class="jplayer-unavailable jplayer-to-hide"></div>'),
+      $ ('<div class="jplayer-play-pause jplayer-hidden" style="display: none"></div>')
+    )
+    $ (thisSelector).find ('.jplayer-play-pause').append (
+      $ ('<div class="jplayer-play"></div>'),
+      $ ('<div class="jplayer-pause" style="display: none"></div>')
+    )
+    
+    
     $ (thisSelector).find ('.jplayer-invisible-object').jPlayer ({
       
       swfPath: $ (thisSelector).find ('.jplayer-swf-source').attr ('href'),
@@ -119,7 +152,7 @@ $ (function () {
         
         var me = this
         var isMouseDown = false
-        
+
         $ ('.jplayer .jplayer-hidden').show ()
         $ ('.jplayer .jplayer-to-hide').hide ()
         
