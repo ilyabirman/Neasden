@@ -39,16 +39,7 @@ function n__render_group_audio ($group) {
       <div class="jplayer" id="jplayer-ui-zone-'. $zoneid .'">
 
         <a class="jplayer-swf-source" href="'. $mypath .'/Jplayer.swf"></a>
-        
-        <div class="jplayer-info-area">
-          <a class="jplayer-audio-source" href="'. $href .'" title="'. $downloadstr .'"></a>
-          <div class="jplayer-play-control"></div>
-          <div class="jplayer-play-time"></div>
-          <div class="jplayer-total-time"></div>
-          
-          <div class="jplayer-name">'. $alt .'</div>
-          
-        </div>
+        <a class="jplayer-audio-source" href="'. $href .'" title="'. $downloadstr .'" data-alt="'. $alt .'">'. $downloadstr .'</a>
         
       </div>
     

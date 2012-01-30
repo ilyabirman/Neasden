@@ -99,7 +99,8 @@ $ (function () {
 
     $ (thisSelector).append (
       $ ('<div class="jplayer-invisible-object"></div>'),
-      $ ('<div class="jplayer-progress-area"></div>')
+      $ ('<div class="jplayer-progress-area"></div>'),
+      $ ('<div class="jplayer-info-area"></div>')
     )
     
     // progress area
@@ -121,6 +122,14 @@ $ (function () {
     )
    
     // info area
+    $ (thisSelector).find ('.jplayer-info-area').append (
+      $ ('<a class="jplayer-download jplayer-hidden" style="display: none"></a>'),
+      $ ('<div class="jplayer-play-control"></div>'),
+      $ ('<div class="jplayer-play-time"></div>'),
+      $ ('<div class="jplayer-total-time"></div>'),
+      $ ('<div class="jplayer-name">' + $ (thisSelector).find ('.jplayer-audio-source').attr ('data-alt') + '</div>')
+    )
+    
     $ (thisSelector).find ('.jplayer-play-control').append (
       $ ('<div class="jplayer-unavailable jplayer-to-hide"></div>'),
       $ ('<div class="jplayer-play-pause jplayer-hidden" style="display: none"></div>')
@@ -153,6 +162,12 @@ $ (function () {
         var me = this
         var isMouseDown = false
 
+        $ (thisSelector).find ('.jplayer-download').attr (
+          'href',
+          $ (thisSelector).find ('.jplayer-audio-source').attr ('href')
+        )
+
+        // why no thisSelector?
         $ ('.jplayer .jplayer-hidden').show ()
         $ ('.jplayer .jplayer-to-hide').hide ()
         

@@ -143,7 +143,7 @@
 .jplayer-pause {
   background: url('i/playing.png') center center no-repeat;
 }
-.jplayer-audio-source {
+.jplayer-download {
   position: absolute;
   right: 0;
   width: 16px; height: 16px;
