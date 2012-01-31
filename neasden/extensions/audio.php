@@ -36,12 +36,14 @@ function n__render_group_audio ($group) {
 
     $player_html = '
 
-      <div class="jplayer" id="jplayer-ui-zone-'. $zoneid .'">
-
-        <a class="jplayer-swf-source" href="'. $mypath .'/Jplayer.swf"></a>
-        <a class="jplayer-audio-source" href="'. $href .'" title="'. $downloadstr .'" data-alt="'. $alt .'">'. $downloadstr .'</a>
-        
-      </div>
+        <a '.
+          'class="jplayer-audio-source" '.
+          'href="'. $href .'" '.
+          'title="'. $downloadstr .'" '.
+          'data-alt="'. $alt .'"'.
+          'data-swfSource="'. $mypath .'Jplayer.swf" '.
+        '>'. $downloadstr .
+        '</a>
     
     '."\n";
     

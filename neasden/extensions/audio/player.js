@@ -60,16 +60,6 @@ $ (function () {
 
   }
 
-  /*
-  $ ('.jplayer .jplayer-audio-source').addClass ('jplayer-audio-source-shifted')
-  $ ('.jplayer .jplayer-ui').show ()
-  $ ('.jplayer .jplayer-load-bar').css ('width', '200px')
-  $ ('.jplayer .jplayer-load-bar-right').css ('left', '200px')
-  updatePlayBar ('',50);
-  updateTimeDisplay ('', 50)
-  return;
-  */
-  
   var willSeekTo = function (playerSelector, playerObject, tryPixels) {
 
     var maxWidth = $ (playerSelector).find ('.jplayer-progress-area').width ()
@@ -94,8 +84,17 @@ $ (function () {
     
   }
   
-  $ (".jplayer").each (function () {
-    var thisSelector = '#' + this.id
+  $ (".jplayer-audio-source").each (function () {
+    
+    var thisID = 'jplayer-ui-zone-' + (1000 + Math.round (Math.random ()*8999))
+    
+    var $aHref = $ (this) 
+    
+    $jdiv = $ (this).after (
+      $ ('<div class="jplayer" id="' + thisID + '"></div>')
+    )
+
+    var thisSelector = '#' + thisID
 
     $ (thisSelector).append (
       $ ('<div class="jplayer-invisible-object"></div>'),
@@ -127,7 +126,7 @@ $ (function () {
       $ ('<div class="jplayer-play-control"></div>'),
       $ ('<div class="jplayer-play-time"></div>'),
       $ ('<div class="jplayer-total-time"></div>'),
-      $ ('<div class="jplayer-name">' + $ (thisSelector).find ('.jplayer-audio-source').attr ('data-alt') + '</div>')
+      $ ('<div class="jplayer-name">' + $ (this).attr ('data-alt') + '</div>')
     )
     
     $ (thisSelector).find ('.jplayer-play-control').append (
@@ -139,10 +138,12 @@ $ (function () {
       $ ('<div class="jplayer-pause" style="display: none"></div>')
     )
     
+    //alert ($ (thisSelector).find ('.jplayer-audio-source').attr ('data-swfSource'))
+    
     
     $ (thisSelector).find ('.jplayer-invisible-object').jPlayer ({
       
-      swfPath: $ (thisSelector).find ('.jplayer-swf-source').attr ('href'),
+      swfPath: $aHref.attr ('data-swfSource'),
       preload: 'metadata',
       volume: 100,
       
@@ -158,13 +159,12 @@ $ (function () {
       errorAlerts: false,
       
       ready: function (event) {
-        
         var me = this
         var isMouseDown = false
 
         $ (thisSelector).find ('.jplayer-download').attr (
           'href',
-          $ (thisSelector).find ('.jplayer-audio-source').attr ('href')
+          $aHref.attr ('href')
         )
 
         // why no thisSelector?
@@ -172,7 +172,7 @@ $ (function () {
         $ ('.jplayer .jplayer-to-hide').hide ()
         
         $ (this).jPlayer ("setMedia", {
-          mp3: $ (thisSelector).find ('.jplayer-audio-source').attr ('href'),
+          mp3: $aHref.attr ('href'),
         })
         
         $ (thisSelector).find ('.jplayer-mine').mousedown (function (e) {
