@@ -34,18 +34,14 @@ function n__render_group_audio ($group) {
     @list ($href, $alt) = explode (' ', trim ($line['class-data'][1]), 2);
     $zoneid = rand (1000, 9999);
 
-    $player_html = '
-
-        <a '.
-          'class="jplayer-audio-source" '.
-          'href="'. $href .'" '.
-          'title="'. $downloadstr .'" '.
-          'data-alt="'. $alt .'"'.
-          'data-swfSource="'. $mypath .'Jplayer.swf" '.
-        '>'. $downloadstr .
-        '</a>
-    
-    '."\n";
+    $player_html = '<a '.
+      'class="jplayer-audio-source" '.
+      'href="'. $href .'" '.
+      'title="'. $downloadstr .'" '.
+      'data-alt="'. $alt .'"'.
+      'data-swfSource="'. $mypath .'Jplayer.swf" '.
+    '>'. $downloadstr .
+    '</a>'."\n";
     
     $player_html = n__save_tag ($player_html);
 
