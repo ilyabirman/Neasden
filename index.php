@@ -35,9 +35,15 @@ $stopwatch = stopwatch () - $stopwatch;
 
 <html>
 <head>
+  
   <link rel="stylesheet" href="style.css" />
-  <script src="js/jquery.js" type="text/javascript"></script>
+  <script src="js/jquery.js"></script>
   <script src="js/scaleimage.js"></script>
+  
+  <link rel="stylesheet" href="jouele/jouele.css" />
+  <script src="jouele/jquery.jplayer.min.js"></script>
+  <script src="jouele/jouele.js"></script>
+  
 </head>
 <body>
 

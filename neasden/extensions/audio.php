@@ -21,9 +21,9 @@ function n__render_group_audio ($group) {
 
   $p = false;
 
-  n__require_link ($mypath .'player.js');
-  n__require_link ($mypath .'jquery.jplayer.min.js');
-  n__require_link ($mypath .'player.css');
+  //n__require_link ($mypath .'player.js');
+  //n__require_link ($mypath .'jquery.jplayer.min.js');
+  //n__require_link ($mypath .'player.css');
 
   $result = (
     '<div class="'. $css_class .'">'."\n"
@@ -36,10 +36,10 @@ function n__render_group_audio ($group) {
     $zoneid = rand (1000, 9999);
 
     $player_html = '<a '.
-      'class="playhere" '.
+      'class="jouele" '.
       'href="'. $href .'" '.
       'title="'. $downloadstr .'" '.
-      'data-swfSource="'. $mypath .'Jplayer.swf" '.
+    //'data-swfSource="'. $mypath .'Jplayer.swf" '.
     '>'. $alt .
     '</a>'."\n";
     
