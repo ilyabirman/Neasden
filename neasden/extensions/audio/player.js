@@ -84,11 +84,13 @@ $ (function () {
     
   }
   
-  $ (".jplayer-audio-source").each (function () {
+  $ (".playhere").each (function () {
+
+    var $aHref = $ (this) 
+    
+    var thisName = $aHref.text ()
     
     var thisID = 'jplayer-ui-zone-' + (1000 + Math.round (Math.random ()*8999))
-    
-    var $aHref = $ (this) 
     
     $jdiv = $ (this).after (
       $ ('<div class="jplayer" id="' + thisID + '"></div>')
@@ -126,7 +128,7 @@ $ (function () {
       $ ('<div class="jplayer-play-control"></div>'),
       $ ('<div class="jplayer-play-time"></div>'),
       $ ('<div class="jplayer-total-time"></div>'),
-      $ ('<div class="jplayer-name">' + $ (this).attr ('data-alt') + '</div>')
+      $ ('<div class="jplayer-name">' + thisName + '</div>')
     )
     
     $ (thisSelector).find ('.jplayer-play-control').append (
@@ -138,7 +140,9 @@ $ (function () {
       $ ('<div class="jplayer-pause" style="display: none"></div>')
     )
     
-    //alert ($ (thisSelector).find ('.jplayer-audio-source').attr ('data-swfSource'))
+    $aHref.remove ()
+    
+    //alert ($ (thisSelector).find ('.playhere').attr ('data-swfSource'))
     
     
     $ (thisSelector).find ('.jplayer-invisible-object').jPlayer ({

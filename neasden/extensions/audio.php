@@ -32,15 +32,15 @@ function n__render_group_audio ($group) {
   foreach ($group as $line) {
   
     @list ($href, $alt) = explode (' ', trim ($line['class-data'][1]), 2);
+    if (!$alt) $alt = basename ($href);
     $zoneid = rand (1000, 9999);
 
     $player_html = '<a '.
-      'class="jplayer-audio-source" '.
+      'class="playhere" '.
       'href="'. $href .'" '.
       'title="'. $downloadstr .'" '.
-      'data-alt="'. $alt .'"'.
       'data-swfSource="'. $mypath .'Jplayer.swf" '.
-    '>'. $downloadstr .
+    '>'. $alt .
     '</a>'."\n";
     
     $player_html = n__save_tag ($player_html);
