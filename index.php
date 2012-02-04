@@ -24,7 +24,7 @@ function stopwatch () {
 
 $stopwatch = stopwatch ();
 //for ($i = 0; $i < 100; $i ++) {
-  $n = neasden ($text, '', '');//, 'comments');
+  $n = neasden ($text, 'simple', '');//, 'comments');
   //$res = $n['result'];
   $res = $n;
 //}

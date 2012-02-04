@@ -5,10 +5,10 @@ $_neasden_config = array (
   '__overload' => 'user/',
   
   '__profiles' => array (
-    'comments' => array (
+    'simple' => array (
       'with-html' => false,
       'banned-groups' => array (
-        'picture',
+        'picture', 'fotorama', 'audio', 'youtube', 'vimeo'
       ),
     ),
   ),

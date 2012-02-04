@@ -18,11 +18,13 @@ define ('N_DEFAULT_GROUP', 'p');
 
 require 'config.php';
 
+$_default_config = $_neasden_config;
+
 if (array_key_exists ('__overload', $_neasden_config)) {
   if (is_file ($_neasden_config['__overload']. 'config.php')) {
     $_default_config = $_neasden_config;
     require $_neasden_config['__overload']. 'config.php';
-    $_neasden_config = array_merge_recursive ($_default_config, $_neasden_config);
+    $_neasden_config = array_merge ($_default_config, $_neasden_config);
     
     // now use this as a basis for profiles
     $_default_config = $_neasden_config;
@@ -967,7 +969,7 @@ function neasden ($text, $profile = '', $intent = '') {
   $_neasden_resources = array ();
 
   if ($profile and @$_default_config['__profiles'][$profile]) {
-    $_neasden_config = array_merge_recursive ($_default_config, $_default_config['__profiles'][$profile]);
+    $_neasden_config = array_merge ($_default_config, $_default_config['__profiles'][$profile]);
   }
   
   $result = '';

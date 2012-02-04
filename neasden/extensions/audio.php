@@ -11,7 +11,6 @@ function n__render_group_audio ($group) {
   global $_neasden_config, $_neasden_extensions;
 
   $myconf = @$_neasden_extensions['audio']['config'];
-  $mypath = @$_neasden_extensions['audio']['path'];
 
   $css_class = $_neasden_config['generic-object-css-class'];
   if (@$myconf['css-class']) $css_class = @$myconf['css-class'];
@@ -20,10 +19,6 @@ function n__render_group_audio ($group) {
   if ($_neasden_config['language'] == 'ru') $downloadstr = 'Скачать';
 
   $p = false;
-
-  //n__require_link ($mypath .'player.js');
-  //n__require_link ($mypath .'jquery.jplayer.min.js');
-  //n__require_link ($mypath .'player.css');
 
   $result = (
     '<div class="'. $css_class .'">'."\n"
@@ -39,9 +34,7 @@ function n__render_group_audio ($group) {
       'class="jouele" '.
       'href="'. $href .'" '.
       'title="'. $downloadstr .'" '.
-    //'data-swfSource="'. $mypath .'Jplayer.swf" '.
-    '>'. $alt .
-    '</a>'."\n";
+    '>'. $alt .'</a>'."\n";
     
     $player_html = n__save_tag ($player_html);
 
