@@ -1,7 +1,7 @@
 <?
 
 if (!($chars_ul_items = @$_neasden_config['extensions']['lists']['chars-ul-items'])) {
-  $chars_ul_items = array ('-', '–', '–', '*');
+  $chars_ul_items = array ('-', '*');
 }
 
 $ul_item_regex = array ();
@@ -83,11 +83,11 @@ function n__render_group_list ($group) {
 
       if ($line['class'] == 'ol-item') {
         $line_numberless = ltrim ($line['content'], '0123456789');
-        $result .= ltrim (substr ($line_numberless, 1), ' ');
+        $result .= ltrim (mb_substr ($line_numberless, 1), ' ');
       }
 
       if ($line['class'] == 'ul-item') {
-        $result .= ltrim (substr ($line['content'], 1), ' ' . $line['content'][0]);
+        $result .= ltrim (mb_substr ($line['content'], 1), ' ' . $line['content'][0]);
       }
       
     }

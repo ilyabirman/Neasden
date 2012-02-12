@@ -44,7 +44,7 @@ $_neasden_config = array (
 
   'extensions' => array (
     'lists' => array (
-      'chars-ul-items' => array ('-', '–', '—', '*'),
+      'chars-ul-items' => array ('-', '–'),
     ),
     'pictures' => array (
       'src-prefix' => 'http://neasden/',
