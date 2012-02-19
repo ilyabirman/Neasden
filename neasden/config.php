@@ -6,22 +6,17 @@ $_neasden_config = array (
   
   '__profiles' => array (
     'simple' => array (
-      'with-html' => false,
+      'html.enable' => false,
       'banned-groups' => array (
         'picture', 'fotorama', 'audio', 'youtube', 'vimeo'
       ),
     ),
   ),
-  
-  'opaque-elements' => array (
-    'p', 'ul', 'ol', 'li', 'blockquote', 'table', 'pre', 'textarea',
-  ),
-  
-  'sacred-elements' => array (
-    'object', 'embed', 'iframe', 'script', 'style', 'code'
-  ),
-  
-  'with-html' => true,
+    
+  'html.enable' => true,
+  'html.elements.opaque' => 'p ul ol li blockquote table pre textarea',
+  'html.elements.sacred' => 'object embed iframe script style code',
+
   'with-groups' => true,
   'with-typography' => true,
   

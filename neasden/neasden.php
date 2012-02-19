@@ -696,10 +696,10 @@ function n__element_strength ($element) {
     return $_neasden_config['fragment-strengths'][$element];
   }
   */
-  if (in_array ($element, $_neasden_config['sacred-elements'])) {
+  if (strstr (' '. $_neasden_config['html.elements.sacred'] .' ', ' '. $element .' ')) {
     return N_FRAG_STRENGTH_SACRED;
   }
-  if (in_array ($element, $_neasden_config['opaque-elements'])) {
+  if (strstr (' '. $_neasden_config['html.elements.opaque'] .' ', ' '. $element .' ')) {
     return N_FRAG_STRENGTH_OPAQUE;
   }
   return N_FRAG_STRENGTH_TEXT;
@@ -858,8 +858,8 @@ function n__split_fragments ($text) {
           } else {
 
             if (
-              in_array ($tagname, $_neasden_config['opaque-elements']) or
-              in_array ($tagname, $_neasden_config['sacred-elements'])
+              strstr (' '. $_neasden_config['html.elements.sacred'] .' ', ' '. $tagname .' ') or
+              strstr (' '. $_neasden_config['html.elements.opaque'] .' ', ' '. $tagname .' ')
             ) {
   
               // closing tag makes no sense, it wasn’t open
@@ -907,7 +907,7 @@ function n__format_fragments ($text) {
   global $_neasden_config, $_neasden_intent;
 
   // remove html if necessary
-  if (!$_neasden_config['with-html']) {
+  if (!$_neasden_config['html.enable']) {
     $text = str_replace ('<', '&lt;', $text);
     #$text = str_replace ('>', '&gt;', $text);
   }
@@ -958,71 +958,67 @@ function n__format_fragments ($text) {
 }
 
 
-
-function neasden ($text, $profile = '', $intent = '') {
+function neasden ($object) {
   global $_default_config, $_neasden_config, $_neasden_intent, $_neasden_resources, $_neasden_links;
+  
+  $text = $object['text-original'];
+  $profile = $object['profile-name'];
   
   $last_mb_encoding = mb_internal_encoding ();
   mb_internal_encoding ('utf-8');
 
-  $_neasden_intent = $intent; 
+  if (@$object['explain']) $_neasden_intent = 'explain';
+  
   $_neasden_resources = array ();
 
   if ($profile and @$_default_config['__profiles'][$profile]) {
     $_neasden_config = array_merge ($_default_config, $_default_config['__profiles'][$profile]);
   }
   
-  $result = '';
-  
-  if ($intent == 'explain') {
-    $result .= '<style>';
-    $result .= 'table.neasden-explanation { font-size: 85%; background: #f0f0f0 }';
-    $result .= 'table.neasden-explanation td { border-top: 1px #ccc solid; padding: 2px 8px 2px 2px }';
-    $result .= 'table.neasden-explanation tr.frag td { border-top: 2px #000 solid }';
-    $result .= '</style>';
-    
-    $result .= '<table class="neasden-explanation" cellspacing="0" cellpadding="0" border="0">';
-    
-    $result .= '<tr valign="top">';
-    $result .= '<td><pre><b>frags and groups</b></pre></td>';
-    $result .= '<td><pre><b>processing</b></pre></td>';
-    $result .= '<td><pre><b>result</b></pre></td>';
-    $result .= '</tr>';
-  }
+  $text_final = '';
+
+  $explanation = '';
+  $explanation .= '<style>';
+  $explanation .= 'table.neasden-explanation { font-size: 85%; background: #f0f0f0 }';
+  $explanation .= 'table.neasden-explanation td { border-top: 1px #ccc solid; padding: 2px 8px 2px 2px }';
+  $explanation .= 'table.neasden-explanation tr.frag td { border-top: 2px #000 solid }';
+  $explanation .= '</style>';
+  $explanation .= '<table class="neasden-explanation" cellspacing="0" cellpadding="0" border="0">';
+  $explanation .= '<tr valign="top">';
+  $explanation .= '<td><tt><b>frags and groups</b></tt></td>';
+  $explanation .= '<td><tt><b>processing</b></tt></td>';
+  $explanation .= '<td><tt><b>result</b></tt></td>';
+  $explanation .= '</tr>';
   
   foreach (n__format_fragments ($text) as $frag) {
   
-    if ($intent == '') {
-
-      $result .= $frag['result'];
-
-    }
+    $text_final .= $frag['result'];
     
-    if ($intent == 'explain') {
+    if ($_neasden_intent == 'explain') {
 
       $color = '#f00';
       if ($frag['strength'] == N_FRAG_STRENGTH_TEXT) $color = '#080';
       if ($frag['strength'] == N_FRAG_STRENGTH_OPAQUE) $color = '#00a';
       if ($frag['strength'] == N_FRAG_STRENGTH_SACRED) $color = '#000';
       
-      $result .= '<tr valign="top" class="frag">';
-      $result .= '<td style="background: #ffc; color: '. $color .'"><pre>['. htmlspecialchars ($frag['content']) .']</pre></td>';
+      $explanation .= '<tr valign="top" class="frag">';
+      $explanation .= '<td style="background: #ffc; color: '. $color .'"><tt>['. htmlspecialchars ($frag['content']) .']</tt></td>';
       
       if (is_array (@$frag['processing'])) {
-        $result .= '<td><pre>see below ↓</pre></td>';
+        $explanation .= '<td><tt>see below ↓</tt></td>';
       } else {
-        $result .= '<td><pre>['. @print_r ($frag['debug'], true) .']</pre></td>';
+        $explanation .= '<td><tt>['. @print_r ($frag['debug'], true) .']</tt></td>';
       }
-      $result .= '<td><pre>['. htmlspecialchars ($frag['result']) .']</pre></td>';
-      $result .= '</tr>';
+      $explanation .= '<td><tt>['. htmlspecialchars ($frag['result']) .']</tt></td>';
+      $explanation .= '</tr>';
   
       if (is_array (@$frag['processing'])) {
         foreach ($frag['processing'] as $group) {
-          $result .= '<tr valign="top">';
-          $result .= '<td><pre>['. @htmlspecialchars  ($group['content']) .']</pre></td>';
-          $result .= '<td><pre>['. @str_repeat ('>', $group['depth']) .''. @$group['class'] .' ('. @$group['class-data'] .')<br />'. @print_r ($group['debug'], true) .']</pre></td>';
-          $result .= '<td><pre>['. @htmlspecialchars  ($group['result']) .']</pre></td>';
-          $result .= '</tr>';
+          $explanation .= '<tr valign="top">';
+          $explanation .= '<td><tt>['. @htmlspecialchars  ($group['content']) .']</tt></td>';
+          $explanation .= '<td><tt>['. @str_repeat ('>', $group['depth']) .''. @$group['class'] .' ('. @$group['class-data'] .')<br />'. @print_r ($group['debug'], true) .']</tt></td>';
+          $explanation .= '<td><tt>['. @htmlspecialchars  ($group['result']) .']</tt></td>';
+          $explanation .= '</tr>';
         }
       }
 
@@ -1030,32 +1026,31 @@ function neasden ($text, $profile = '', $intent = '') {
     
   }
 
-  if ($intent == 'explain') {
-    $result .= '</table>';
-  }
+  $explanation .= '</table>';
+
+  $preresult = '';
+
+  foreach (array_unique ($_neasden_links) as $link) {
   
-  if ($intent == '') {
-    $preresult = '';
-  
-    foreach (array_unique ($_neasden_links) as $link) {
-    
-      if (substr ($link, -3) == '.js') {
-        $preresult .= '<script src="'. $link .'"></script>'. "\n";
-      }
-      if (substr ($link, -4) == '.css') {
-        $preresult .= '<style type="text/css" >@import url('. $link .'); </style>'. "\n";
-      }
-  
+    if (substr ($link, -3) == '.js') {
+      $preresult .= '<script src="'. $link .'"></script>'. "\n";
     }
-  
-    $result = $preresult . $result;
+    if (substr ($link, -4) == '.css') {
+      $preresult .= '<style type="text/css" >@import url('. $link .'); </style>'. "\n";
+    }
+
   }
+
+  $text_final = $preresult . $text_final;
   
-  if ($intent == 'detect') {
-    $result = $_neasden_resources;
-  }
   
   mb_internal_encoding ($last_mb_encoding);
+  
+  $result = array (
+    'text-final' => $text_final,
+    'explanation' => $explanation,
+    'resources-detected' => $_neasden_resources,
+  );
 
   return $result;
 
