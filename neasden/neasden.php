@@ -1,6 +1,6 @@
 <?
 
-// Neasden v31
+// Neasden v36
 
 define ('N_FRAG_STRENGTH_TEXT', 0); // grouped, typographed
 define ('N_FRAG_STRENGTH_OPAQUE', 7); // typographed
@@ -932,7 +932,7 @@ function n__format_fragments ($text) {
 
     // text fragments should be formatted
     if (
-      $_neasden_config['with-groups'] and
+      $_neasden_config['groups.on'] and
       $initial_fragment['strength'] == N_FRAG_STRENGTH_TEXT
     ) {
 
