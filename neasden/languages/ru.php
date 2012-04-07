@@ -3,6 +3,7 @@
 $_neasden_language = array (
   
   'quotes' => array ('«', '„', '“', '»'),
+
   'dash' => '—',
   
   'replacements' => array (
@@ -44,6 +45,7 @@ $_neasden_language = array (
   'nobreak' => array (
     'из-за',
     'из-под',
+    'e. g.',
   ),
 
   'with-next' => '(а|в|во|въ|и|к|ко|къ|о|об|обо|объ|с|со|cъ|у|без|безо|безъ|для|до|за|из|изъ|или|на|над|надъ|не|ни|но|от|отъ|по|под|подъ|при|про|a|an|as|and|\&|at|but|by|for|in|no|not|of|on|or|per|the|to)',
