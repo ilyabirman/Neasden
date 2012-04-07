@@ -1,6 +1,6 @@
 <?
 
-if (!($chars_ul_items = @$_neasden_config['extensions']['lists']['chars-ul-items'])) {
+if (!($chars_ul_items = @$_neasden_config['groups.lists.chars'])) {
   $chars_ul_items = array ('-', '*');
 }
 

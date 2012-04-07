@@ -13,21 +13,19 @@ $_neasden_config = array (
     ),
   ),
     
+  'language' => 'ru',
+  
   'html.on' => true,
   'html.elements.opaque' => 'p ul ol li blockquote table pre textarea',
   'html.elements.sacred' => 'object embed iframe script style code',
 
   'groups.on' => true,
+  'groups.headings.char'  => '#',
+  'groups.quotes.char' => '>',
+  'groups.lists.chars' => array ('-', '–'),
   
   'typography.on' => true,
-  
-  'language' => 'ru',
-
-  'char-headings'  => '#',
-
-  'char-quotes'    => '>',
-  
-  'nettoyer' => array (
+  'typography.cleanup' => array (
     '&nbsp;' => ' ',
     '&laquo;' => '«',
     '&raquo;' => '»',
@@ -39,9 +37,7 @@ $_neasden_config = array (
   'generic-object-css-class' => 'txt-generic-object',
 
   'extensions' => array (
-    'lists' => array (
-      'chars-ul-items' => array ('-', '–'),
-    ),
+
     'pictures' => array (
       'src-prefix' => 'http://neasden/',
       'folder' => 'pictures/',

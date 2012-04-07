@@ -1,6 +1,6 @@
 <?
 
-// Neasden v36
+// Neasden v37
 
 define ('N_FRAG_STRENGTH_TEXT', 0); // grouped, typographed
 define ('N_FRAG_STRENGTH_OPAQUE', 7); // typographed
@@ -422,8 +422,8 @@ function n__process_opaque_fragment ($text) {
   
   // replace &laquo; with normal quote characters
   $text = str_replace (
-    array_keys ($_neasden_config['nettoyer']),
-    array_values ($_neasden_config['nettoyer']),
+    array_keys ($_neasden_config['typography.cleanup']),
+    array_values ($_neasden_config['typography.cleanup']),
     $text
   );
   
@@ -516,7 +516,7 @@ function n__parse_group_line ($line) {
   }
   
   // headings
-  $line_hashless = ltrim ($line, $_neasden_config['char-headings']);
+  $line_hashless = ltrim ($line, $_neasden_config['groups.headings.char']);
   $heading_level = strlen ($line) - strlen ($line_hashless);
   if ($heading_level > 0 and $line_hashless[0] == ' ') {
     $result['content'] = ltrim ($line_hashless, ' ');
@@ -598,7 +598,7 @@ function n__groups ($text) {
   foreach ($src_lines as $src_line) {
   
     // quote level
-    $line_quoteless = ltrim ($src_line, $_neasden_config['char-quotes']);
+    $line_quoteless = ltrim ($src_line, $_neasden_config['groups.quotes.char']);
     $quote_level = strlen ($src_line) - strlen ($line_quoteless);
     $src_line = $line_quoteless;
     $quote_level_changed = ($prev_quote_level != $quote_level);
