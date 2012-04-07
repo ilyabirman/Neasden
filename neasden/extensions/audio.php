@@ -36,7 +36,7 @@ function n__render_group_audio ($group) {
       'title="'. $downloadstr .'" '.
     '>'. $alt .'</a>'."\n";
     
-    $player_html = n__save_tag ($player_html);
+    $player_html = n__isolate ($player_html);
 
     $result .= $player_html;
     

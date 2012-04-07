@@ -164,7 +164,7 @@ function n__special_sequence ($index) {
 
 
 
-function n__save_tag ($tag) {
+function n__isolate ($tag) {
   //return $tag;
   global $_neasden_saved_tags;
   $index = count ($_neasden_saved_tags);
@@ -277,14 +277,14 @@ function n__process_double_brackets_contents_callback ($params) {
 
   if ($quotes_should_hang)  {
     $text = mb_substr ($text, 1, mb_strlen ($text) - 2);
-    $a_in = n__save_tag ('<a href="'. $href .'" class="nu">');
-    $u_in = n__save_tag ('<u>');
-    $u_out = n__save_tag ('</u>');
-    $a_out = n__save_tag ('</a>');
+    $a_in = n__isolate ('<a href="'. $href .'" class="nu">');
+    $u_in = n__isolate ('<u>');
+    $u_out = n__isolate ('</u>');
+    $a_out = n__isolate ('</a>');
     return $a_in . $hang_left . $u_in . $text . $u_out . $hang_right . $a_out;
   } else {
-    $a_in = n__save_tag ('<a href="'. $href .'">');
-    $a_out = n__save_tag ('</a>');
+    $a_in = n__isolate ('<a href="'. $href .'">');
+    $a_out = n__isolate ('</a>');
     if (!@$text) $text = $href;
     return $a_in . $text . $a_out;
   }
@@ -305,14 +305,14 @@ function n__typography ($text) {
   $quotes = $_neasden_language['quotes'];
   $dash = $_neasden_language['dash'];
 
-  //$span_tsp = n__save_tag ('<span class=\"tsp\">'. $nbsp .'</span>');
-  $nobr_in = n__save_tag ('<nobr>');
-  $nobr_out = n__save_tag ('</nobr>');
+  //$span_tsp = n__isolate ('<span class=\"tsp\">'. $nbsp .'</span>');
+  $nobr_in = n__isolate ('<nobr>');
+  $nobr_out = n__isolate ('</nobr>');
 
   #echo htmlspecialchars ($text);
   #die;
 
-  $text = preg_replace_callback ('/(?:\<[^\>]+\>)/isxu', 'n__save_tag', $text);
+  $text = preg_replace_callback ('/(?:\<[^\>]+\>)/isxu', 'n__isolate', $text);
 
   #echo htmlspecialchars ($text);
   #die;
@@ -336,8 +336,8 @@ function n__typography ($text) {
   // wiki stuff
   $duomap = array ('/' => 'i', '*' => 'b', '-' => 's');
   foreach ($duomap as $from => $to) {
-    if (!@$t_in[$to]) $t_in[$to] = n__save_tag ('<'. $to .'>');
-    if (!@$t_out[$to]) $t_out[$to] = n__save_tag ('</'. $to .'>');
+    if (!@$t_in[$to]) $t_in[$to] = n__isolate ('<'. $to .'>');
+    if (!@$t_out[$to]) $t_out[$to] = n__isolate ('</'. $to .'>');
     $char = '\\'. $from;
     $text = preg_replace (
       '/'.
@@ -820,7 +820,7 @@ function n__split_fragments ($text) {
           } else {
           
             $thisfrag['content'] .= $r;
-            //$thisfrag['content'] .= n__save_tag ($r);
+            //$thisfrag['content'] .= n__isolate ($r);
             
           }
             
@@ -851,7 +851,7 @@ function n__split_fragments ($text) {
               // so we are now off sacred elements, 
               // so finish and append this fragment, start new fragment
               $thisfrag['content'] .= $r ."\n";
-              //$thisfrag['content'] .= n__save_tag ($r);
+              //$thisfrag['content'] .= n__isolate ($r);
               $fragments[] = $thisfrag;
               $thisfrag = array ('content' => '', 'strength' => -1);
               $r = '';
