@@ -28,14 +28,14 @@ $stopwatch = stopwatch ();
 
 $n = array (
   'text-original' => $text,
-  'profile-name' => 'simple',
+  'profile-name' => '',
   'explain' => true,
 );
 
 //$n = neasden ($text, 'simple', '');//, 'comments');
 $n = neasden ($n);//, 'comments');
-//$res = $n['text-final'];
-$res = $n['explanation'];
+$res = $n['text-final'];
+//$res = $n['explanation'];
 
 $stopwatch = stopwatch () - $stopwatch;
 
@@ -44,13 +44,26 @@ $stopwatch = stopwatch () - $stopwatch;
 <html>
 <head>
   
-  <link rel="stylesheet" href="style.css" />
-  <script src="js/jquery.js"></script>
-  <script src="js/scaleimage.js"></script>
+<link rel="stylesheet" href="style.css" />
+<script src="js/jquery.js"></script>
+<script src="js/scaleimage.js"></script>
+
+<link rel="stylesheet" href="jouele/jouele.css" />
+<script src="jouele/jquery.jplayer.min.js"></script>
+<script src="jouele/jouele.js"></script>
+
+<?
+  foreach (array_unique ($n['links-required']) as $link) {
   
-  <link rel="stylesheet" href="jouele/jouele.css" />
-  <script src="jouele/jquery.jplayer.min.js"></script>
-  <script src="jouele/jouele.js"></script>
+    if (substr ($link, -3) == '.js') {
+      echo '<script src="'. $link .'"></script>'. "\n";
+    }
+    if (substr ($link, -4) == '.css') {
+      echo '<link rel="stylesheet" href="'. $link .'" />'. "\n";
+    }
+  
+  }
+?>
   
 </head>
 <body>

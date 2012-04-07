@@ -962,7 +962,7 @@ function neasden ($object) {
   global $_default_config, $_neasden_config, $_neasden_intent, $_neasden_resources, $_neasden_links;
   
   $text = $object['text-original'];
-  $profile = $object['profile-name'];
+  $profile = @$object['profile-name'] or $profile = '';
   
   $last_mb_encoding = mb_internal_encoding ();
   mb_internal_encoding ('utf-8');
@@ -1030,6 +1030,7 @@ function neasden ($object) {
 
   $preresult = '';
 
+  /*
   foreach (array_unique ($_neasden_links) as $link) {
   
     if (substr ($link, -3) == '.js') {
@@ -1040,6 +1041,7 @@ function neasden ($object) {
     }
 
   }
+  */
 
   $text_final = $preresult . $text_final;
   
@@ -1049,6 +1051,7 @@ function neasden ($object) {
   $result = array (
     'text-final' => $text_final,
     'explanation' => $explanation,
+    'links-required' => $_neasden_links,
     'resources-detected' => $_neasden_resources,
   );
 
