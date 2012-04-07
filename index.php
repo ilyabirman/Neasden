@@ -53,7 +53,14 @@ $stopwatch = stopwatch () - $stopwatch;
 <script src="jouele/jouele.js"></script>
 
 <?
-  foreach (array_unique ($n['links-required']) as $link) {
+
+  if (in_array ('fotorama', $n['groups-used'])) {
+    echo '<script src="/user/extensions/fotorama/fotorama.js"></script>';
+    echo '<link rel="stylesheet" href="/user/extensions/fotorama/fotorama.css" />';    
+  }
+
+  /*
+  foreach ($n['links-required'] as $link) {
   
     if (substr ($link, -3) == '.js') {
       echo '<script src="'. $link .'"></script>'. "\n";
@@ -61,8 +68,9 @@ $stopwatch = stopwatch () - $stopwatch;
     if (substr ($link, -4) == '.css') {
       echo '<link rel="stylesheet" href="'. $link .'" />'. "\n";
     }
-  
   }
+  */
+  
 ?>
   
 </head>
@@ -87,7 +95,11 @@ $stopwatch = stopwatch () - $stopwatch;
 
 <pre>
 Resources:
-<?# print_r ($n['resources']); ?>
+<? print_r ($n['resources-detected']); ?>
+
+Groups:
+<? print_r ($n['groups-used']); ?>
+
 </pre>
 
 </body>

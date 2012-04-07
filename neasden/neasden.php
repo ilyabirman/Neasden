@@ -37,6 +37,8 @@ $_neasden_resources = array ();
 
 $_neasden_required_line_classes = array ();
 
+$_neasden_used_groups = array ();
+
 $_neasden_line_classes = array (
  //'ul-item' => '\-+|\–+|\—+|\*+ *.+',
 //  'hr'      => '[-–—]{5,}',
@@ -482,12 +484,13 @@ function n__render_group ($class, $group) {
 
 // return a group class by it’s current running definition
 function n__matching_group ($rdef) {
-  global $_neasden_groups, $_neasden_config;
+  global $_neasden_groups, $_neasden_config, $_neasden_used_groups;
   foreach ($_neasden_groups as $group_class => $group_regex) {
     if (
       !@in_array ($group_class, $_neasden_config['banned-groups']) and
       preg_match ('/^'. $group_regex .'$/', $rdef)
     ) {
+      $_neasden_used_groups[] = $group_class;
       return $group_class;
     }
   }
@@ -959,7 +962,7 @@ function n__format_fragments ($text) {
 
 
 function neasden ($object) {
-  global $_default_config, $_neasden_config, $_neasden_intent, $_neasden_resources, $_neasden_links;
+  global $_default_config, $_neasden_config, $_neasden_intent, $_neasden_resources, $_neasden_links, $_neasden_used_groups;
   
   $text = $object['text-original'];
   $profile = @$object['profile-name'] or $profile = '';
@@ -1051,7 +1054,8 @@ function neasden ($object) {
   $result = array (
     'text-final' => $text_final,
     'explanation' => $explanation,
-    'links-required' => $_neasden_links,
+    'groups-used' => array_unique ($_neasden_used_groups),
+    'links-required' => array_unique ($_neasden_links),
     'resources-detected' => $_neasden_resources,
   );
 
