@@ -46,19 +46,23 @@ $stopwatch = stopwatch () - $stopwatch;
   
 <link rel="stylesheet" href="style.css" />
 <script src="js/jquery.js"></script>
-<script src="js/scaleimage.js"></script>
-
-<link rel="stylesheet" href="jouele/jouele.css" />
-<script src="jouele/jquery.jplayer.min.js"></script>
-<script src="jouele/jouele.js"></script>
 
 <?
-
-  if (in_array ('fotorama', $n['groups-used'])) {
-    echo '<script src="/user/extensions/fotorama/fotorama.js"></script>';
-    echo '<link rel="stylesheet" href="/user/extensions/fotorama/fotorama.css" />';    
+  if (in_array ('picture', $n['groups-used'])) {
+    echo '<script src="js/scaleimage.js"></script>'. "\n";
   }
 
+  if (in_array ('fotorama', $n['groups-used'])) {
+    echo '<script src="js/fotorama/fotorama.js"></script>'. "\n";
+    echo '<link rel="stylesheet" href="js/fotorama/fotorama.css" />'. "\n";
+  }
+
+  if (in_array ('audio', $n['groups-used'])) {
+    echo '<link rel="stylesheet" href="js/jouele/jouele.css" />'. "\n";
+    echo '<script src="js/jouele/jquery.jplayer.min.js"></script>'. "\n";
+    echo '<script src="js/jouele/jouele.js"></script>'. "\n";
+  }
+  
   /*
   foreach ($n['links-required'] as $link) {
   

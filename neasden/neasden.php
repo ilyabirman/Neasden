@@ -176,7 +176,7 @@ function n__isolate ($tag) {
 
 
 
-function n__restore_tags ($text) {
+function n__unisolate ($text) {
 
   global $_neasden_saved_tags;
   foreach ($_neasden_saved_tags as $index => $value) {
@@ -407,8 +407,6 @@ function n__typography ($text) {
   }
 
 
-  $text = n__restore_tags ($text);
-
   return $text;
 
 }
@@ -429,9 +427,11 @@ function n__process_opaque_fragment ($text) {
     $text
   );
   
-  if ($_neasden_config['with-typography']) {
+  if ($_neasden_config['typography.on']) {
     $text = n__typography ($text);
   }
+  
+  $text = n__unisolate ($text);
   
   return $text;
   
@@ -910,7 +910,7 @@ function n__format_fragments ($text) {
   global $_neasden_config, $_neasden_intent;
 
   // remove html if necessary
-  if (!$_neasden_config['html.enable']) {
+  if (!$_neasden_config['html.on']) {
     $text = str_replace ('<', '&lt;', $text);
     #$text = str_replace ('>', '&gt;', $text);
   }

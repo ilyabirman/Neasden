@@ -6,19 +6,19 @@ $_neasden_config = array (
   
   '__profiles' => array (
     'simple' => array (
-      'html.enable' => false,
+      'html.on' => false,
       'banned-groups' => array (
         'picture', 'fotorama', 'audio', 'youtube', 'vimeo'
       ),
     ),
   ),
     
-  'html.enable' => true,
+  'html.on' => true,
   'html.elements.opaque' => 'p ul ol li blockquote table pre textarea',
   'html.elements.sacred' => 'object embed iframe script style code',
 
   'with-groups' => true,
-  'with-typography' => true,
+  'typography.on' => true,
   
   'language' => 'ru',
 
