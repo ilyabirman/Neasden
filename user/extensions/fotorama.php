@@ -23,10 +23,10 @@ function n__render_group_fotorama ($group) {
 
   $result = (
     '<div class="'. $myconf['css-class'] .' fotorama" '.
-    'data-width="'. $myconf['max-width'] .'" '.
+    //'data-width="'. $myconf['max-width'] .'" '.
     'data-thumbsPreview="false" '.
     'data-zoomToFit="false" '.
-    'data-resize="true"'.
+    //'data-resize="true"'.
     '>'."\n"
   );
   
