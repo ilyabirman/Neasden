@@ -1,6 +1,6 @@
 <?
 
-// Neasden v37
+// Neasden v38
 
 define ('N_FRAG_STRENGTH_TEXT', 0); // grouped, typographed
 define ('N_FRAG_STRENGTH_OPAQUE', 7); // typographed
@@ -406,6 +406,14 @@ function n__typography ($text) {
     }
   }
 
+  // url to working link
+  $text = preg_replace (
+    '/(\s|^)((?:https?)\:\/\/[\w\d\#\.\/&=%-_!\?\@\*]+)/isu',
+    '$1<a href="$2">$2</a>',
+    $text
+  );
+  
+  
 
   return $text;
 
