@@ -20,6 +20,7 @@ $_neasden_config = array (
   'html.elements.sacred' => 'object embed iframe script style code',
 
   'groups.on' => true,
+  'groups.generic-css-class' => 'txt-generic-object',
   'groups.headings.char'  => '#',
   'groups.quotes.char' => '>',
   'groups.lists.chars' => array ('-', '–'),
@@ -34,7 +35,6 @@ $_neasden_config = array (
     '&rdquo;' => '”',
   ),
   
-  'generic-object-css-class' => 'txt-generic-object',
 
   'extensions' => array (
 

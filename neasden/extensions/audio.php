@@ -12,7 +12,7 @@ function n__render_group_audio ($group) {
 
   $myconf = @$_neasden_extensions['audio']['config'];
 
-  $css_class = $_neasden_config['generic-object-css-class'];
+  $css_class = $_neasden_config['groups.generic-css-class'];
   if (@$myconf['css-class']) $css_class = @$myconf['css-class'];
   
   $downloadstr = 'Download';
