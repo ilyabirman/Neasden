@@ -1,6 +1,6 @@
 <?
 
-// Neasden v38
+// Neasden v39
 
 define ('N_FRAG_STRENGTH_TEXT', 0); // grouped, typographed
 define ('N_FRAG_STRENGTH_OPAQUE', 7); // typographed
@@ -1040,19 +1040,6 @@ function neasden ($object) {
   $explanation .= '</table>';
 
   $preresult = '';
-
-  /*
-  foreach (array_unique ($_neasden_links) as $link) {
-  
-    if (substr ($link, -3) == '.js') {
-      $preresult .= '<script src="'. $link .'"></script>'. "\n";
-    }
-    if (substr ($link, -4) == '.css') {
-      $preresult .= '<style type="text/css" >@import url('. $link .'); </style>'. "\n";
-    }
-
-  }
-  */
 
   $text_final = $preresult . $text_final;
   
