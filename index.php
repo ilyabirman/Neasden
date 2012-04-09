@@ -2,7 +2,7 @@
 
 /*
 научить # фигачить заголовки не с первого уровня, а с другого
-
+explanation должен быть пустым, если не просили
 если дефисов больше трёх подряд, то не нужно их трогать ни один (-------)
 просто урлы делать ссылками
 в ХТМЛ-коде генерируемых таблиц какие-то мусорные пробелы
@@ -44,9 +44,9 @@ $stopwatch = stopwatch () - $stopwatch;
 <head>
   
 <link rel="stylesheet" href="style.css" />
-<script src="js/jquery.js"></script>
 
 <?
+  /*
   if (in_array ('picture', $n['groups-used'])) {
     echo '<script src="js/scaleimage.js"></script>'. "\n";
   }
@@ -61,18 +61,19 @@ $stopwatch = stopwatch () - $stopwatch;
     echo '<script src="js/jouele/jquery.jplayer.min.js"></script>'. "\n";
     echo '<script src="js/jouele/jouele.js"></script>'. "\n";
   }
+  */
   
-  /*
+  //*
   foreach ($n['links-required'] as $link) {
   
     if (substr ($link, -3) == '.js') {
-      echo '<script src="'. $link .'"></script>'. "\n";
+      echo '<script src="js/'. $link .'"></script>'. "\n";
     }
     if (substr ($link, -4) == '.css') {
-      echo '<link rel="stylesheet" href="'. $link .'" />'. "\n";
+      echo '<link rel="stylesheet" href="js/'. $link .'" />'. "\n";
     }
   }
-  */
+  //*/
   
 ?>
   
@@ -99,6 +100,9 @@ $stopwatch = stopwatch () - $stopwatch;
 <pre>
 Resources:
 <? print_r ($n['resources-detected']); ?>
+
+Links:
+<? print_r ($n['links-required']); ?>
 
 Groups:
 <? print_r ($n['groups-used']); ?>

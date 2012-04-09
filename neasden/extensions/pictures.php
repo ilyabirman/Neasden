@@ -88,6 +88,10 @@ function n__render_group_picture ($group) {
 
       // wrap into a link if needed
       if ($myconf['scaled-img-link-to-original'] and $is_scaled) {
+        
+        n__require_link ('jquery.js');
+        n__require_link ('scaleimage.js');
+        
         $image_html = (
           '<a href="'. $myconf['src-prefix'] . $filename_original .'" class="'. $cssc_zoomlink .'" width="'. $width_original .'">' ."\n".
           '<div class="'. $cssc_zoomicon .'">'.
@@ -97,6 +101,7 @@ function n__render_group_picture ($group) {
           $image_html .
           '</a>'
         );
+        
       }
       
       $result .= $image_html;

@@ -6,6 +6,10 @@ n__define_group ('fotorama', '(-picture-){2,}(-p-)*');
 function n__render_group_fotorama ($group) {
   global $_neasden_config, $_neasden_extensions;
 
+  n__require_link ('jquery.js');
+  n__require_link ('fotorama/fotorama.css');
+  n__require_link ('fotorama/fotorama.js');
+
   $myconf = @$_neasden_extensions['pictures']['config'];
 
   if (is_array (@$_neasden_extensions['fotorama']['config'])) {
