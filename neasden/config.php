@@ -23,7 +23,7 @@ $_neasden_config = array (
   'groups.generic-css-class' => 'txt-generic-object',
   'groups.headings.char'  => '#',
   'groups.quotes.char' => '>',
-  'groups.lists.chars' => array ('-', '–'),
+  'groups.lists.chars' => array ('-', '*'),
   
   'typography.on' => true,
   'typography.cleanup' => array (
