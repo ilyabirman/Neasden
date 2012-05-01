@@ -308,45 +308,43 @@ function n__typography ($text) {
   $nobr_in = n__isolate ('<nobr>');
   $nobr_out = n__isolate ('</nobr>');
 
-  #echo htmlspecialchars ($text);
-  #die;
-
   $text = preg_replace_callback ('/(?:\<[^\>]+\>)/isxu', 'n__isolate', $text);
 
-  #echo htmlspecialchars ($text);
-  #die;
+  if (@$_neasden_config['typography.markup']) {
   
-  // double brackets
-  $chars = array ('\\(', '\\)', '\\[', '\\]');
-  $text = preg_replace_callback (
-    '/'.
-    '(?:'. $chars[0].$chars[0] .'(?!'. $chars[0] .')(?=\S)(.*?)'.  $chars[1].$chars[1] .')'.
-    '|'.
-    '(?:'. $chars[0].$chars[0] .'(?!'. $chars[0] .')(.*?)(?<=\S)'. $chars[1].$chars[1] .')'.
-    '|'.
-    '(?:'. $chars[2].$chars[2] .'(?!'. $chars[2] .')(?=\S)(.*?)'.  $chars[3].$chars[3] .')'.
-    '|'.
-    '(?:'. $chars[2].$chars[2] .'(?!'. $chars[2] .')(.*?)(?<=\S)'. $chars[3].$chars[3] .')'.
-    '/imu',
-    'n__process_double_brackets_contents_callback',
-    $text
-  );
-  
-  // wiki stuff
-  $duomap = array ('/' => 'i', '*' => 'b', '-' => 's');
-  foreach ($duomap as $from => $to) {
-    if (!@$t_in[$to]) $t_in[$to] = n__isolate ('<'. $to .'>');
-    if (!@$t_out[$to]) $t_out[$to] = n__isolate ('</'. $to .'>');
-    $char = '\\'. $from;
-    $text = preg_replace (
+    // double brackets
+    $chars = array ('\\(', '\\)', '\\[', '\\]');
+    $text = preg_replace_callback (
       '/'.
-      '(?:'. $char.$char .'(?!'. $char .')(?=\S)(.*?)'. $char.$char .')'.
+      '(?:'. $chars[0].$chars[0] .'(?!'. $chars[0] .')(?=\S)(.*?)'.  $chars[1].$chars[1] .')'.
       '|'.
-      '(?:'. $char.$char .'(?!'. $char .')(.*?)(?<=\S)'. $char.$char .')'.
+      '(?:'. $chars[0].$chars[0] .'(?!'. $chars[0] .')(.*?)(?<=\S)'. $chars[1].$chars[1] .')'.
+      '|'.
+      '(?:'. $chars[2].$chars[2] .'(?!'. $chars[2] .')(?=\S)(.*?)'.  $chars[3].$chars[3] .')'.
+      '|'.
+      '(?:'. $chars[2].$chars[2] .'(?!'. $chars[2] .')(.*?)(?<=\S)'. $chars[3].$chars[3] .')'.
       '/imu',
-      $t_in[$to] . '$1$2' . $t_out[$to],
+      'n__process_double_brackets_contents_callback',
       $text
     );
+    
+    // wiki stuff
+    $duomap = array ('/' => 'i', '*' => 'b', '-' => 's');
+    foreach ($duomap as $from => $to) {
+      if (!@$t_in[$to]) $t_in[$to] = n__isolate ('<'. $to .'>');
+      if (!@$t_out[$to]) $t_out[$to] = n__isolate ('</'. $to .'>');
+      $char = '\\'. $from;
+      $text = preg_replace (
+        '/'.
+        '(?:'. $char.$char .'(?!'. $char .')(?=\S)(.*?)'. $char.$char .')'.
+        '|'.
+        '(?:'. $char.$char .'(?!'. $char .')(.*?)(?<=\S)'. $char.$char .')'.
+        '/imu',
+        $t_in[$to] . '$1$2' . $t_out[$to],
+        $text
+      );
+    }
+  
   }
   
 
@@ -406,12 +404,13 @@ function n__typography ($text) {
   }
 
   // url to working link
-  $text = preg_replace (
-    '/(\s|^)((?:https?)\:\/\/[\w\d\#\.\/&=%-_!\?\@\*]+)/isu',
-    '$1<a href="$2">$2</a>',
-    $text
-  );
-  
+  if (@$_neasden_config['typography.autohref']) {
+    $text = preg_replace (
+      '/(\s|^)((?:https?)\:\/\/[\w\d\#\.\/&=%-_!\?\@\*]+)/isu',
+      '$1<a href="$2">$2</a>',
+      $text
+    );
+  }
   
 
   return $text;
