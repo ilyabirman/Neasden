@@ -311,7 +311,6 @@ function n__typography ($text) {
   $text = preg_replace_callback ('/(?:\<[^\>]+\>)/isxu', 'n__isolate', $text);
 
   if (@$_neasden_config['typography.markup']) {
-  
     // double brackets
     $chars = array ('\\(', '\\)', '\\[', '\\]');
     $text = preg_replace_callback (
@@ -344,10 +343,8 @@ function n__typography ($text) {
         $text
       );
     }
-  
   }
   
-
   // replacements
   if (1) {
     if (array_key_exists ('replacements', $_neasden_language)) {
@@ -406,7 +403,8 @@ function n__typography ($text) {
   // url to working link
   if (@$_neasden_config['typography.autohref']) {
     $text = preg_replace (
-      '/(\s|^)((?:https?)\:\/\/[\w\d\#\.\/&=%-_!\?\@\*]+)/isu',
+      '/(\s|^|'. N_RX_TAGS .')'.
+      '((?:https?)\:\/\/[\w\d\#\.\/&=%-_!\?\@\*]+)/isu',
       '$1<a href="$2">$2</a>',
       $text
     );

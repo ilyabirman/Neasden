@@ -26,6 +26,8 @@ return array (
   'groups.lists.chars' => array ('-', '*'),
   
   'typography.on' => true,
+  'typography.markup' => true,
+  'typography.autohref' => true,
   'typography.cleanup' => array (
     '&nbsp;' => ' ',
     '&laquo;' => '«',
