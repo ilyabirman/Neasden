@@ -1,6 +1,6 @@
 <?
 
-// Neasden v39
+// Neasden v41
 
 define ('N_FRAG_STRENGTH_TEXT', 0); // grouped, typographed
 define ('N_FRAG_STRENGTH_OPAQUE', 7); // typographed
@@ -16,6 +16,7 @@ define ('N_RX_TAGS', '(?:'. N_RX_TAG .')*');
 define ('N_MAX_H_LEVEL', 6);
 define ('N_DEFAULT_GROUP', 'p');
 
+/*
 require 'config.php';
 
 $_default_config = $_neasden_config;
@@ -30,6 +31,7 @@ if (array_key_exists ('__overload', $_neasden_config)) {
     $_default_config = $_neasden_config;
   }
 }
+*/
 
 $_neasden_links = array ();
 
@@ -72,13 +74,10 @@ $_neasden_saved_tags = array ();
 function n__init () {
   global
     $_neasden_config,
-    $_neasden_language,
     $_neasden_extensions,
     $_neasden_line_classes,
     $_neasden_required_line_classes;
 
-  include 'languages/'. $_neasden_config['language'] .'.php';
-  
   $host_dir = dirname ($_SERVER['PHP_SELF']); # '/meanwhile'
   $host_dir = trim ($host_dir, '/').'/'; # 'meanwhile/'
   if ($host_dir == '/') $host_dir = '';
@@ -427,7 +426,7 @@ function n__typography ($text) {
 
 function n__process_opaque_fragment ($text) {
   global $_neasden_config, $_neasden_tag_machine;
-  
+
   // replace &laquo; with normal quote characters
   $text = str_replace (
     array_keys ($_neasden_config['typography.cleanup']),
@@ -970,7 +969,7 @@ function n__format_fragments ($text) {
 
 
 function neasden ($object) {
-  global $_default_config, $_neasden_config, $_neasden_intent, $_neasden_resources, $_neasden_links, $_neasden_used_groups;
+  global $_default_config, $_neasden_config, $_neasden_intent, $_neasden_resources, $_neasden_links, $_neasden_used_groups, $_neasden_language;
   
   $text = $object['text-original'];
   $profile = @$object['profile-name'] or $profile = '';
@@ -982,9 +981,15 @@ function neasden ($object) {
   
   $_neasden_resources = array ();
 
-  if ($profile and @$_default_config['__profiles'][$profile]) {
-    $_neasden_config = array_merge ($_default_config, $_default_config['__profiles'][$profile]);
+  $_neasden_config = require $object['config'];
+  if ($profile and $_neasden_config['__profiles'][$profile]) {
+    $_neasden_config = array_merge ($_neasden_config, $_neasden_config['__profiles'][$profile]);
   }
+
+  $_neasden_language = require 'languages/'. $_neasden_config['language'] .'.php';
+  
+  #echo '<pre>';
+  #print_r ($_neasden_config);
   
   $text_final = '';
 
@@ -1002,7 +1007,7 @@ function neasden ($object) {
   $explanation .= '</tr>';
   
   foreach (n__format_fragments ($text) as $frag) {
-  
+
     $text_final .= $frag['result'];
     
     if ($_neasden_intent == 'explain') {
