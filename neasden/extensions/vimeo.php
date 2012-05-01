@@ -6,10 +6,8 @@ n__define_line_class (
 );
 n__define_group ('vimeo', '(-vimeo-)(-p-)*');
 
-function n__render_group_vimeo ($group) {
+function n__render_group_vimeo ($group, $myconf) {
   global $_neasden_config, $_neasden_extensions;
-
-  $myconf = @$_neasden_extensions['vimeo']['config'];
 
   $p = false;
 

@@ -3,20 +3,17 @@
 //n__define_line_class ('picture', '.*\.(jpe?g|gif|png)');
 n__define_line_class ('picture', '.*\.(jpe?g|gif|png)(?: +(.+))?');
 
-function n__detect_class_picture ($line) {
+function n__detect_class_picture ($line, $myconf) {
   global $_neasden_config;
   
   list ($filebasename, ) = explode (' ', $line, 2);  
-  return is_file ($_neasden_config['extensions']['pictures']['folder'] . $filebasename);
+  return is_file ($myconf['folder'] . $filebasename);
 }
 
 n__define_group ('picture', '(-picture-)(-p-)*');
 
-function n__render_group_picture ($group) {
+function n__render_group_picture ($group, $myconf) {
   global $_neasden_config, $_neasden_extensions;
-
-  $myconf = @$_neasden_extensions['pictures']['config'];
-
   $p = false;
 
   $result = '<div class="'. $myconf['css-class'] .'">'."\n";

@@ -5,10 +5,8 @@ n__define_line_class ('tr', '\|([^\|]+\|)+');
 
 n__define_group ('table', '(-hr-)(-tr-)+(-hr-)?');
 
-function n__render_group_table ($group) {
+function n__render_group_table ($group, $myconf) {
   global $_neasden_config, $_neasden_extensions;
-
-  $myconf = @$_neasden_extensions['tables']['config'];
 
   $result = '<table cellpadding="0" cellspacing="0" border="0" class="'. $myconf['css-class'] .'">' ."\n";
   foreach ($group as $line) if ($line['class'] == 'tr') {

@@ -1,6 +1,8 @@
 <?
 
-// Neasden v41
+// Neasden v42
+
+error_reporting (E_ALL);
 
 define ('N_FRAG_STRENGTH_TEXT', 0); // grouped, typographed
 define ('N_FRAG_STRENGTH_OPAQUE', 7); // typographed
@@ -69,7 +71,7 @@ $_neasden_groups = array (
 
 $_neasden_saved_tags = array ();
 
-/*
+
 
 function n__init () {
   global
@@ -78,19 +80,48 @@ function n__init () {
     $_neasden_line_classes,
     $_neasden_required_line_classes;
 
+  $host_dir = dirname ($_SERVER['PHP_SELF']); # '/meanwhile'
+  $host_dir = trim ($host_dir, '/').'/'; # 'meanwhile/'
+  if ($host_dir == '/') $host_dir = '';
+  
+  $dir = rtrim (dirname (__FILE__), '/'). '/';
+  $dir = str_replace ($_SERVER['DOCUMENT_ROOT'] .'/'. $host_dir, '', $dir);
 
-  // this was a check to make sure all line classes implementations are available
-  // foreach ($_neasden_required_line_classes as $class => $no_need) {
-  //   if (!array_key_exists ($class, $_neasden_line_classes)) {
-  //     return false;
-  //   }
-  // }
+  $extensions_folders = array (
+    $dir. 'extensions',
+    $_neasden_config['__overload']. 'extensions'
+  );
+
+  $_neasden_extensions = array ();
+
+  foreach ($extensions_folders as $extensions_folder) {
+    foreach (glob ($extensions_folder. '/*.php') as $file) {
+      $name = basename ($file);
+      if (substr ($name, -4) == '.php') $name = substr ($name, 0, strlen ($name) - 4);
+      if (!array_key_exists ($name, $_neasden_extensions)) {
+        $_neasden_extensions[$name] = array (
+          'path' => dirname ($file) .'/'. $name .'/',
+        );
+        //echo '+'.$file.'<br>';
+        include $file;
+      }
+    }
+  }
+
+//print_r ($_neasden_extensions);
+//die;
+  /*
+  this was a check to make sure all line classes implementations are available
+  foreach ($_neasden_required_line_classes as $class => $no_need) {
+    if (!array_key_exists ($class, $_neasden_line_classes)) {
+      return false;
+    }
+  }
+  */
   
   return true;
   
 }
-
-*/
 
 
 
@@ -414,8 +445,10 @@ function n__process_opaque_fragment ($text) {
 
 
 function n__render_group ($class, $group) {
+  global $_neasden_config;
   
-  #print_r ($group);
+  #print_r ($_neasden_config['groups.classes'][$class]);
+  #print_r ($class);
   #echo '<br />';
 
   if (!$class) return;
@@ -430,7 +463,11 @@ function n__render_group ($class, $group) {
 
   } elseif (function_exists ('n__render_group_'. $class)) {
   
-    return call_user_func ('n__render_group_'. $class, $group);
+    return call_user_func (
+      'n__render_group_'. $class,
+      $group,
+      $_neasden_config['groups.classes'][$class]
+    );
     
   } else {
   
@@ -531,7 +568,11 @@ function n__parse_group_line ($line) {
     if (preg_match ($regex, $line, $matches)) {
       if (
         !function_exists ('n__detect_class_'. $class)
-        or call_user_func ('n__detect_class_'. $class, $line)
+        or call_user_func (
+          'n__detect_class_'. $class,
+          $line,
+          $_neasden_config['groups.classes'][$class]
+        )
       ) {
         $result['class'] = $class;
         $result['class-data'] = $matches;
@@ -936,7 +977,7 @@ function n__format_fragments ($text) {
 
 
 function neasden ($object) {
-  global $_default_config, $_neasden_config, $_neasden_intent, $_neasden_resources, $_neasden_links, $_neasden_used_groups, $_neasden_language, $_neasden_extensions;
+  global $_default_config, $_neasden_config, $_neasden_intent, $_neasden_resources, $_neasden_links, $_neasden_used_groups, $_neasden_language;
   
   $text = $object['text-original'];
   $profile = @$object['profile-name'] or $profile = '';
@@ -955,41 +996,6 @@ function neasden ($object) {
 
   $_neasden_language = require 'languages/'. $_neasden_config['language'] .'.php';
   
-
-
-
-  $host_dir = dirname ($_SERVER['PHP_SELF']); # '/meanwhile'
-  $host_dir = trim ($host_dir, '/').'/'; # 'meanwhile/'
-  if ($host_dir == '/') $host_dir = '';
-  
-  $dir = rtrim (dirname (__FILE__), '/'). '/';
-  $dir = str_replace ($_SERVER['DOCUMENT_ROOT'] .'/'. $host_dir, '', $dir);
-
-  $extensions_folders = array (
-    $dir. 'extensions',
-    $_neasden_config['__overload']. 'extensions'
-  );
-  
-  $_neasden_extensions = array ();
-  
-  foreach ($extensions_folders as $extensions_folder) {
-    foreach (glob ($extensions_folder. '/*.php') as $file) {
-      $name = basename ($file);
-      if (substr ($name, -4) == '.php') $name = substr ($name, 0, strlen ($name) - 4);
-      if (!array_key_exists ($name, $_neasden_extensions)) {
-        $_neasden_extensions[$name] = array (
-          'path' => dirname ($file) .'/'. $name .'/',
-          'config' => @$_neasden_config['extensions'][$name],
-        );
-        //echo '+'.$file.'<br>';
-        include $file;
-      }
-    }
-  }
-
-
-
-
   #echo '<pre>';
   #print_r ($_neasden_config);
   
@@ -1065,6 +1071,8 @@ function neasden ($object) {
 
 }
 
+
+return n__init ();
 
 
 ?>
