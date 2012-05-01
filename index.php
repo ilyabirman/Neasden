@@ -24,15 +24,17 @@ function stopwatch () {
 
 $stopwatch = stopwatch ();
 
-$n = array (
+$n = neasden (array (
+  'config' => 'neasden/config.php',
   'text-original' => $text,
   'profile-name' => '',
   'explain' => true,
-);
+));
 
-//$n = neasden ($text, 'simple', '');//, 'comments');
-$n = neasden ($n);//, 'comments');
+
+
 $res = $n['text-final'];
+
 //$res = $n['explanation'];
 
 $stopwatch = stopwatch () - $stopwatch;

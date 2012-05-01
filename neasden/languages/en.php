@@ -1,6 +1,6 @@
 <?
 
-$_neasden_language = array (
+return array (
   
   'quotes' => array ('“', '‘', '’', '”'),
 
