@@ -1,6 +1,6 @@
 <?
 
-// Neasden v42
+// Neasden v43
 
 error_reporting (E_ALL);
 
@@ -18,9 +18,9 @@ define ('N_RX_TAGS', '(?:'. N_RX_TAG .')*');
 define ('N_MAX_H_LEVEL', 6);
 define ('N_DEFAULT_GROUP', 'p');
 
-/*
 require 'config.php';
 
+/*
 $_default_config = $_neasden_config;
 
 if (array_key_exists ('__overload', $_neasden_config)) {
@@ -108,8 +108,9 @@ function n__init () {
     }
   }
 
-//print_r ($_neasden_extensions);
-//die;
+  //print_r ($_neasden_extensions);
+  //die;
+  
   /*
   this was a check to make sure all line classes implementations are available
   foreach ($_neasden_required_line_classes as $class => $no_need) {
@@ -989,16 +990,20 @@ function neasden ($object) {
   
   $_neasden_resources = array ();
 
-  $_neasden_config = require $object['config'];
+  /*
+  //$_neasden_config = 
+  require $object['config'];
+  */
   if ($profile and $_neasden_config['__profiles'][$profile]) {
     $_neasden_config = array_merge ($_neasden_config, $_neasden_config['__profiles'][$profile]);
   }
 
   $_neasden_language = require 'languages/'. $_neasden_config['language'] .'.php';
   
-  #echo '<pre>';
-  #print_r ($_neasden_config);
-  
+  // echo '<pre>';
+  // print_r ($_neasden_config);
+  // die;
+
   $text_final = '';
 
   $explanation = '';

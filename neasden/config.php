@@ -1,6 +1,6 @@
 <?
 
-return array (
+$_neasden_config = array (
 
   '__overload' => 'user/neasden/',
   
@@ -48,9 +48,6 @@ return array (
       'css-class' => 'txt-video',
       'width' => 768,
       'height' => 480,
-    ),
-    'audio' => array (
-      'css-class' => 'txt-generic-object',
     ),
   ),
   
