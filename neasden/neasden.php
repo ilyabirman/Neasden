@@ -274,7 +274,8 @@ function n__process_double_brackets_contents_callback ($params) {
   $quotes_right = array ('"', $quotes[2], $quotes[3]);
   $hang_left = mb_substr ($text, 0, 1);
   $hang_right = mb_substr ($text, -1);
-  $quotes_should_hang = in_array ($hang_left, $quotes_left) and in_array ($hang_right, $quotes_right);
+  
+  $quotes_should_hang = (in_array ($hang_left, $quotes_left) and in_array ($hang_right, $quotes_right));
 
   if ($quotes_should_hang)  {
     $text = mb_substr ($text, 1, mb_strlen ($text) - 2);
