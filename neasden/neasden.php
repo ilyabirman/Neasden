@@ -468,7 +468,7 @@ function n__render_group ($class, $group) {
     return call_user_func (
       'n__render_group_'. $class,
       $group,
-      $_neasden_config['groups.classes'][$class]
+      @$_neasden_config['groups.classes'][$class]
     );
     
   } else {
@@ -533,7 +533,9 @@ function n__parse_group_line ($line) {
   $heading_level = strlen ($line) - strlen ($line_hashless);
   if ($heading_level > 0 and $line_hashless[0] == ' ') {
     $result['content'] = ltrim ($line_hashless, ' ');
-    $result['class'] = 'h'. min ($heading_level, N_MAX_H_LEVEL);
+    $result['class'] = 'h'. min (
+      ($heading_level + ((int) @$_neasden_config['groups.headings.plus'])), N_MAX_H_LEVEL
+    );
     return $result;
   }
   

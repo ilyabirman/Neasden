@@ -21,6 +21,7 @@ $_neasden_config = array (
 
   'groups.on' => true,
   'groups.headings.char'  => '#',
+  'groups.headings.plus'  => 0,
   'groups.quotes.char' => '>',
   'groups.lists.chars' => array ('-', '*'),
   'groups.generic-css-class' => 'txt-generic-object',
