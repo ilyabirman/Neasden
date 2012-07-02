@@ -1,6 +1,6 @@
 <?
 
-// Neasden v46
+// Neasden v47
 
 error_reporting (E_ALL);
 
@@ -28,7 +28,7 @@ if (array_key_exists ('__overload', $_neasden_config)) {
     $_default_config = $_neasden_config;
     require $_neasden_config['__overload']. 'config.php';
     $_neasden_config = array_merge ($_default_config, $_neasden_config);
-    
+
     // now use this as a basis for profiles
     $_default_config = $_neasden_config;
   }
@@ -83,7 +83,7 @@ function n__init () {
   $host_dir = dirname ($_SERVER['PHP_SELF']); # '/meanwhile'
   $host_dir = trim ($host_dir, '/').'/'; # 'meanwhile/'
   if ($host_dir == '/') $host_dir = '';
-  
+
   $dir = rtrim (dirname (__FILE__), '/'). '/';
   $dir = str_replace ($_SERVER['DOCUMENT_ROOT'] .'/'. $host_dir, '', $dir);
 
@@ -110,7 +110,7 @@ function n__init () {
 
   //print_r ($_neasden_extensions);
   //die;
-  
+
   /*
   this was a check to make sure all line classes implementations are available
   foreach ($_neasden_required_line_classes as $class => $no_need) {
@@ -119,9 +119,9 @@ function n__init () {
     }
   }
   */
-  
+
   return true;
-  
+
 }
 
 
@@ -211,7 +211,7 @@ function n__enclose_within_tagless ($text, $char, $enclosures) {
       $text
     );
   }
-  
+
   if (1) {
     $text = preg_replace (
       '/(?<!^|\s|\-)('. N_RX_TAGS .')'.
@@ -253,7 +253,7 @@ function n__enclose_within_tagless ($text, $char, $enclosures) {
       }
     }
   }
-  
+
   return $text;                                                
 
 }
@@ -268,13 +268,13 @@ function n__process_double_brackets_contents_callback ($params) {
   $text = @$params[1] . @$params[2] . @$params[3] . @$params[4];
   @list ($href, $text) = explode (' ', $text, 2);
   if (!@$text) $text = $href;
-  
+
   $quotes = $_neasden_language['quotes'];
   $quotes_left = array ('"', $quotes[0], $quotes[1]);
   $quotes_right = array ('"', $quotes[2], $quotes[3]);
   $hang_left = mb_substr ($text, 0, 1);
   $hang_right = mb_substr ($text, -1);
-  
+
   $quotes_should_hang = (in_array ($hang_left, $quotes_left) and in_array ($hang_right, $quotes_right));
 
   if ($quotes_should_hang)  {
@@ -290,7 +290,7 @@ function n__process_double_brackets_contents_callback ($params) {
     if (!@$text) $text = $href;
     return $a_in . $text . $a_out;
   }
-  
+
 }
 
 
@@ -298,12 +298,12 @@ function n__process_double_brackets_contents_callback ($params) {
 // replacements, quotes, dashes, no-break spaces
 // input text must be netto:
 // no html entities, just actual utf-8 chars
-  
+
 function n__typography ($text) {
   global $_neasden_config, $_neasden_language;
 
   $nbsp = " ";
-  
+
   $quotes = $_neasden_language['quotes'];
   $dash = $_neasden_language['dash'];
 
@@ -329,7 +329,7 @@ function n__typography ($text) {
       'n__process_double_brackets_contents_callback',
       $text
     );
-    
+
     // wiki stuff
     $duomap = array ('/' => 'i', '*' => 'b', '-' => 's');
     foreach ($duomap as $from => $to) {
@@ -347,7 +347,7 @@ function n__typography ($text) {
       );
     }
   }
-  
+
   // replacements
   if (1) {
     if (array_key_exists ('replacements', $_neasden_language)) {
@@ -358,10 +358,10 @@ function n__typography ($text) {
       );
     }
   }
-  
+
   // quotes
   $text = n__enclose_within_tagless ($text, '"', $quotes);
-  
+
 
   // dash
   $text = preg_replace (
@@ -388,7 +388,7 @@ function n__typography ($text) {
         $text
       );
     }
-  
+
     if ($nobreak_bw = $_neasden_language['with-prev']) {
       $text = preg_replace (
         "/".
@@ -412,7 +412,7 @@ function n__typography ($text) {
       $text
     );
   }
-  
+
 
   return $text;
 
@@ -433,28 +433,28 @@ function n__process_opaque_fragment ($text) {
     array_values ($_neasden_config['typography.cleanup']),
     $text
   );
-  
+
   if ($_neasden_config['typography.on']) {
     $text = n__typography ($text);
   }
-  
+
   $text = n__unisolate ($text);
-  
+
   return $text;
-  
+
 }
 
 
 
 function n__render_group ($class, $group) {
   global $_neasden_config;
-  
+
   #print_r ($_neasden_config['groups.classes'][$class]);
   #print_r ($class);
   #echo '<br />';
 
   if (!$class) return;
-  
+
   $simple_group_classes = array (
     'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'
   );
@@ -464,33 +464,33 @@ function n__render_group ($class, $group) {
     return '';
 
   } elseif (function_exists ('n__render_group_'. $class)) {
-  
+
     return call_user_func (
       'n__render_group_'. $class,
       $group,
       @$_neasden_config['groups.classes'][$class]
     );
-    
+
   } else {
-  
+
     if (in_array ($class, $simple_group_classes)) {
       $ot = $ct = $class;
     } else {
       $ot = 'p neasden:class="'. $class .'"';
       $ct = 'p';
     }
-    
+
     $lines_content = array ();
     foreach ($group as $line) {
       $lines_content[] = $line['content'];
     }
     $lines_content = implode ('<br />'."\n", $lines_content);
-    
+
     return "<". $ot .">". $lines_content ."</". $ct .">\n";
 
 
   }
-  
+
 }
 
 
@@ -515,19 +515,19 @@ function n__parse_group_line ($line) {
   global $_neasden_config, $_neasden_line_classes;
 
   $line = rtrim ($line);
-  
+
   $result = array (
     'content' => $line,
     'quote-level' => 0,
     'class' => 'p',
     'class-data' => null,
   );
-  
+
   if (strlen ($line) == 0) {
     $result['class'] = 'empty';
     return $result;
   }
-  
+
   // headings
   $line_hashless = ltrim ($line, $_neasden_config['groups.headings.char']);
   $heading_level = strlen ($line) - strlen ($line_hashless);
@@ -538,7 +538,7 @@ function n__parse_group_line ($line) {
     );
     return $result;
   }
-  
+
   /*
   // ordered list items
   $line_numberless = ltrim ($line, '0123456789');
@@ -551,7 +551,7 @@ function n__parse_group_line ($line) {
       return $result;
     }
   }
-  
+
   // unordered list items
   if (strstr ($_neasden_config['chars-ul-items'], $line[0])) {
     if ($c = ltrim (substr ($line, 1), ' ' . $line[0])) {
@@ -565,7 +565,7 @@ function n__parse_group_line ($line) {
 #  } elseif (function_exists ('n__render_group_'. $class)) {
 #    return call_user_func ('n__render_group_'. $class, $group);
 
-  
+
   // other classes
   foreach ($_neasden_line_classes as $class => $regex) {
     $regex = '/^(?:'. $regex .')$/isu';
@@ -584,9 +584,9 @@ function n__parse_group_line ($line) {
       }
     }
   }
-  
+
   return $result;
-  
+
 }
 
 
@@ -604,18 +604,18 @@ function n__groups ($text) {
   $prev_spaceshift = 0;
   $depths_spaceshifts = array (0);
   $depth = 0;
-  
+
   $list_levels = array ();
- 
+
   $last_group_class = N_DEFAULT_GROUP;
- 
+
   $groups = array ();
   $good_buffer = array ();
-  
+
   $rdef = '';
 
   foreach ($src_lines as $src_line) {
-  
+
     // quote level
     $line_quoteless = ltrim ($src_line, $_neasden_config['groups.quotes.char']);
     $quote_level = strlen ($src_line) - strlen ($line_quoteless);
@@ -650,12 +650,12 @@ function n__groups ($text) {
     $prev_spaceshift = $spaceshift;
 
     // parse and match line groups
-    
+
     $line = n__parse_group_line ($line);
     $line['result'] = '';
     $line['depth'] = $depth;
     $rdef .= '-'. $line['class'] .'-';
-        
+
     $line['debug'] = implode ("-\n-", explode ('--', $rdef));
 
     $match_found = false;
@@ -665,7 +665,7 @@ function n__groups ($text) {
       $match_found = true;
       $good_buffer[] = $line;
     }
-    
+
     #$line['debug'] .= "\n".'gbuf: '. $good_buffer[0]['class'];
     #$line['debug'] .= "\n".'gbuf: '. count ($good_buffer);
 
@@ -678,25 +678,25 @@ function n__groups ($text) {
       if (!$match_found) {
         $line['debug'] .= "\n".'nomatch ';
       }
-      
+
       #print_r ($last_group_class);
       #echo '<br>';
-      
+
       $line['result'] = n__render_group ($last_group_class, $good_buffer);
 
       for ($i=0; $i<$quote_level_inc; $i++) $line['result'] .= '<blockquote>'."\n";
       for ($i=0; $i<$quote_level_dec; $i++) $line['result'] .= '</blockquote>'."\n";
-      
+
       // now the widow line should be processed as part of next group
 
       $good_buffer = array ($line);
       $rdef = '-'. $line['class'] .'-';
       $last_group_class = n__matching_group ($rdef) or $last_group_class = N_DEFAULT_GROUP;
-      
+
     }
-    
+
     $groups[] = $line;
-    
+
   }
 
   $another_line['result'] = n__render_group ($last_group_class, $good_buffer);
@@ -765,7 +765,7 @@ function n__split_fragments ($text) {
     ),
     'comment' => array (),
   );
-  
+
   $l = strlen ($text);
   $r = '';
   $state = 'text';
@@ -774,12 +774,12 @@ function n__split_fragments ($text) {
   $fragments = array ();
   $thisfrag = array ('content' => '', 'strength' => -1);
   $current_el = '';
-  
+
   for ($i = 0; $i < $l; $i ++ ) {
-  
+
     $c = $text[$i];
     $r .= $c;
-    
+
     // auto manage state machine
     if (array_key_exists ($c,  $machine[$state])) {
       $state = $machine[$state][$c];
@@ -804,7 +804,7 @@ function n__split_fragments ($text) {
       $thisfrag = array ('content' => '', 'strength' => -1);
       $r = '';
     }
-    
+
     // state change
     if ($state != $prevstate) {
       if ($prevstate == 'text' and $state == 'tag') {
@@ -816,13 +816,13 @@ function n__split_fragments ($text) {
         $thisfrag['content'] .= substr ($r, 0, -1);
         $thisfrag['strength'] = n__element_strength ($current_el);
         $r = substr ($r, -1, 1);
-        
+
       } elseif ($prevstate == 'tag' and $state == 'text') {
 
         $tagname = n__element_name ($r);
 
         if ($tagname[0] != '/') {
-        
+
           // open tag
 
           if (
@@ -835,27 +835,27 @@ function n__split_fragments ($text) {
               $fragments[] = $thisfrag;
             }
             $thisfrag = array ('content' => $r, 'strength' => -1);
-            
+
           } else {
-          
+
             $thisfrag['content'] .= $r;
             //$thisfrag['content'] .= n__isolate ($r);
-            
+
           }
-            
+
           $tagstack[] = $tagname;
           $current_el = $tagname;
           $r = '';
-          
+
         } else {
 
           // close tag
           $tagname = substr ($tagname, 1);
 
           if (in_array ($tagname, $tagstack)) {
-          
+
             $strength_before = n__element_strength ($current_el);
-            
+
             // so tag is in stack, so we force close it
             while (array_pop ($tagstack) != $tagname);
             // if anything remains in the stack, that’s new current tag
@@ -864,7 +864,7 @@ function n__split_fragments ($text) {
             } else {
               $current_el = '';
             }
-            
+
             if (n__element_strength ($current_el) < $strength_before) {
 
               // so we are now off sacred elements, 
@@ -874,16 +874,16 @@ function n__split_fragments ($text) {
               $fragments[] = $thisfrag;
               $thisfrag = array ('content' => '', 'strength' => -1);
               $r = '';
-              
+
             }
-            
+
           } else {
 
             if (
               strstr (' '. $_neasden_config['html.elements.sacred'] .' ', ' '. $tagname .' ') or
               strstr (' '. $_neasden_config['html.elements.opaque'] .' ', ' '. $tagname .' ')
             ) {
-  
+
               // closing tag makes no sense, it wasn’t open
 
               // so end whatever fragments we have
@@ -903,24 +903,24 @@ function n__split_fragments ($text) {
             }
           }
         }
-        
+
       }
     }
 
     $prevstate = $state;
 
   }
-  
+
   $thisfrag['content'] .= $r;
   $thisfrag['strength'] = n__element_strength ($current_el);
   $r = '';
-  
+
   if ($thisfrag['content']) {
     $fragments[] = $thisfrag;
   }
 
   return $fragments;
-  
+
 }
 
 
@@ -933,20 +933,20 @@ function n__format_fragments ($text) {
     $text = str_replace ('<', '&lt;', $text);
     #$text = str_replace ('>', '&gt;', $text);
   }
-    
+
   // dirty split
   $initial_fragments = n__split_fragments ($text);
 
   // process initial fragments
   $resulting_fragments = array ();  
   foreach ($initial_fragments as $initial_fragment) {
-   
+
     // if explaining, borough the initial
     // explanation to result
     if ($_neasden_intent == 'explain') {
       $resulting_fragment = $initial_fragment;
     }
-    
+
     $resulting_fragment['result'] = $initial_fragment['content'];
 
     // text fragments should be formatted
@@ -962,9 +962,9 @@ function n__format_fragments ($text) {
         $resulting_fragment['processing'][] = $group;
         $resulting_fragment['result'] .= $group['result'];
       }
-      
+
     }
-  
+
 
     // opaque fragments should be typographed
     if ($initial_fragment['strength'] < N_FRAG_STRENGTH_SACRED) {
@@ -972,25 +972,25 @@ function n__format_fragments ($text) {
     }
 
     $resulting_fragments[] = $resulting_fragment;
-    
+
   }
-  
+
   return $resulting_fragments;
-  
+
 }
 
 
 function neasden ($object) {
   global $_default_config, $_neasden_config, $_neasden_intent, $_neasden_resources, $_neasden_links, $_neasden_used_groups, $_neasden_language;
-  
+
   $text = $object['text-original'];
   $profile = @$object['profile-name'] or $profile = '';
-  
+
   $last_mb_encoding = mb_internal_encoding ();
   mb_internal_encoding ('utf-8');
 
   if (@$object['explain']) $_neasden_intent = 'explain';
-  
+
   $_neasden_resources = array ();
 
   /*
@@ -1002,7 +1002,7 @@ function neasden ($object) {
   }
 
   $_neasden_language = require 'languages/'. $_neasden_config['language'] .'.php';
-  
+
   // echo '<pre>';
   // print_r ($_neasden_config);
   // die;
@@ -1021,21 +1021,21 @@ function neasden ($object) {
   $explanation .= '<td><tt><b>processing</b></tt></td>';
   $explanation .= '<td><tt><b>result</b></tt></td>';
   $explanation .= '</tr>';
-  
+
   foreach (n__format_fragments ($text) as $frag) {
 
     $text_final .= $frag['result'];
-    
+
     if ($_neasden_intent == 'explain') {
 
       $color = '#f00';
       if ($frag['strength'] == N_FRAG_STRENGTH_TEXT) $color = '#080';
       if ($frag['strength'] == N_FRAG_STRENGTH_OPAQUE) $color = '#00a';
       if ($frag['strength'] == N_FRAG_STRENGTH_SACRED) $color = '#000';
-      
+
       $explanation .= '<tr valign="top" class="frag">';
       $explanation .= '<td style="background: #ffc; color: '. $color .'"><tt>['. htmlspecialchars ($frag['content']) .']</tt></td>';
-      
+
       if (is_array (@$frag['processing'])) {
         $explanation .= '<td><tt>see below ↓</tt></td>';
       } else {
@@ -1043,7 +1043,7 @@ function neasden ($object) {
       }
       $explanation .= '<td><tt>['. htmlspecialchars ($frag['result']) .']</tt></td>';
       $explanation .= '</tr>';
-  
+
       if (is_array (@$frag['processing'])) {
         foreach ($frag['processing'] as $group) {
           $explanation .= '<tr valign="top">';
@@ -1055,7 +1055,7 @@ function neasden ($object) {
       }
 
     }
-    
+
   }
 
   $explanation .= '</table>';
@@ -1063,10 +1063,10 @@ function neasden ($object) {
   $preresult = '';
 
   $text_final = $preresult . $text_final;
-  
-  
+
+
   mb_internal_encoding ($last_mb_encoding);
-  
+
   $result = array (
     'text-final' => $text_final,
     'explanation' => $explanation,

@@ -94,8 +94,8 @@ function n__render_group_picture ($group, $myconf) {
       // wrap into a link to zoomed version if needed
       if (!$link and $myconf['scaled-img-link-to-original'] and $is_scaled) {
         
-        n__require_link ('jquery/jquery.js');
-        n__require_link ('scaleimage/scaleimage.js');
+        n__require_link (@$_neasden_config['library']. 'jquery/jquery.js');
+        n__require_link (@$_neasden_config['library']. 'scaleimage/scaleimage.js');
         
         $image_html = (
           '<a href="'. $myconf['src-prefix'] . $filename_original .'" class="'. $cssc_zoomlink .'" width="'. $width_original .'">' ."\n".

@@ -13,6 +13,8 @@ $_neasden_config = array (
     ),
   ),
     
+  'library' => '',
+  
   'language' => 'ru',
   
   'html.on' => true,
