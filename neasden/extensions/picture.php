@@ -20,6 +20,14 @@ function n__render_group_picture ($group, $myconf) {
   foreach ($group as $line) {
     @list ($filebasename, $alt) = explode (' ', $line['content'], 2);
     
+    // check if alt start with an url
+    @list ($link, $newalt) = explode (' ', $alt, 2);
+    if (preg_match ('/[a-z]+\:.+/i', $link)) {
+      $alt = $newalt;
+    } else {
+      $link = '';
+    }
+    
     if ($line['class'] == 'picture') {
 
       n__resource_detected ($filebasename);
@@ -83,11 +91,11 @@ function n__render_group_picture ($group, $myconf) {
       $cssc_zoomable = $myconf['css-class'] .'-zoomable';
       $cssc_zoomin   = $myconf['css-class'] .'-zoom-in';
 
-      // wrap into a link if needed
-      if ($myconf['scaled-img-link-to-original'] and $is_scaled) {
+      // wrap into a link to zoomed version if needed
+      if (!$link and $myconf['scaled-img-link-to-original'] and $is_scaled) {
         
-        n__require_link ('jquery.js');
-        n__require_link ('scaleimage.js');
+        n__require_link ('jquery/jquery.js');
+        n__require_link ('scaleimage/scaleimage.js');
         
         $image_html = (
           '<a href="'. $myconf['src-prefix'] . $filename_original .'" class="'. $cssc_zoomlink .'" width="'. $width_original .'">' ."\n".
@@ -99,6 +107,15 @@ function n__render_group_picture ($group, $myconf) {
           '</a>'
         );
         
+      }
+
+      // wrap into a link to URL if needed
+      if ($link) {
+        $image_html = (
+          '<a href="'. $link .'" width="'. $width_original .'">' ."\n".
+          $image_html .
+          '</a>'
+        );
       }
       
       $result .= $image_html;
