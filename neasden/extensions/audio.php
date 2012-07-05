@@ -10,10 +10,10 @@ n__define_group ('audio', '(-audio-)');
 function n__render_group_audio ($group, $myconf) {
   global $_neasden_config, $_neasden_extensions;
 
-  n__require_link ('jquery.js');
-  n__require_link ('jouele/jquery.jplayer.min.js');
-  n__require_link ('jouele/jouele.css');
-  n__require_link ('jouele/jouele.js');
+  n__require_link (@$_neasden_config['library']. 'jquery/jquery.js');
+  n__require_link (@$_neasden_config['library']. 'jouele/jquery.jplayer.min.js');
+  n__require_link (@$_neasden_config['library']. 'jouele/jouele.css');
+  n__require_link (@$_neasden_config['library']. 'jouele/jouele.js');
   
   $css_class = $_neasden_config['groups.generic-css-class'];
   if (@$myconf['css-class']) $css_class = @$myconf['css-class'];
