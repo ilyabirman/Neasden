@@ -6,11 +6,13 @@ if (!($chars_ul_items = @$_neasden_config['groups.lists.chars'])) {
 
 $ul_item_regex = array ();
 foreach ($chars_ul_items as $item) {
-  $ul_item_regex[] = '(\\'. $item .'[^'. $item .'].*)';
+  // $ul_item_regex[] = '(\\'. $item .'[^'. $item .'].*)';
+  $ul_item_regex[] = '(\\'. $item .'(?:$|[^'. $item .'].*))';
 }
 $ul_item_regex = implode ('|', $ul_item_regex);
 
-n__define_line_class ('ol-item', '[1234567890]+\. +.+');
+// n__define_line_class ('ol-item', '[1234567890]+\. +.+');
+n__define_line_class ('ol-item', '[1234567890]+\.(?:$| +.*)');
 n__define_line_class ('ul-item', $ul_item_regex);
 
 //die ($ul_item_regex);
