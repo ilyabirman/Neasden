@@ -2,7 +2,7 @@
 
 n__define_line_class (
   'vimeo',
-  'https?\:\/\/(?:www\.)?(?:(?:vimeo\.com\/))(\d{8})'
+  'https?\:\/\/(?:www\.)?(?:(?:vimeo\.com\/))(\d{1,8})'
 );
 n__define_group ('vimeo', '(-vimeo-)(-p-)*');
 
