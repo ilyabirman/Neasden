@@ -1,6 +1,6 @@
 <?
 
-// Neasden v47
+// Neasden v48
 
 error_reporting (E_ALL);
 
@@ -17,8 +17,6 @@ define ('N_RX_TAGS', '(?:'. N_RX_TAG .')*');
 
 define ('N_MAX_H_LEVEL', 6);
 define ('N_DEFAULT_GROUP', 'p');
-
-require 'config.php';
 
 /*
 $_default_config = $_neasden_config;
@@ -78,7 +76,12 @@ function n__init () {
     $_neasden_config,
     $_neasden_extensions,
     $_neasden_line_classes,
-    $_neasden_required_line_classes;
+    $_neasden_required_line_classes,
+    $_neasden_initialized;
+    
+  if (@$_neasden_initialized) return true;
+
+  require_once 'config.php';
 
   $host_dir = dirname ($_SERVER['PHP_SELF']); # '/meanwhile'
   $host_dir = trim ($host_dir, '/').'/'; # 'meanwhile/'
@@ -119,6 +122,8 @@ function n__init () {
     }
   }
   */
+  
+  $_neasden_initialized = true;
 
   return true;
 
@@ -982,6 +987,8 @@ function n__format_fragments ($text) {
 
 function neasden ($object) {
   global $_default_config, $_neasden_config, $_neasden_intent, $_neasden_resources, $_neasden_links, $_neasden_used_groups, $_neasden_language;
+  
+  n__init ();
 
   $text = $object['text-original'];
   $profile = @$object['profile-name'] or $profile = '';
@@ -1080,7 +1087,7 @@ function neasden ($object) {
 }
 
 
-return n__init ();
+// return n__init ();
 
 
 ?>
