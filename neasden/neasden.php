@@ -1,6 +1,6 @@
 <?
 
-// Neasden v48
+// Neasden v49
 
 error_reporting (E_ALL);
 
@@ -98,15 +98,17 @@ function n__init () {
   $_neasden_extensions = array ();
 
   foreach ($extensions_folders as $extensions_folder) {
-    foreach (glob ($extensions_folder. '/*.php') as $file) {
-      $name = basename ($file);
-      if (substr ($name, -4) == '.php') $name = substr ($name, 0, strlen ($name) - 4);
-      if (!array_key_exists ($name, $_neasden_extensions)) {
-        $_neasden_extensions[$name] = array (
-          'path' => dirname ($file) .'/'. $name .'/',
-        );
-        //echo '+'.$file.'<br>';
-        include $file;
+    if (is_array ($files = glob ($extensions_folder. '/*.php'))) {
+      foreach ($files as $file) {
+        $name = basename ($file);
+        if (substr ($name, -4) == '.php') $name = substr ($name, 0, strlen ($name) - 4);
+        if (!array_key_exists ($name, $_neasden_extensions)) {
+          $_neasden_extensions[$name] = array (
+            'path' => dirname ($file) .'/'. $name .'/',
+          );
+          //echo '+'.$file.'<br>';
+          include $file;
+        }
       }
     }
   }
