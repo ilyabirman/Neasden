@@ -11,7 +11,13 @@ $_neasden_config = array (
         'picture', 'fotorama', 'audio', 'youtube', 'vimeo'
       ),
     ),
-  ),
+   'kavychki' => array (
+      'html.on' => true,
+      'groups.on' => false,
+      'typography.markup' => false,
+      'typography.autohref' => false,
+    ),
+ ),
     
   'library' => '',
   
