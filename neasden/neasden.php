@@ -1,6 +1,6 @@
 <?
 
-// Neasden v49
+// Neasden v50
 
 error_reporting (E_ALL);
 
@@ -821,7 +821,19 @@ function n__split_fragments ($text) {
         // start a new run with a '<'
         // and then just see how it goes from there
         $thisfrag['content'] .= substr ($r, 0, -1);
-        $thisfrag['strength'] = n__element_strength ($current_el);
+
+        // set strength if not yet set
+        if ($thisfrag['strength'] == -1) {
+          $thisfrag['strength'] = n__element_strength ($current_el);
+        }
+
+        /*
+        echo '<pre>';
+          echo 'EL = '.$current_el.'<br>';
+        echo (htmlspecialchars(print_r ($thisfrag, true)));
+        echo '</pre>';
+        */
+        
         $r = substr ($r, -1, 1);
 
       } elseif ($prevstate == 'tag' and $state == 'text') {
