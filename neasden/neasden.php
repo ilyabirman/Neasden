@@ -277,8 +277,8 @@ function n__process_double_brackets_contents_callback ($params) {
   if (!@$text) $text = $href;
 
   $quotes = $_neasden_language['quotes'];
-  $quotes_left = array ('"', $quotes[0], $quotes[1]);
-  $quotes_right = array ('"', $quotes[2], $quotes[3]);
+  $quotes_left = array ('"', mb_substr ($quotes, 0, 1), mb_substr ($quotes, 1, 1));
+  $quotes_right = array ('"', mb_substr ($quotes, 2, 1), mb_substr ($quotes, 3, 1));
   $hang_left = mb_substr ($text, 0, 1);
   $hang_right = mb_substr ($text, -1);
 
@@ -742,7 +742,7 @@ function n__element_strength ($element) {
 // e. g. '<P Class=some>' -> 'p'
 
 function n__element_name ($text) {
-  if ($text[0] != '<') return;
+  if ($text[0] != '<') return; // usafe
   if ($text[strlen ($text) - 1] != '>') return; // usafe
   $text = ltrim (substr ($text, 1, -1)) . ' '; // usafe: checked 128ness above
   $text = substr ($text, 0, strpos ($text, ' ')); // usafe: paired
@@ -786,7 +786,7 @@ function n__split_fragments ($text) {
 
   for ($i = 0; $i < $l; $i ++ ) {
 
-    $c = $text[$i];
+    $c = mb_substr ($text, $i, 1);
     $r .= $c;
 
     // auto manage state machine
