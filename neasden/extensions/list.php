@@ -15,10 +15,6 @@ $ul_item_regex = implode ('|', $ul_item_regex);
 n__define_line_class ('ol-item', '[1234567890]+\.(?:$| +.*)');
 n__define_line_class ('ul-item', $ul_item_regex);
 
-//die ($ul_item_regex);
-//if (preg_match ('/^'.$ul_item_regex.'$/', '----------')) die ('!');
-
-#n__define_group ('list', '((-ol-item-)|(-ul-item-))((-ol-item-)|(-ul-item-)|(-p-))+');
 n__define_group ('list', '(((-ol-item-)|(-ul-item-))(-p-)*)+');
 
 function n__render_group_list ($group) {
@@ -84,12 +80,12 @@ function n__render_group_list ($group) {
       $result .= '<li>';
 
       if ($line['class'] == 'ol-item') {
-        $line_numberless = ltrim ($line['content'], '0123456789');
-        $result .= ltrim (mb_substr ($line_numberless, 1), ' ');
+        $line_numberless = ltrim ($line['content'], '0123456789'); // usafe
+        $result .= ltrim (mb_substr ($line_numberless, 1), ' '); // usafe
       }
 
       if ($line['class'] == 'ul-item') {
-        $result .= ltrim (mb_substr ($line['content'], 1), ' ' . $line['content'][0]);
+        $result .= ltrim (mb_substr ($line['content'], 1), ' ' . $line['content'][0]); // usafe
       }
       
     }

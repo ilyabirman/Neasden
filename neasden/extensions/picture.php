@@ -22,7 +22,7 @@ function n__render_group_picture ($group, $myconf) {
     
     // check if alt start with an url
     @list ($link, $newalt) = explode (' ', $alt, 2);
-    if (preg_match ('/[a-z]+\:.+/i', $link)) {
+    if (preg_match ('/[a-z]+\:.+/i', $link)) { // usafe
       $alt = $newalt;
     } else {
       $link = '';

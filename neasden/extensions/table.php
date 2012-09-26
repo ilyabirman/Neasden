@@ -11,7 +11,7 @@ function n__render_group_table ($group, $myconf) {
   $result = '<table cellpadding="0" cellspacing="0" border="0" class="'. $myconf['css-class'] .'">' ."\n";
   foreach ($group as $line) if ($line['class'] == 'tr') {
     $result .= "<tr>\n";
-    $tr = explode ('|', trim ($line['content'], '|'));
+    $tr = explode ('|', trim ($line['content'], '|')); // usafe
     foreach ($tr as $td) {
       
       $lsp = (mb_substr ($td, 0, 1) == ' ');
@@ -24,7 +24,7 @@ function n__render_group_table ($group, $myconf) {
       
       if ($alignment) $alignment = ' style="text-align: '. $alignment .'"';
       
-      $result .= "<td ". $alignment .">". trim ($td) ."</td>\n";
+      $result .= "<td ". $alignment .">". trim ($td) ."</td>\n"; // usafe
       
     }
     $result .= "</tr>\n";

@@ -29,7 +29,7 @@ function n__render_group_audio ($group, $myconf) {
   
   foreach ($group as $line) {
   
-    @list ($href, $alt) = explode (' ', trim ($line['class-data'][1]), 2);
+    @list ($href, $alt) = explode (' ', trim ($line['class-data'][1]), 2); // usafe
     if (!$alt) $alt = basename ($href);
     $zoneid = rand (1000, 9999);
 
