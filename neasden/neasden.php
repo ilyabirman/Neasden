@@ -1,6 +1,6 @@
 <?
 
-// Neasden v50
+// Neasden v51
 
 error_reporting (E_ALL);
 
@@ -84,10 +84,10 @@ function n__init () {
   require_once 'config.php';
 
   $host_dir = dirname ($_SERVER['PHP_SELF']); # '/meanwhile'
-  $host_dir = trim ($host_dir, '/').'/'; # 'meanwhile/'
+  $host_dir = trim ($host_dir, '/').'/'; # 'meanwhile/' // usafe
   if ($host_dir == '/') $host_dir = '';
 
-  $dir = rtrim (dirname (__FILE__), '/'). '/';
+  $dir = rtrim (dirname (__FILE__), '/'). '/'; // usafe
   $dir = str_replace ($_SERVER['DOCUMENT_ROOT'] .'/'. $host_dir, '', $dir);
 
   $extensions_folders = array (
@@ -101,7 +101,7 @@ function n__init () {
     if (is_array ($files = glob ($extensions_folder. '/*.php'))) {
       foreach ($files as $file) {
         $name = basename ($file);
-        if (substr ($name, -4) == '.php') $name = substr ($name, 0, strlen ($name) - 4);
+        if (substr ($name, -4) == '.php') $name = substr ($name, 0, strlen ($name) - 4); // usafe
         if (!array_key_exists ($name, $_neasden_extensions)) {
           $_neasden_extensions[$name] = array (
             'path' => dirname ($file) .'/'. $name .'/',
@@ -167,7 +167,7 @@ function n__require_link ($link) {
 
 
 function n__special_sequence ($index) {
-  return N_RX_SPECIAL_CHAR . str_pad ($index, N_RX_SPECIAL_SEQUENCE_LENGTH, '0', STR_PAD_LEFT) . N_RX_SPECIAL_CHAR;
+  return N_RX_SPECIAL_CHAR . str_pad ($index, N_RX_SPECIAL_SEQUENCE_LENGTH, '0', STR_PAD_LEFT) . N_RX_SPECIAL_CHAR; // usafe
 }
 
 
@@ -210,9 +210,9 @@ function n__enclose_within_tagless ($text, $char, $enclosures) {
 
   // obvious replacements
   if (1) {
-    $text = preg_replace (
+    $text = preg_replace ( // usafe
       '/((?:^|\s|\-)'. N_RX_TAGS .')'.
-      preg_quote ($char).
+      preg_quote ($char). // usafe
       '(?!'. N_RX_TAGS .'($|\-|\s))/m',
       '$1'. $enclosures[0],
       $text
@@ -220,9 +220,9 @@ function n__enclose_within_tagless ($text, $char, $enclosures) {
   }
 
   if (1) {
-    $text = preg_replace (
+    $text = preg_replace ( // usafe
       '/(?<!^|\s|\-)('. N_RX_TAGS .')'.
-      preg_quote ($char).
+      preg_quote ($char). // usafe
       '(?='. N_RX_TAGS ."(?:$|\-|\s))/m",
       '$1'. $enclosures[3],
       $text
@@ -231,30 +231,30 @@ function n__enclose_within_tagless ($text, $char, $enclosures) {
 
   // remaining replacements
   if (1) {
-    $len = strlen ($enclosures[0]);
+    $len = mb_strlen ($enclosures[0]);
     $qdepth = 0;
-    for ($i = 0; $i < strlen ($text)-1; ++ $i) {
-      $scan = substr ($text, $i, $len);
+    for ($i = 0; $i < mb_strlen ($text)-1; ++ $i) {
+      $scan = mb_substr ($text, $i, $len);
       if ($scan == $enclosures[0]) {
         $qdepth ++;
-        if ($qdepth > 1) $text = substr ($text, 0, $i) . $enclosures[1] . substr ($text, $i + $len);
+        if ($qdepth > 1) $text = mb_substr ($text, 0, $i) . $enclosures[1] . mb_substr ($text, $i + $len);
         $i += $len;
       }
       if ($scan == $enclosures[3]) {
-        if ($qdepth > 1) $text = substr ($text, 0, $i) . $enclosures[2] . substr ($text, $i + $len);
+        if ($qdepth > 1) $text = mb_substr ($text, 0, $i) . $enclosures[2] . mb_substr ($text, $i + $len);
         $qdepth --;
         $i += $len;
       }
-      if ($i > strlen ($text)-1) break;
-      if ($text[$i] == $char) {
+      if ($i > mb_strlen ($text)-1) break;
+      if (mb_substr ($text, $i, 1) == $char) {
         if ($qdepth > 0) {
           if ($qdepth > 1)
-            $text = substr ($text, 0, $i) . $enclosures[2] . substr ($text, $i + 1);
+            $text = mb_substr ($text, 0, $i) . $enclosures[2] . mb_substr ($text, $i + 1);
           else
-            $text = substr ($text, 0, $i) . $enclosures[3] . substr ($text, $i + 1);
+            $text = mb_substr ($text, 0, $i) . $enclosures[3] . mb_substr ($text, $i + 1);
           -- $qdepth;
         } else {
-          $text = substr ($text, 0, $i) . $enclosures[0] . substr ($text, $i + 1);
+          $text = mb_substr ($text, 0, $i) . $enclosures[0] . mb_substr ($text, $i + 1);
           ++ $qdepth;
         }
       }
@@ -318,12 +318,12 @@ function n__typography ($text) {
   $nobr_in = n__isolate ('<nobr>');
   $nobr_out = n__isolate ('</nobr>');
 
-  $text = preg_replace_callback ('/(?:\<[^\>]+\>)/isxu', 'n__isolate', $text);
+  $text = preg_replace_callback ('/(?:\<[^\>]+\>)/isxu', 'n__isolate', $text); // usafe
 
   if (@$_neasden_config['typography.markup']) {
     // double brackets
     $chars = array ('\\(', '\\)', '\\[', '\\]');
-    $text = preg_replace_callback (
+    $text = preg_replace_callback ( // usafe
       '/'.
       '(?:'. $chars[0].$chars[0] .'(?!'. $chars[0] .')(?=\S)(.*?)'.  $chars[1].$chars[1] .')'.
       '|'.
@@ -343,7 +343,7 @@ function n__typography ($text) {
       if (!@$t_in[$to]) $t_in[$to] = n__isolate ('<'. $to .'>');
       if (!@$t_out[$to]) $t_out[$to] = n__isolate ('</'. $to .'>');
       $char = '\\'. $from;
-      $text = preg_replace (
+      $text = preg_replace ( // usafe
         '/'.
         '(?:'. $char.$char .'(?!'. $char .')(?=\S)(.*?)'. $char.$char .')'.
         '|'.
@@ -371,20 +371,22 @@ function n__typography ($text) {
 
 
   // dash
-  $text = preg_replace (
-    '/(?<=^| |'. preg_quote ($nbsp) .')('. N_RX_TAGS .')\-('. N_RX_TAGS .')(?= |$)/m',
+  $text = preg_replace ( // usafe
+    '/(?<=^| |'. preg_quote ($nbsp) .')('. N_RX_TAGS .')\-('. N_RX_TAGS .')(?= |$)/mu', // usafe
     '$1'. $dash .'$2',
     $text
   );
 
   // space before dash
-  $text = preg_replace ('/ ('. N_RX_TAGS .')'. preg_quote ($dash) .'/', $nbsp .'$1'. $dash, $text);
+  $text = preg_replace ( // usafe
+    '/ ('. N_RX_TAGS .')'. preg_quote ($dash) .'/', $nbsp .'$1'. $dash, $text // usafe
+  );
 
   // unions and prepositions
   if (1) {
     //die ($text);
     if ($nobreak_fw = $_neasden_language['with-next']) {
-      $text = preg_replace (
+      $text = preg_replace ( // usafe
         "/".
         "(?<!\pL|\-)".    // not-a—Unicode-letter-or-dash lookbehind
         $nobreak_fw .     // a preposition
@@ -397,7 +399,7 @@ function n__typography ($text) {
     }
 
     if ($nobreak_bw = $_neasden_language['with-prev']) {
-      $text = preg_replace (
+      $text = preg_replace ( // usafe
         "/".
         " ".             // a space
         "(". N_RX_TAGS .")".
@@ -412,7 +414,7 @@ function n__typography ($text) {
 
   // url to working link
   if (@$_neasden_config['typography.autohref']) {
-    $text = preg_replace (
+    $text = preg_replace ( // usafe
       '/(\s|^|'. N_RX_TAGS .')'.
       '((?:https?)\:\/\/[\w\d\#\.\/&=%-_!\?\@\*]+)/isu',
       '$1<a href="$2">$2</a>',
@@ -508,7 +510,7 @@ function n__matching_group ($rdef) {
   foreach ($_neasden_groups as $group_class => $group_regex) {
     if (
       !@in_array ($group_class, $_neasden_config['banned-groups']) and
-      preg_match ('/^'. $group_regex .'$/', $rdef)
+      preg_match ('/^'. $group_regex .'$/', $rdef) // usafe
     ) {
       $_neasden_used_groups[] = $group_class;
       return $group_class;
@@ -521,7 +523,7 @@ function n__matching_group ($rdef) {
 function n__parse_group_line ($line) {
   global $_neasden_config, $_neasden_line_classes;
 
-  $line = rtrim ($line);
+  $line = rtrim ($line); // usafe
 
   $result = array (
     'content' => $line,
@@ -530,16 +532,16 @@ function n__parse_group_line ($line) {
     'class-data' => null,
   );
 
-  if (strlen ($line) == 0) {
+  if (strlen ($line) == 0) { // usafe
     $result['class'] = 'empty';
     return $result;
   }
 
   // headings
-  $line_hashless = ltrim ($line, $_neasden_config['groups.headings.char']);
-  $heading_level = strlen ($line) - strlen ($line_hashless);
+  $line_hashless = ltrim ($line, $_neasden_config['groups.headings.char']); // usafe
+  $heading_level = strlen ($line) - strlen ($line_hashless); // usafe
   if ($heading_level > 0 and $line_hashless[0] == ' ') {
-    $result['content'] = ltrim ($line_hashless, ' ');
+    $result['content'] = ltrim ($line_hashless, ' '); // usafe
     $result['class'] = 'h'. min (
       ($heading_level + ((int) @$_neasden_config['groups.headings.plus'])), N_MAX_H_LEVEL
     );
@@ -548,10 +550,10 @@ function n__parse_group_line ($line) {
 
   /*
   // ordered list items
-  $line_numberless = ltrim ($line, '0123456789');
-  $line_number = substr ($line, 0, strlen ($line) - strlen ($line_numberless));
-  if ($line_number != '' and substr ($line_numberless, 0, 2) == '. ') {
-    if ($c = ltrim (substr ($line_numberless, 1), ' ')) {
+  $line_numberless = ltrim ($line, '0123456789'); // usafe
+  $line_number = substr ($line, 0, strlen ($line) - strlen ($line_numberless)); // usafe
+  if ($line_number != '' and substr ($line_numberless, 0, 2) == '. ') { // usafe
+    if ($c = ltrim (substr ($line_numberless, 1), ' ')) { // usafe
       $result['content'] = $c;
       $result['class'] = 'ol-item';
       $result['class-data'] = $line_number;
@@ -561,7 +563,7 @@ function n__parse_group_line ($line) {
 
   // unordered list items
   if (strstr ($_neasden_config['chars-ul-items'], $line[0])) {
-    if ($c = ltrim (substr ($line, 1), ' ' . $line[0])) {
+    if ($c = ltrim (substr ($line, 1), ' ' . $line[0])) { // usafe
       $result['content'] = $c;
       $result['class'] = 'ul-item';
       return $result;
@@ -576,7 +578,7 @@ function n__parse_group_line ($line) {
   // other classes
   foreach ($_neasden_line_classes as $class => $regex) {
     $regex = '/^(?:'. $regex .')$/isu';
-    if (preg_match ($regex, $line, $matches)) {
+    if (preg_match ($regex, $line, $matches)) { // usafe
       if (
         !function_exists ('n__detect_class_'. $class)
         or call_user_func (
@@ -624,8 +626,8 @@ function n__groups ($text) {
   foreach ($src_lines as $src_line) {
 
     // quote level
-    $line_quoteless = ltrim ($src_line, $_neasden_config['groups.quotes.char']);
-    $quote_level = strlen ($src_line) - strlen ($line_quoteless);
+    $line_quoteless = ltrim ($src_line, $_neasden_config['groups.quotes.char']); // usafe
+    $quote_level = strlen ($src_line) - strlen ($line_quoteless); // usafe
     $src_line = $line_quoteless;
     $quote_level_changed = ($prev_quote_level != $quote_level);
     $quote_level_inc = max (0, $quote_level - $prev_quote_level);
@@ -633,8 +635,8 @@ function n__groups ($text) {
     $prev_quote_level = $quote_level;
 
     // analize spaceshifts and depth
-    $line = ltrim ($src_line, ' ');
-    $spaceshift = strlen ($src_line) - strlen ($line);
+    $line = ltrim ($src_line, ' '); // usafe
+    $spaceshift = strlen ($src_line) - strlen ($line); // usafe
     if ($spaceshift > $prev_spaceshift) {
       $depth ++;
       $depths_spaceshifts[] = $spaceshift;
@@ -741,10 +743,10 @@ function n__element_strength ($element) {
 
 function n__element_name ($text) {
   if ($text[0] != '<') return;
-  if ($text[strlen ($text) - 1] != '>') return;
-  $text = ltrim (substr ($text, 1, -1)) . ' ';
-  $text = substr ($text, 0, strpos ($text, ' '));
-  return strtolower (rtrim ($text));
+  if ($text[strlen ($text) - 1] != '>') return; // usafe
+  $text = ltrim (substr ($text, 1, -1)) . ' '; // usafe: checked 128ness above
+  $text = substr ($text, 0, strpos ($text, ' ')); // usafe: paired
+  return strtolower (rtrim ($text)); // usafe: who cares
 }
 
 
@@ -773,7 +775,7 @@ function n__split_fragments ($text) {
     'comment' => array (),
   );
 
-  $l = strlen ($text);
+  $l = mb_strlen ($text);
   $r = '';
   $state = 'text';
   $prevstate = 'text';
@@ -801,7 +803,7 @@ function n__split_fragments ($text) {
       $thisfrag = array ('content' => $r, 'strength' => -1);
       $r = '';
     }
-    if ($state == 'comment' and substr ($r, -3, 3) == '-->') { 
+    if ($state == 'comment' and mb_substr ($r, -3, 3) == '-->') { 
       $state = 'text';
       $thisfrag['content'] .= $r;
       $thisfrag['strength'] = N_FRAG_STRENGTH_SACRED;
@@ -820,27 +822,20 @@ function n__split_fragments ($text) {
         // so commit all previous text to this fragment
         // start a new run with a '<'
         // and then just see how it goes from there
-        $thisfrag['content'] .= substr ($r, 0, -1);
+        $thisfrag['content'] .= mb_substr ($r, 0, -1);
 
         // set strength if not yet set
         if ($thisfrag['strength'] == -1) {
           $thisfrag['strength'] = n__element_strength ($current_el);
         }
 
-        /*
-        echo '<pre>';
-          echo 'EL = '.$current_el.'<br>';
-        echo (htmlspecialchars(print_r ($thisfrag, true)));
-        echo '</pre>';
-        */
-        
-        $r = substr ($r, -1, 1);
+        $r = mb_substr ($r, -1, 1);
 
       } elseif ($prevstate == 'tag' and $state == 'text') {
 
         $tagname = n__element_name ($r);
 
-        if ($tagname[0] != '/') {
+        if (substr ($tagname, 0, 1) != '/') { // usafe
 
           // open tag
 
@@ -869,7 +864,7 @@ function n__split_fragments ($text) {
         } else {
 
           // close tag
-          $tagname = substr ($tagname, 1);
+          $tagname = substr ($tagname, 1); // usafe
 
           if (in_array ($tagname, $tagstack)) {
 
@@ -1055,22 +1050,26 @@ function neasden ($object) {
       if ($frag['strength'] == N_FRAG_STRENGTH_SACRED) $color = '#000';
 
       $explanation .= '<tr valign="top" class="frag">';
-      $explanation .= '<td style="background: #ffc; color: '. $color .'"><tt>['. htmlspecialchars ($frag['content']) .']</tt></td>';
+      $explanation .= (
+        '<td style="background: #ffc; color: '. $color .'"><tt>['.
+        htmlspecialchars ($frag['content'], ENT_NOQUOTES, 'UTF-8') . // usafe
+        ']</tt></td>'
+      );
 
       if (is_array (@$frag['processing'])) {
         $explanation .= '<td><tt>see below ↓</tt></td>';
       } else {
         $explanation .= '<td><tt>['. @print_r ($frag['debug'], true) .']</tt></td>';
       }
-      $explanation .= '<td><tt>['. htmlspecialchars ($frag['result']) .']</tt></td>';
+      $explanation .= '<td><tt>['. htmlspecialchars ($frag['result'], ENT_NOQUOTES, 'UTF-8') .']</tt></td>'; // usafe
       $explanation .= '</tr>';
 
       if (is_array (@$frag['processing'])) {
         foreach ($frag['processing'] as $group) {
           $explanation .= '<tr valign="top">';
-          $explanation .= '<td><tt>['. @htmlspecialchars  ($group['content']) .']</tt></td>';
+          $explanation .= '<td><tt>['. @htmlspecialchars  ($group['content'], ENT_NOQUOTES, 'UTF-8') .']</tt></td>'; // usafe
           $explanation .= '<td><tt>['. @str_repeat ('>', $group['depth']) .''. @$group['class'] .' ('. @$group['class-data'] .')<br />'. @print_r ($group['debug'], true) .']</tt></td>';
-          $explanation .= '<td><tt>['. @htmlspecialchars  ($group['result']) .']</tt></td>';
+          $explanation .= '<td><tt>['. @htmlspecialchars  ($group['result'], ENT_NOQUOTES, 'UTF-8') .']</tt></td>'; // usafe
           $explanation .= '</tr>';
         }
       }
