@@ -1,6 +1,6 @@
 <?
 
-// Neasden v51
+// Neasden v52
 
 error_reporting (E_ALL);
 
@@ -277,8 +277,8 @@ function n__process_double_brackets_contents_callback ($params) {
   if (!@$text) $text = $href;
 
   $quotes = $_neasden_language['quotes'];
-  $quotes_left = array ('"', mb_substr ($quotes, 0, 1), mb_substr ($quotes, 1, 1));
-  $quotes_right = array ('"', mb_substr ($quotes, 2, 1), mb_substr ($quotes, 3, 1));
+  $quotes_left = array ('"', $quotes[0], $quotes[1]);
+  $quotes_right = array ('"', $quotes[2], $quotes[3]);
   $hang_left = mb_substr ($text, 0, 1);
   $hang_right = mb_substr ($text, -1);
 
