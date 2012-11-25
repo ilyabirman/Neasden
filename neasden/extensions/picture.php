@@ -90,6 +90,7 @@ function n__render_group_picture ($group, $myconf) {
       $cssc_zoomicon = $myconf['css-class'] .'-zoom-icon';
       $cssc_zoomable = $myconf['css-class'] .'-zoomable';
       $cssc_zoomin   = $myconf['css-class'] .'-zoom-in';
+      $cssc_link     = $myconf['css-class'] .'-link';
 
       // wrap into a link to zoomed version if needed
       if (!$link and $myconf['scaled-img-link-to-original'] and $is_scaled) {
@@ -112,7 +113,7 @@ function n__render_group_picture ($group, $myconf) {
       // wrap into a link to URL if needed
       if ($link) {
         $image_html = (
-          '<a href="'. $link .'" width="'. $width_original .'">' ."\n".
+          '<a href="'. $link .'" width="'. $width_original .'" class="'. $cssc_link .'">' ."\n".
           $image_html .
           '</a>'
         );
