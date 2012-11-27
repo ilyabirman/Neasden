@@ -13,7 +13,7 @@ error_reporting (E_ALL);
 
 if (!include 'neasden/neasden.php') die ('neasden init failed');
 
-$text = file_get_contents ('tests/test-13.txt');
+$text = file_get_contents ('tests/test-14.txt');
 $res = '';
 
 function stopwatch () {
@@ -85,7 +85,7 @@ $stopwatch = stopwatch () - $stopwatch;
 
 <?#= neasden_explain ($text); ?>
 
-<?#= '<pre>'. htmlspecialchars ($res) .'</pre>' ?>
+<?= '<pre>'. htmlspecialchars ($res) .'</pre>' ?>
 
 <!--
 <table>

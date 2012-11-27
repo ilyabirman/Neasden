@@ -83,7 +83,7 @@ function n__render_group_picture ($group, $myconf) {
       $image_html = (
         '<img src="'. $myconf['src-prefix'] . $filename .'" '.
         'width="'. $width .'" height="'. $height.'" '.
-        'alt="'. $alt .'" />'. "\n"
+        'alt="'. htmlspecialchars ($alt) .'" />'. "\n"
       );
       
       $cssc_zoomlink = $myconf['css-class'] .'-zoom-link';
