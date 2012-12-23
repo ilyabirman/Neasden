@@ -24,7 +24,7 @@ $_neasden_config = array (
   'language' => 'ru',
   
   'html.on' => true,
-  'html.elements.opaque' => 'p ul ol li blockquote table pre textarea',
+  'html.elements.opaque' => 'div p ul ol li blockquote table pre textarea',
   'html.elements.sacred' => 'object embed iframe script style code',
 
   'groups.on' => true,
