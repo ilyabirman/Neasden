@@ -2,10 +2,6 @@
 
 // Neasden v2.01
 
-define ('N_FRAG_STRENGTH_TEXT', 0); // grouped, typographed
-define ('N_FRAG_STRENGTH_OPAQUE', 7); // typographed
-define ('N_FRAG_STRENGTH_SACRED', 9); // returned as is
-
 define ('N_RX_SPECIAL_CHAR', "\x1");
 define ('N_RX_SPECIAL_SEQUENCE_LENGTH', 6);
 
@@ -13,15 +9,19 @@ define ('N_RX_TAG', '\\' . N_RX_SPECIAL_CHAR .'\d{'. N_RX_SPECIAL_SEQUENCE_LENGT
 
 define ('N_RX_TAGS', '(?:'. N_RX_TAG .')*');
 
-define ('N_MAX_H_LEVEL', 6);
-define ('N_DEFAULT_GROUP', 'p');
-
 interface NeasdenRenderableGroup {
   function render ($group, $myconf);
 }
 
 
 class Neasden {
+  
+  const FRAG_STRENGTH_TEXT = 0; // grouped, typographed
+  const FRAG_STRENGTH_OPAQUE = 7; // typographed
+  const FRAG_STRENGTH_SACRED = 9; // returned as is
+
+  const MAX_H_LEVEL = 6;
+  const DEFAULT_GROUP = 'p';
   
   public $input = '';
   public $output = '';
@@ -536,7 +536,7 @@ class Neasden {
     if ($heading_level > 0 and $line_hashless[0] == ' ') {
       $result['content'] = ltrim ($line_hashless, ' '); // usafe
       $result['class'] = 'h'. min (
-        ($heading_level + ((int) @$this->config['groups.headings.plus'])), N_MAX_H_LEVEL
+        ($heading_level + ((int) @$this->config['groups.headings.plus'])), self::MAX_H_LEVEL
       );
       return $result;
     }
@@ -578,7 +578,7 @@ class Neasden {
   
     $list_levels = array ();
   
-    $last_group_class = N_DEFAULT_GROUP;
+    $last_group_class = self::DEFAULT_GROUP;
   
     $groups = array ();
     $good_buffer = array ();
@@ -656,7 +656,7 @@ class Neasden {
   
         $good_buffer = array ($line);
         $rdef = '-'. $line['class'] .'-';
-        $last_group_class = $this->matching_group ($rdef) or $last_group_class = N_DEFAULT_GROUP;
+        $last_group_class = $this->matching_group ($rdef) or $last_group_class = self::DEFAULT_GROUP;
   
       }
   
@@ -676,12 +676,12 @@ class Neasden {
   
   private function element_strength ($element) {
     if (strstr (' '. $this->config['html.elements.sacred'] .' ', ' '. $element .' ')) {
-      return N_FRAG_STRENGTH_SACRED;
+      return self::FRAG_STRENGTH_SACRED;
     }
     if (strstr (' '. $this->config['html.elements.opaque'] .' ', ' '. $element .' ')) {
-      return N_FRAG_STRENGTH_OPAQUE;
+      return self::FRAG_STRENGTH_OPAQUE;
     }
-    return N_FRAG_STRENGTH_TEXT;
+    return self::FRAG_STRENGTH_TEXT;
   }
   
   
@@ -751,7 +751,7 @@ class Neasden {
       if ($state == 'comment' and mb_substr ($r, -3, 3) == '-->') { 
         $state = 'text';
         $thisfrag['content'] .= $r;
-        $thisfrag['strength'] = N_FRAG_STRENGTH_SACRED;
+        $thisfrag['strength'] = FRAG_STRENGTH_SACRED;
         if ($thisfrag['content']) {
           $fragments[] = $thisfrag;
         }
@@ -853,7 +853,7 @@ class Neasden {
                 // make a new sacred fragment of this weird tag
                 $fragments[] = array (
                   'content' => $r,
-                  'strength' => N_FRAG_STRENGTH_SACRED,
+                  'strength' => self::FRAG_STRENGTH_SACRED,
                 );
   
                 // and start new fragment
@@ -911,7 +911,7 @@ class Neasden {
       // text fragments should be formatted
       if (
         $this->config['groups.on'] and
-        $initial_fragment['strength'] == N_FRAG_STRENGTH_TEXT
+        $initial_fragment['strength'] == self::FRAG_STRENGTH_TEXT
       ) {
     
         $resulting_fragment['result'] = '';
@@ -926,7 +926,7 @@ class Neasden {
     
     
       // opaque fragments should be typographed
-      if ($initial_fragment['strength'] < N_FRAG_STRENGTH_SACRED) {
+      if ($initial_fragment['strength'] < self::FRAG_STRENGTH_SACRED) {
         $resulting_fragment['result'] = $this->process_opaque_fragment ($resulting_fragment['result']);
       }
     
@@ -984,9 +984,9 @@ class Neasden {
       if ($this->should_explain) {
     
         $color = '#f00';
-        if ($frag['strength'] == N_FRAG_STRENGTH_TEXT) $color = '#080';
-        if ($frag['strength'] == N_FRAG_STRENGTH_OPAQUE) $color = '#00a';
-        if ($frag['strength'] == N_FRAG_STRENGTH_SACRED) $color = '#000';
+        if ($frag['strength'] == self::FRAG_STRENGTH_TEXT) $color = '#080';
+        if ($frag['strength'] == self::FRAG_STRENGTH_OPAQUE) $color = '#00a';
+        if ($frag['strength'] == self::FRAG_STRENGTH_SACRED) $color = '#000';
     
         $this->explanation .= '<tr valign="top" class="frag">';
         $this->explanation .= (
