@@ -1,13 +1,17 @@
 <?
 
+class NeasdenGroup_hr extends NeasdenGroup {
 
-n__define_line_class ('hr', '[-–—]{5,}');
-n__define_group ('hr', '(-hr-)');
+  function __construct ($neasden) {
+    $neasden->define_line_class ('hr', '[-–—]{5,}');
+    $neasden->define_group ('hr', '(-hr-)');
+  }
 
-function n__render_group_hr ($group) {
-  return "<hr />\n";
+  function render ($group, $myconf) {
+    return "<hr />\n";
+  }
+  
 }
-
 
 
 ?>

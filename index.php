@@ -10,8 +10,10 @@ explanation должен быть пустым, если не просили
 header ('Content-Type: text/html; charset=utf-8');
 //error_reporting (E_ALL & ~E_NOTICE);
 error_reporting (E_ALL);
-
-if (!include 'neasden/neasden.php') die ('neasden init failed');
+//*
+ini_set('display_errors', 1);
+error_reporting(~0);
+//*/
 
 $text = file_get_contents ('tests/test-14.txt');
 $res = '';
@@ -24,18 +26,35 @@ function stopwatch () {
 
 $stopwatch = stopwatch ();
 
-$n = neasden (array (
+$inputarray = array (
   'config' => 'neasden/config.php',
   'text-original' => $text,
   'profile-name' => '',
   'explain' => true,
-));
+);
 
-
-
+/*
+if (!include 'neasden/neasden-54.php') die ('neasden init failed');
+$n = neasden ($inputarray);
 $res = $n['text-final'];
-
+$resources = $n['resources-detected'];
+$links = $n['links-required'];
+$groups = $n['groups-used'];
 //$res = $n['explanation'];
+//*/
+
+//*
+if (!include 'neasden/neasden.php') die ('neasden init failed');
+$Nn = new Neasden;
+$Nn->should_explain = true;
+$Nn->profile_name = '';
+$res = $Nn->format ($text);
+//$res = $Nn->explanation;
+$resources = $Nn->resources_detected;
+$links = $Nn->links_required;
+$groups = $Nn->groups_used;
+//*/
+
 
 $stopwatch = stopwatch () - $stopwatch;
 
@@ -100,13 +119,13 @@ $stopwatch = stopwatch () - $stopwatch;
 
 <pre>
 Resources:
-<? print_r ($n['resources-detected']); ?>
+<? print_r ($resources); ?>
 
 Links:
-<? print_r ($n['links-required']); ?>
+<? print_r ($links); ?>
 
 Groups:
-<? print_r ($n['groups-used']); ?>
+<? print_r ($groups); ?>
 
 </pre>
 
