@@ -1,6 +1,6 @@
 <?
 
-class NeasdenGroup_picture extends NeasdenGroup {
+class NeasdenGroup_picture implements NeasdenRenderableGroup {
 
   private $neasden = null;
   
@@ -13,7 +13,7 @@ class NeasdenGroup_picture extends NeasdenGroup {
     
   }
     
-  function detect ($line, $myconf) {
+  function detect_line ($line, $myconf) {
     list ($filebasename, ) = explode (' ', $line, 2);  
     return is_file ($myconf['folder'] . $filebasename);
   }

@@ -1,8 +1,6 @@
 <?
 
-// Neasden v55
-
-//error_reporting (E_ALL);
+// Neasden v2.01
 
 define ('N_FRAG_STRENGTH_TEXT', 0); // grouped, typographed
 define ('N_FRAG_STRENGTH_OPAQUE', 7); // typographed
@@ -18,49 +16,8 @@ define ('N_RX_TAGS', '(?:'. N_RX_TAG .')*');
 define ('N_MAX_H_LEVEL', 6);
 define ('N_DEFAULT_GROUP', 'p');
 
-$_neasden_required_line_classes = array ();
-
-$_neasden_line_classes = array (
-);
-
-$_neasden_groups = array (
-  'empty'   => '(-empty-)+',
-  'p'       => '(-p-)+',
-  'h1'      => '(-h1-)+',
-  'h2'      => '(-h2-)+',
-  'h3'      => '(-h3-)+',
-  'h4'      => '(-h4-)+',
-  'h5'      => '(-h5-)+',
-  'h6'      => '(-h6-)+',
-  /*
-  'list'    => '((-ol-item-)|(-ul-item-))((-ol-item-)|(-ul-item-)|(-p-))*',
-  'hr'      => '(-hr-)',
-  'table'   => '(-hr-)(-tr-)+(-hr-)?',
-  */
-  //'img'     => '(-img-name-)((-img-name-)|(-p-))*',
-  //'youtube' => '(-youtube-href-)(-p-)*',
-);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-abstract class NeasdenGroup {
-  abstract public function render ($group, $myconf);
+interface NeasdenRenderableGroup {
+  function render ($group, $myconf);
 }
 
 
@@ -72,7 +29,7 @@ class Neasden {
   public $should_explain = false;
   public $profile_name = '';
   public $explanation = '';
-  public $resources_detected = array ();
+  public $resources_detected = array ();  
   
   public $config = array (
     '__overload' => 'user/neasden/',
@@ -147,6 +104,19 @@ class Neasden {
   
   );
   
+  private $groups = array (
+    'empty'   => '(-empty-)+',
+    'p'       => '(-p-)+',
+    'h1'      => '(-h1-)+',
+    'h2'      => '(-h2-)+',
+    'h3'      => '(-h3-)+',
+    'h4'      => '(-h4-)+',
+    'h5'      => '(-h5-)+',
+    'h6'      => '(-h6-)+',
+  );
+
+  private $line_classes = array ();
+  private $required_line_classes = array ();
   private $saved_tags = array ();
   private $extensions = array ();
   
@@ -191,20 +161,17 @@ class Neasden {
   
   
   function require_line_class ($class) {
-    global $_neasden_required_line_classes;
-    $_neasden_required_line_classes[$class] = true;
+    $this->required_line_classes[$class] = true;
   }
   
   
   function define_line_class ($class, $regex) {
-    global $_neasden_line_classes;
-    $_neasden_line_classes[$class] = $regex;
+    $this->line_classes[$class] = $regex;
   }
     
   
   function define_group ($group, $regex) {
-    global $_neasden_groups;
-    $_neasden_groups[$group] = $regex;
+    $this->groups[$group] = $regex;
   }
     
   
@@ -535,8 +502,7 @@ class Neasden {
     
   // return a group class by it’s current running definition
   private function matching_group ($rdef) {
-    global $_neasden_groups;
-    foreach ($_neasden_groups as $group_class => $group_regex) {
+    foreach ($this->groups as $group_class => $group_regex) {
       if (
         !@in_array ($group_class, $this->config['banned-groups']) and
         preg_match ('/^'. $group_regex .'$/', $rdef) // usafe
@@ -549,7 +515,6 @@ class Neasden {
   
   
   private function parse_group_line ($line) {
-    global $_neasden_line_classes;
   
     $line = rtrim ($line); // usafe
   
@@ -577,12 +542,12 @@ class Neasden {
     }
   
     // other classes
-    foreach ($_neasden_line_classes as $class => $regex) {
+    foreach ($this->line_classes as $class => $regex) {
       $regex = '/^(?:'. $regex .')$/isu';
       if (preg_match ($regex, $line, $matches)) { // usafe
         if (
-          !method_exists ($this->extensions[$class]['instance'], 'detect')
-          or $this->extensions[$class]['instance']->detect ($line, @$this->config['groups.classes'][$class])
+          !method_exists ($this->extensions[$class]['instance'], 'detect_line')
+          or $this->extensions[$class]['instance']->detect_line ($line, @$this->config['groups.classes'][$class])
         ) {
           $result['class'] = $class;
           $result['class-data'] = $matches;
@@ -599,7 +564,6 @@ class Neasden {
 
 
   private function groups ($text) {
-    global $_neasden_groups;
   
     $text = str_replace ("\r\n", "\n", $text); 
     $text = str_replace ("\r", "\n", $text); 

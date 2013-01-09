@@ -1,6 +1,6 @@
 <?
 
-class NeasdenGroup_audio extends NeasdenGroup {
+class NeasdenGroup_audio implements NeasdenRenderableGroup {
   
   private $neasden = null;
 

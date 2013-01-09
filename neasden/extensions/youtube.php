@@ -1,6 +1,6 @@
 <?
 
-class NeasdenGroup_youtube extends NeasdenGroup {
+class NeasdenGroup_youtube implements NeasdenRenderableGroup {
 
   function __construct ($neasden) {
   
