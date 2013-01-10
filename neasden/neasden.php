@@ -1,13 +1,6 @@
 <?
 
-// Neasden v2.01
-
-define ('N_RX_SPECIAL_CHAR', "\x1");
-define ('N_RX_SPECIAL_SEQUENCE_LENGTH', 6);
-
-define ('N_RX_TAG', '\\' . N_RX_SPECIAL_CHAR .'\d{'. N_RX_SPECIAL_SEQUENCE_LENGTH .'}\\' . N_RX_SPECIAL_CHAR);
-
-define ('N_RX_TAGS', '(?:'. N_RX_TAG .')*');
+// Neasden v2.02
 
 interface NeasdenRenderableGroup {
   function render ($group, $myconf);
@@ -119,12 +112,20 @@ class Neasden {
   private $required_line_classes = array ();
   private $saved_tags = array ();
   private $extensions = array ();
+
+  const RX_SPECIAL_CHAR = "\x1";
+  const RX_SPECIAL_SEQUENCE_LENGTH = 6;
+  private $rx_tag_regex;
+  private $rx_tags_regex;
   
   function __construct () {
 
     $this->resources_detected = array ();
     $this->links_required = array ();
     $this->groups_used = array ();
+    
+    $this->rx_tag_regex = '\\' . self::RX_SPECIAL_CHAR .'\d{'. self::RX_SPECIAL_SEQUENCE_LENGTH .'}\\' . self::RX_SPECIAL_CHAR;
+    $this->rx_tags_regex = '(?:'. $this->rx_tag_regex .')*';
 
     $host_dir = dirname ($_SERVER['PHP_SELF']); # '/meanwhile'
     $host_dir = trim ($host_dir, '/').'/'; # 'meanwhile/' // usafe
@@ -186,7 +187,7 @@ class Neasden {
   
   
   function special_sequence ($index) {
-    return N_RX_SPECIAL_CHAR . str_pad ($index, N_RX_SPECIAL_SEQUENCE_LENGTH, '0', STR_PAD_LEFT) . N_RX_SPECIAL_CHAR; // usafe
+    return self::RX_SPECIAL_CHAR . str_pad ($index, self::RX_SPECIAL_SEQUENCE_LENGTH, '0', STR_PAD_LEFT) . self::RX_SPECIAL_CHAR; // usafe
   }
 
 
@@ -223,9 +224,9 @@ class Neasden {
     // obvious replacements
     if (1) {
       $text = preg_replace ( // usafe
-        '/((?:^|\s|\-)'. N_RX_TAGS .')'.
+        '/((?:^|\s|\-)'. $this->rx_tags_regex .')'.
         preg_quote ($char). // usafe
-        '(?!'. N_RX_TAGS .'($|\-|\s))/m',
+        '(?!'. $this->rx_tags_regex .'($|\-|\s))/m',
         '$1'. $enclosures[0],
         $text
       );
@@ -233,9 +234,9 @@ class Neasden {
   
     if (1) {
       $text = preg_replace ( // usafe
-        '/(?<!^|\s|\-)('. N_RX_TAGS .')'.
+        '/(?<!^|\s|\-)('. $this->rx_tags_regex .')'.
         preg_quote ($char). // usafe
-        '(?='. N_RX_TAGS ."(?:$|\-|\s))/m",
+        '(?='. $this->rx_tags_regex ."(?:$|\-|\s))/m",
         '$1'. $enclosures[3],
         $text
       );
@@ -382,14 +383,14 @@ class Neasden {
   
     // dash
     $text = preg_replace ( // usafe
-      '/(?<=^| |'. preg_quote ($nbsp) .')('. N_RX_TAGS .')\-('. N_RX_TAGS .')(?= |$)/mu', // usafe
+      '/(?<=^| |'. preg_quote ($nbsp) .')('. $this->rx_tags_regex .')\-('. $this->rx_tags_regex .')(?= |$)/mu', // usafe
       '$1'. $dash .'$2',
       $text
     );
   
     // space before dash
     $text = preg_replace ( // usafe
-      '/ ('. N_RX_TAGS .')'. preg_quote ($dash) .'/', $nbsp .'$1'. $dash, $text // usafe
+      '/ ('. $this->rx_tags_regex .')'. preg_quote ($dash) .'/', $nbsp .'$1'. $dash, $text // usafe
     );
   
     // unions and prepositions
@@ -400,7 +401,7 @@ class Neasden {
           "/".
           "(?<!\pL|\-)".    // not-a—Unicode-letter-or-dash lookbehind
           $nobreak_fw .     // a preposition
-          "(". N_RX_TAGS .")".
+          "(". $this->rx_tags_regex .")".
           " ".              // and a space
           "/isu",      
           '$1$2'. $nbsp,
@@ -412,7 +413,7 @@ class Neasden {
         $text = preg_replace ( // usafe
           "/".
           " ".             // a space
-          "(". N_RX_TAGS .")".
+          "(". $this->rx_tags_regex .")".
           $nobreak_bw .    // a particle
           "(?!\pL|\-)".    // not-a—Unicode-letter-or-dash lookforward
           "/isu",      
@@ -425,7 +426,7 @@ class Neasden {
     // url to working link
     if (@$this->config['typography.autohref']) {
       $text = preg_replace ( // usafe
-        '/(\s|^|'. N_RX_TAGS .')'.
+        '/(\s|^|'. $this->rx_tags_regex .')'.
         '((?:https?)\:\/\/[\w\d\#\.\/&=%-_!\?\@\*]+)/isu',
         '$1<a href="$2">$2</a>',
         $text
