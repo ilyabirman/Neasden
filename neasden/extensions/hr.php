@@ -1,6 +1,6 @@
 <?
 
-class NeasdenGroup_hr implements NeasdenRenderableGroup {
+class NeasdenGroup_hr implements NeasdenGroup {
 
   function __construct ($neasden) {
     $neasden->define_line_class ('hr', '[-–—]{5,}');

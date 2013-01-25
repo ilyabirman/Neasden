@@ -2,7 +2,7 @@
 
 // Neasden v2.02
 
-interface NeasdenRenderableGroup {
+interface NeasdenGroup {
   function render ($group, $myconf);
 }
 
@@ -115,7 +115,7 @@ class Neasden {
 
   const RX_SPECIAL_CHAR = "\x1";
   const RX_SPECIAL_SEQUENCE_LENGTH = 6;
-  private $rx_tag_regex;
+
   private $rx_tags_regex;
   
   function __construct () {
@@ -124,8 +124,11 @@ class Neasden {
     $this->links_required = array ();
     $this->groups_used = array ();
     
-    $this->rx_tag_regex = '\\' . self::RX_SPECIAL_CHAR .'\d{'. self::RX_SPECIAL_SEQUENCE_LENGTH .'}\\' . self::RX_SPECIAL_CHAR;
-    $this->rx_tags_regex = '(?:'. $this->rx_tag_regex .')*';
+    $this->rx_tags_regex = (
+      '(?:'. 
+      '\\' . self::RX_SPECIAL_CHAR .'\d{'. self::RX_SPECIAL_SEQUENCE_LENGTH .'}\\' . self::RX_SPECIAL_CHAR.
+      ')*'
+    );
 
     $host_dir = dirname ($_SERVER['PHP_SELF']); # '/meanwhile'
     $host_dir = trim ($host_dir, '/').'/'; # 'meanwhile/' // usafe
@@ -136,28 +139,32 @@ class Neasden {
     
     $extensions_folders = array (
       $dir. 'extensions',
-      //$this->config['__overload']. 'extensions'
+      $this->config['__overload']. 'extensions'
     );
     
     foreach ($extensions_folders as $extensions_folder) {
       if (is_array ($files = glob ($extensions_folder. '/*.php'))) {
         foreach ($files as $file) {
-          $name = basename ($file);
-          if (substr ($name, -4) == '.php') $name = substr ($name, 0, strlen ($name) - 4); // usafe
-          if (!array_key_exists ($name, $this->extensions)) {
-            //echo '+'.$file.'<br>';
-            $NeasdenGroupClass = 'NeasdenGroup_' . $name;
-            //echo '+'.$classname.'<br>';
-            include $file;
-            $this->extensions[$name] = array (
-              'path' => dirname ($file) .'/'. $name .'/',
-              'instance' => new $NeasdenGroupClass ($this),
-            );
-          }
+          $this->load_extension ($file);
         }
       }
     }
     
+  }
+  
+  
+  function load_extension ($file) {
+    $name = basename ($file);
+    if (substr ($name, -4) == '.php') $name = substr ($name, 0, strlen ($name) - 4); // usafe
+    if (!array_key_exists ($name, $this->extensions)) {
+      $NeasdenGroupClass = 'NeasdenGroup_' . $name;
+      include $file;
+      $this->extensions[$name] = array (
+        'path' => dirname ($file) .'/'. $name .'/',
+        'instance' => new $NeasdenGroupClass ($this),
+      );
+      return true;
+    }
   }
   
   
@@ -547,7 +554,7 @@ class Neasden {
       $regex = '/^(?:'. $regex .')$/isu';
       if (preg_match ($regex, $line, $matches)) { // usafe
         if (
-          !method_exists ($this->extensions[$class]['instance'], 'detect_line')
+          !method_exists (@$this->extensions[$class]['instance'], 'detect_line')
           or $this->extensions[$class]['instance']->detect_line ($line, @$this->config['groups.classes'][$class])
         ) {
           $result['class'] = $class;

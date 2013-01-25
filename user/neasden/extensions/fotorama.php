@@ -1,76 +1,89 @@
 <?
 
-n__require_line_class ('picture');
-n__define_group ('fotorama', '(-picture-){2,}(-p-)*');
+class NeasdenGroup_fotorama implements NeasdenGroup {
 
-function n__render_group_fotorama ($group, $myconf) {
-  global $_neasden_config, $_neasden_extensions;
+  private $neasden = null;
+  
+  function __construct ($neasden) {
+    $this->neasden = $neasden;
 
-  n__require_link ('jquery.js');
-  n__require_link ('fotorama/fotorama.css');
-  n__require_link ('fotorama/fotorama.js');
-
-  if (is_array (@$_neasden_extensions['fotorama']['config'])) {
-    $myconf = array_merge (
-      $myconf,
-      @$_neasden_extensions['fotorama']['config']
-    );
+    $neasden->require_line_class ('picture');
+    $neasden->define_group ('fotorama', '(-picture-){2,}(-p-)*');
   }
 
-  $p = false;
-
-  $result = (
-    '<div class="'. $myconf['css-class'] .' fotorama" '.
-    //'data-width="'. $myconf['max-width'] .'" '.
-    'data-thumbsPreview="false" '.
-    'data-zoomToFit="false" '.
-    //'data-resize="true"'.
-    '>'."\n"
-  );
+  function render ($group, $myconf) {
   
-  foreach ($group as $line) {
-    list ($filebasename, $alt) = explode (' ', $line['content'].' ', 2);
-    $alt = trim ($alt);
+    $this->neasden->require_link (@$_neasden_config['library']. 'jquery/jquery.js');
     
-    if ($line['class'] == 'picture') {
-
-      n__resource_detected ($filebasename);
+    $this->neasden->require_link (USER_FOLDER .'library/fotorama/fotorama.css');
+    $this->neasden->require_link (USER_FOLDER .'library/fotorama/fotorama.js');
+    
+    $result = '';
+    $p_opened = false;
+    $div_opened = false;
       
-      $filename = $myconf['folder'] . $filebasename;
-      $size = getimagesize ($filename);
-      list ($width, $height) = $size;
-
-      if ($width > $myconf['max-width']) {
-        $height = $height * ($myconf['max-width'] / $width);
-        $width = $myconf['max-width'];
-      }
-
-      $image_html = (
-        '<img src="'. $myconf['src-prefix'] . $filename .'" '.
-        'width="'. $width .'" height="'. $height.'" '.
-        'alt="'. $alt .'" />'. "\n"
-      );
-
-      $result .= $image_html;
+    foreach ($group as $line) {
+      list ($filebasename, $alt) = explode (' ', $line['content'].' ', 2);
+      $alt = trim ($alt); // usafe
       
-    } else {
-      if (!$p) {
-        $p = true;
-        $result .= '<p>' . $filebasename;
+      if ($line['class'] == 'picture') {
+    
+        n__resource_detected ($filebasename);
+        
+        $filename = $myconf['folder'] . $filebasename;
+        $size = getimagesize ($filename);
+        list ($width, $height) = $size;
+    
+        if ($width > $myconf['max-width']) {
+          $height = $height * ($myconf['max-width'] / $width);
+          $width = $myconf['max-width'];
+        }
+    
+        $image_html = (
+          '<img src="'. $myconf['src-prefix'] . $filename .'" '.
+          'width="'. $width .'" height="'. $height.'" '.
+          'alt="'. $alt .'" />'. "\n"
+        );
+        
+        if (!$div_opened) {
+          $result .= (
+            '<div class="'. $myconf['css-class'] .' fotorama" '.
+              'data-nav="dots" '.
+              'data-dotColor="#555" '.
+              'data-zoomToFit="false" '.
+              'data-width="'. $width .'"'.
+              'data-height="'. $height .'"'.
+              'data-aspectRatio="'. ($width / $height) .'"'.
+            '>'."\n"
+          );
+          $div_opened = true;
+        }
+    
+        $result .= $image_html;
+        
       } else {
-        $result .= '<br />' . "\n" . $filebasename;
+        if (!$p_opened) {
+          $p_opened = true;
+          $result .= '<p>' . $filebasename;
+        } else {
+          $result .= '<br />' . "\n" . $filebasename;
+        }
       }
     }
+    
+    if ($p_opened) {
+      $result .= '</p>'."\n";
+    }
+    
+    if ($div_opened) {
+      $result .= '</div>'."\n";
+    }
+    
+    return $result;
+      
   }
-
-  if ($p) $result .= '</p>'."\n";
-
-  $result .= '</div>'."\n";
-
-  return $result;
   
 }
-
 
 
 ?>

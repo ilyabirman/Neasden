@@ -1,16 +1,14 @@
 <?
 
-class NeasdenGroup_picture implements NeasdenRenderableGroup {
+class NeasdenGroup_picture implements NeasdenGroup {
 
   private $neasden = null;
   
   function __construct ($neasden) {
     $this->neasden = $neasden;
-  
-    //$neasden->define_line_class ('picture', '.*\.(jpe?g|gif|png)');
+
     $neasden->define_line_class ('picture', '.*\.(jpe?g|gif|png)(?: +(.+))?');
     $neasden->define_group ('picture', '(-picture-)(-p-)*');
-    
   }
     
   function detect_line ($line, $myconf) {

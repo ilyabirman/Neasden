@@ -1,6 +1,6 @@
 <?
 
-class NeasdenGroup_vimeo implements NeasdenRenderableGroup {
+class NeasdenGroup_vimeo implements NeasdenGroup {
 
   function __construct ($neasden) {
   

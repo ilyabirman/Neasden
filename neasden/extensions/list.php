@@ -1,6 +1,6 @@
 <?
 
-class NeasdenGroup_list implements NeasdenRenderableGroup {
+class NeasdenGroup_list implements NeasdenGroup {
 
   function __construct ($neasden) {
   

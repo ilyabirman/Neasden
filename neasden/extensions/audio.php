@@ -1,6 +1,6 @@
 <?
 
-class NeasdenGroup_audio implements NeasdenRenderableGroup {
+class NeasdenGroup_audio implements NeasdenGroup {
   
   private $neasden = null;
 
@@ -44,7 +44,7 @@ class NeasdenGroup_audio implements NeasdenRenderableGroup {
       $player_html = '<a '.
         'class="jouele" '.
         'href="'. $href .'" '.
-        'title="'. $downloadstr .'" '.
+        'title="'. $downloadstr .'"'.
       '>'. $alt .'</a>'."\n";
       
       $player_html = $this->neasden->isolate ($player_html);

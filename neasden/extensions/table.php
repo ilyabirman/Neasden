@@ -1,6 +1,6 @@
 <?
 
-class NeasdenGroup_table implements NeasdenRenderableGroup {
+class NeasdenGroup_table implements NeasdenGroup {
 
   function __construct ($neasden) {
 
@@ -29,7 +29,7 @@ class NeasdenGroup_table implements NeasdenRenderableGroup {
         
         if ($alignment) $alignment = ' style="text-align: '. $alignment .'"';
         
-        $result .= "<td ". $alignment .">". trim ($td) ."</td>\n"; // usafe
+        $result .= "<td". $alignment .">". trim ($td) ."</td>\n"; // usafe
         
       }
       $result .= "</tr>\n";
