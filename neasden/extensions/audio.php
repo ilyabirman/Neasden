@@ -57,8 +57,8 @@ class NeasdenGroup_audio implements NeasdenGroup {
           'href="'. $href .'" '.
         '>'. $alt .'</a>'."\n";
         
-        $player_html = n__isolate ($player_html);
-    
+        $player_html = $this->neasden->isolate ($player_html);
+
         $result .= $player_html;
       
       }

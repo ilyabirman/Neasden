@@ -8,7 +8,9 @@ class NeasdenGroup_fotorama implements NeasdenGroup {
     $this->neasden = $neasden;
 
     $neasden->require_line_class ('picture');
-    $neasden->define_group ('fotorama', '(-picture-){2,}(-p-)*');
+    $neasden->define_line_class ('fotorama-thumbs', '(?:\[thumbs\])(.*)');
+
+    $neasden->define_group ('fotorama', '(-picture-){2,}(-fotorama-thumbs-)?(-p-)*');
   }
 
   function render ($group, $myconf) {
@@ -21,14 +23,23 @@ class NeasdenGroup_fotorama implements NeasdenGroup {
     $result = '';
     $p_opened = false;
     $div_opened = false;
-      
+    $thumbs = false;
+
+    $data_nav = 'dots';
+
+    foreach ($group as $line) {
+      if ($line['class'] == 'fotorama-thumbs') {
+        $data_nav = 'thumbs';
+      }
+    }
+    
     foreach ($group as $line) {
       list ($filebasename, $alt) = explode (' ', $line['content'].' ', 2);
       $alt = trim ($alt); // usafe
       
       if ($line['class'] == 'picture') {
     
-        n__resource_detected ($filebasename);
+        $this->neasden->resource_detected ($filebasename);
         
         $filename = $myconf['folder'] . $filebasename;
         $size = getimagesize ($filename);
@@ -48,7 +59,7 @@ class NeasdenGroup_fotorama implements NeasdenGroup {
         if (!$div_opened) {
           $result .= (
             '<div class="'. $myconf['css-class'] .' fotorama" '.
-              'data-nav="dots" '.
+              'data-nav="'. $data_nav .'" '.
               'data-dotColor="#555" '.
               'data-zoomToFit="false" '.
               'data-width="'. $width .'"'.
