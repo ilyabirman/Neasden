@@ -7,15 +7,17 @@ class NeasdenGroup_audio implements NeasdenGroup {
   function __construct ($neasden) {
     $this->neasden = $neasden;
 
-    $neasden->define_line_class (
-      'audio',
-      '(?:\[play\])(.*)'
-    );
-    
-    $neasden->define_group ('audio', '(-audio-)');
+    $neasden->define_line_class ('audio', '.*\.(mp3)(?: +(.+))?');
+    $neasden->define_line_class ('audio-play', '(?:\[play\])(.*)');
+    $neasden->define_group ('audio', '(-audio-)|(-audio-play-)');
 
   }
 
+  function detect_line ($line, $myconf) {
+    list ($filebasename, ) = explode (' ', $line, 2);  
+    return is_file ($myconf['folder'] . $filebasename);
+  }
+  
   function render ($group, $myconf) {
 
     $this->neasden->require_link (@$this->neasden->config['library']. 'jquery/jquery.js');
@@ -37,19 +39,29 @@ class NeasdenGroup_audio implements NeasdenGroup {
     
     foreach ($group as $line) {
     
-      @list ($href, $alt) = explode (' ', trim ($line['class-data'][1]), 2); // usafe
-      if (!$alt) $alt = basename ($href);
-      $zoneid = rand (1000, 9999);
+      if ($line['class'] == 'audio') {
+        @list ($filebasename, $alt) = explode (' ', $line['content'], 2);
+        if (!$alt) $alt = basename ($filebasename);
+        $href = $myconf['src-prefix'] . $myconf['folder'] . $filebasename;
+      }
   
-      $player_html = '<a '.
-        'class="jouele" '.
-        'href="'. $href .'" '.
-        'title="'. $downloadstr .'"'.
-      '>'. $alt .'</a>'."\n";
+      if ($line['class'] == 'audio-play') {
+        @list ($href, $alt) = explode (' ', trim ($line['class-data'][1]), 2); // usafe
+        if (!$alt) $alt = basename ($href);
+      }
+    
+      if ($line['class'] == 'audio' or $line['class'] == 'audio-play') {
+  
+        $player_html = '<a '.
+          'class="jouele" '.
+          'href="'. $href .'" '.
+        '>'. $alt .'</a>'."\n";
+        
+        $player_html = n__isolate ($player_html);
+    
+        $result .= $player_html;
       
-      $player_html = $this->neasden->isolate ($player_html);
-  
-      $result .= $player_html;
+      }
       
     }
   
