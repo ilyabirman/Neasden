@@ -13,6 +13,7 @@ error_reporting (E_ALL);
 //*
 ini_set('display_errors', 1);
 error_reporting(~0);
+define ('USER_FOLDER', '');
 //*/
 
 $text = file_get_contents ('tests/test-14.txt');

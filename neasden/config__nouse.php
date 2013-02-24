@@ -45,6 +45,12 @@ $_neasden_config = array (
       'scaled-img-link-to-original' => true,
       'scaled-img-link-to-original-class' => 'link-to-big-picture',
     ),
+    'fotorama' => array (
+      'src-prefix' => 'http://neasden/',
+      'folder' => 'pictures/',
+      'css-class' => 'txt-picture', // see also var csscPrefix in scaleimage.js
+      'max-width' => '768',
+    ),
     'table' => array (
       'css-class' => 'txt-table',
     ),
@@ -57,6 +63,10 @@ $_neasden_config = array (
       'css-class' => 'txt-video',
       'width' => 768,
       'height' => 480,
+    ),
+    'audio' => array (
+      'src-prefix' => 'http://neasden/',
+      'folder' => 'audio/',
     ),
   ),
   

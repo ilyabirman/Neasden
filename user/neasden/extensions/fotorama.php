@@ -14,7 +14,9 @@ class NeasdenGroup_fotorama implements NeasdenGroup {
   }
 
   function render ($group, $myconf) {
-  
+#echo '<pre>';
+#print_r($group);
+#  die;
     $this->neasden->require_link (@$_neasden_config['library']. 'jquery/jquery.js');
     
     $this->neasden->require_link (USER_FOLDER .'library/fotorama/fotorama.css');
@@ -42,6 +44,7 @@ class NeasdenGroup_fotorama implements NeasdenGroup {
         $this->neasden->resource_detected ($filebasename);
         
         $filename = $myconf['folder'] . $filebasename;
+//        echo $filename;
         $size = getimagesize ($filename);
         list ($width, $height) = $size;
     

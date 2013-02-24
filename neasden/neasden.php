@@ -1,6 +1,6 @@
 <?
 
-// Neasden v2.02
+// Neasden v2.03
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -68,6 +68,12 @@ class Neasden {
         'scaled-img-link-to-original' => true,
         'scaled-img-link-to-original-class' => 'link-to-big-picture',
       ),
+      'fotorama' => array (
+        'src-prefix' => 'http://neasden/',
+        'folder' => 'pictures/',
+        'css-class' => 'txt-picture', // see also var csscPrefix in scaleimage.js
+        'max-width' => '768',
+      ),
       'table' => array (
         'css-class' => 'txt-table',
       ),
@@ -80,6 +86,10 @@ class Neasden {
         'css-class' => 'txt-video',
         'width' => 768,
         'height' => 480,
+      ),
+      'audio' => array (
+        'src-prefix' => 'http://neasden/',
+        'folder' => 'audio/',
       ),
     ),
      
@@ -483,7 +493,8 @@ class Neasden {
       return '';
   
     } elseif (isset ($this->extensions[$class])) {
-      
+    
+
       return $this->extensions[$class]['instance']->render ($group, @$this->config['groups.classes'][$class]);
   
     } else {
