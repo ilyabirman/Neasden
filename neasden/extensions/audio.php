@@ -9,8 +9,7 @@ class NeasdenGroup_audio implements NeasdenGroup {
 
     $neasden->define_line_class ('audio', '.*\.(mp3)(?: +(.+))?');
     $neasden->define_line_class ('audio-play', '(?:\[play\])(.*)');
-    $neasden->define_group ('audio', '(-audio-)|(-audio-play-)');
-
+    $neasden->define_group ('audio', '(?:(-audio-)|(-audio-play-))');
   }
 
   function detect_line ($line, $myconf) {
