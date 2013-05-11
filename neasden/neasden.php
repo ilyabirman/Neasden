@@ -1,6 +1,6 @@
 <?
 
-// Neasden v2.03
+// Neasden v2.04
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -23,6 +23,9 @@ class Neasden {
   public $profile_name = '';
   public $explanation = '';
   public $resources_detected = array ();  
+  
+  public $language_data = array (
+  );
   
   public $config = array (
     '__overload' => 'user/neasden/',
@@ -299,13 +302,12 @@ class Neasden {
   // 
   
   function process_double_brackets_contents_callback ($params) {
-    global $_neasden_language;
   
     $text = @$params[1] . @$params[2] . @$params[3] . @$params[4];
     @list ($href, $text) = explode (' ', $text, 2);
     if (!@$text) $text = $href;
   
-    $quotes = $_neasden_language['quotes'];
+    $quotes = $this->$language_data['quotes'];
     $quotes_left = array ('"', $quotes[0], $quotes[1]);
     $quotes_right = array ('"', $quotes[2], $quotes[3]);
     $hang_left = mb_substr ($text, 0, 1);
@@ -335,12 +337,11 @@ class Neasden {
   // no html entities, just actual utf-8 chars
   
   function typography ($text) {
-    global $_neasden_language;
-  
+    
     $nbsp = " ";
   
-    $quotes = $_neasden_language['quotes'];
-    $dash = $_neasden_language['dash'];
+    $quotes = $this->$language_data['quotes'];
+    $dash = $this->$language_data['dash'];
   
     //$span_tsp = $this->isolate ('<span class=\"tsp\">'. $nbsp .'</span>');
     $nobr_in = $this->isolate ('<nobr>');
@@ -385,10 +386,10 @@ class Neasden {
   
     // replacements
     if (1) {
-      if (array_key_exists ('replacements', $_neasden_language)) {
+      if (array_key_exists ('replacements', $this->$language_data)) {
         $text = str_replace (
-          array_keys ($_neasden_language['replacements']),
-          array_values ($_neasden_language['replacements']),
+          array_keys ($this->$language_data['replacements']),
+          array_values ($this->$language_data['replacements']),
           $text
         );
       }
@@ -413,7 +414,7 @@ class Neasden {
     // unions and prepositions
     if (1) {
       //die ($text);
-      if ($nobreak_fw = $_neasden_language['with-next']) {
+      if ($nobreak_fw = $this->$language_data['with-next']) {
         $text = preg_replace ( // usafe
           "/".
           "(?<!\pL|\-)".    // not-a—Unicode-letter-or-dash lookbehind
@@ -426,7 +427,7 @@ class Neasden {
         );
       }
   
-      if ($nobreak_bw = $_neasden_language['with-prev']) {
+      if ($nobreak_bw = $this->$language_data['with-prev']) {
         $text = preg_replace ( // usafe
           "/".
           " ".             // a space
@@ -959,9 +960,6 @@ class Neasden {
   
   public function format ($input = null) {
   
-    global $_neasden_config, $_neasden_intent, $_neasden_language;
-    $_neasden_config = $this->config;
-
     if ($input !== null) $this->input = $input;
     
     $last_mb_encoding = mb_internal_encoding ();
@@ -969,13 +967,11 @@ class Neasden {
 
     $profile = $this->profile_name or $profile = '';
     
-    if ($this->should_explain) $_neasden_intent = 'explain';
-    
     if ($profile and $this->config['__profiles'][$profile]) {
       $this->config = array_merge ($this->config, $this->config['__profiles'][$profile]);
     }
     
-    $_neasden_language = require 'languages/'. $this->config['language'] .'.php';
+    $this->$language_data = require 'languages/'. $this->config['language'] .'.php';
 
     $this->output = '';
     
