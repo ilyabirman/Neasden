@@ -1,6 +1,6 @@
 <?
 
-// Neasden v2.04
+// Neasden v2.05
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -25,89 +25,6 @@ class Neasden {
   public $resources_detected = array ();  
   
   public $language_data = array (
-  );
-  
-  public $config = array (
-    '__overload' => 'user/neasden/',
-     
-    '__profiles' => array (
-      'simple' => array (
-        'html.on' => false,
-        'banned-groups' => array (
-          'picture', 'fotorama', 'audio', 'youtube', 'vimeo'
-        ),
-      ),
-      'kavychki' => array (
-        'html.on' => true,
-        'groups.on' => false,
-        'typography.markup' => false,
-        'typography.autohref' => false,
-      ),
-    ),
-       
-    'library' => '',
-    
-    'language' => 'ru',
-    
-    'html.on' => true,
-    'html.elements.opaque' => 'div p ul ol li blockquote table pre textarea',
-    'html.elements.sacred' => 'object embed iframe script style code',
-    
-    'groups.on' => true,
-    'groups.headings.char'  => '#',
-    'groups.headings.plus'  => 0,
-    'groups.quotes.char' => '>',
-    'groups.lists.chars' => array ('-', '*'),
-    'groups.generic-css-class' => 'txt-generic-object',
-    'groups.classes' => array (
-      'picture' => array (
-        'src-prefix' => 'http://neasden/',
-        'folder' => 'pictures/',
-        'css-class' => 'txt-picture', // see also var csscPrefix in scaleimage.js
-        'max-width' => '768',
-        'scaled-img-folder' => 'pictures/scaled/',
-        //'scaled-img-provider' => '@scale-image:',
-        'scaled-img-extension' => 'scaled.jpg',
-        'scaled-img-link-to-original' => true,
-        'scaled-img-link-to-original-class' => 'link-to-big-picture',
-      ),
-      'fotorama' => array (
-        'src-prefix' => 'http://neasden/',
-        'folder' => 'pictures/',
-        'css-class' => 'txt-picture', // see also var csscPrefix in scaleimage.js
-        'max-width' => '768',
-      ),
-      'table' => array (
-        'css-class' => 'txt-table',
-      ),
-      'youtube' => array (
-        'css-class' => 'txt-video',
-        'width' => 768,
-        'height' => 480,
-      ),
-      'vimeo' => array (
-        'css-class' => 'txt-video',
-        'width' => 768,
-        'height' => 480,
-      ),
-      'audio' => array (
-        'src-prefix' => 'http://neasden/',
-        'folder' => 'audio/',
-      ),
-    ),
-     
-    'typography.on' => true,
-    'typography.markup' => true,
-    'typography.autohref' => true,
-    'typography.cleanup' => array (
-      '&nbsp;' => ' ',
-      '&laquo;' => '«',
-      '&raquo;' => '»',
-      '&bdquo;' => '„',
-      '&ldquo;' => '“',
-      '&rdquo;' => '”',
-    ),
-  
   );
   
   private $groups = array (
@@ -149,6 +66,8 @@ class Neasden {
     
     $dir = rtrim (dirname (__FILE__), '/'). '/'; // usafe
     $dir = str_replace ($_SERVER['DOCUMENT_ROOT'] .'/'. $host_dir, '', $dir);
+    
+    $this->config = require ('config.php');
     
     $extensions_folders = array (
       $dir. 'extensions',
@@ -307,7 +226,7 @@ class Neasden {
     @list ($href, $text) = explode (' ', $text, 2);
     if (!@$text) $text = $href;
   
-    $quotes = $this->$language_data['quotes'];
+    $quotes = $this->language_data['quotes'];
     $quotes_left = array ('"', $quotes[0], $quotes[1]);
     $quotes_right = array ('"', $quotes[2], $quotes[3]);
     $hang_left = mb_substr ($text, 0, 1);
@@ -340,8 +259,8 @@ class Neasden {
     
     $nbsp = " ";
   
-    $quotes = $this->$language_data['quotes'];
-    $dash = $this->$language_data['dash'];
+    $quotes = $this->language_data['quotes'];
+    $dash = $this->language_data['dash'];
   
     //$span_tsp = $this->isolate ('<span class=\"tsp\">'. $nbsp .'</span>');
     $nobr_in = $this->isolate ('<nobr>');
@@ -386,10 +305,10 @@ class Neasden {
   
     // replacements
     if (1) {
-      if (array_key_exists ('replacements', $this->$language_data)) {
+      if (array_key_exists ('replacements', $this->language_data)) {
         $text = str_replace (
-          array_keys ($this->$language_data['replacements']),
-          array_values ($this->$language_data['replacements']),
+          array_keys ($this->language_data['replacements']),
+          array_values ($this->language_data['replacements']),
           $text
         );
       }
@@ -414,7 +333,7 @@ class Neasden {
     // unions and prepositions
     if (1) {
       //die ($text);
-      if ($nobreak_fw = $this->$language_data['with-next']) {
+      if ($nobreak_fw = $this->language_data['with-next']) {
         $text = preg_replace ( // usafe
           "/".
           "(?<!\pL|\-)".    // not-a—Unicode-letter-or-dash lookbehind
@@ -427,7 +346,7 @@ class Neasden {
         );
       }
   
-      if ($nobreak_bw = $this->$language_data['with-prev']) {
+      if ($nobreak_bw = $this->language_data['with-prev']) {
         $text = preg_replace ( // usafe
           "/".
           " ".             // a space
@@ -461,7 +380,6 @@ class Neasden {
   // should be typographed with this function
   
   private function process_opaque_fragment ($text) {
-    global $_neasden_tag_machine;
   
     // replace &laquo; with normal quote characters
     $text = str_replace (
@@ -971,7 +889,7 @@ class Neasden {
       $this->config = array_merge ($this->config, $this->config['__profiles'][$profile]);
     }
     
-    $this->$language_data = require 'languages/'. $this->config['language'] .'.php';
+    $this->language_data = require 'languages/'. $this->config['language'] .'.php';
 
     $this->output = '';
     

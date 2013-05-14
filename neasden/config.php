@@ -1,6 +1,4 @@
-<?
-
-$_neasden_config = array (
+<? return array (
 
   '__overload' => 'user/neasden/',
   
@@ -82,7 +80,4 @@ $_neasden_config = array (
     '&rdquo;' => '”',
   ),
 
-  
-);
-
-?>
+); ?>
