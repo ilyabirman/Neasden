@@ -16,14 +16,13 @@ error_reporting(~0);
 define ('USER_FOLDER', '');
 //*/
 
-$text = file_get_contents ('tests/test-14.txt');
+$text = file_get_contents ('tests/test-16-metromap.txt');
 $res = '';
 
 function stopwatch () {
   list ($usec, $sec) = explode (' ', microtime ());
   return ((float) $usec + (float) $sec);
 }
-
 
 $stopwatch = stopwatch ();
 
@@ -37,12 +36,11 @@ $inputarray = array (
 if (!include 'neasden/neasden.php') die ('neasden init failed');
 $Nn = new Neasden;
 $Nn->should_explain = true;
-$Nn->profile_name = '';
+$Nn->profile_name = 'kavychki';
+
 $res = $Nn->format ($text);
+
 //$res = $Nn->explanation;
-$resources = $Nn->resources_detected;
-$links = $Nn->links_required;
-$groups = $Nn->groups_used;
 
 $stopwatch = stopwatch () - $stopwatch;
 
@@ -55,7 +53,7 @@ $stopwatch = stopwatch () - $stopwatch;
 
 <?
   
-  foreach ($links as $link) {
+  foreach ($Nn->links_required as $link) {
   
     if (substr ($link, -3) == '.js') {
       echo '<script src="js/'. $link .'"></script>'. "\n";
@@ -89,15 +87,19 @@ $stopwatch = stopwatch () - $stopwatch;
 
 <pre>
 Resources:
-<? print_r ($resources); ?>
+<? print_r ($Nn->resources_detected); ?>
 
 Links:
-<? print_r ($links); ?>
+<? print_r ($Nn->links_required); ?>
 
 Groups:
-<? print_r ($groups); ?>
+<? print_r ($Nn->groups_used); ?>
 
 </pre>
+
+<hr>
+
+<?= $stopwatch ?>
 
 </body>
 </html>

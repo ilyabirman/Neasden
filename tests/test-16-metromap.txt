@@ -1,0 +1,476 @@
+<html>
+<head>
+
+<meta charset="utf-8" />
+
+
+<title>Схема московского метро Ильи Бирмана</title>
+<link rel="shortcut icon" href="http://ibs8x/favicon.ico" />
+
+  
+
+
+<script src="http://ibs8x/js/jquery/jquery-1.7.1.min.js"></script>
+<script src="http://ibs8x/js/pseudohover/pseudohover.js"></script>
+<script src="http://ibs8x/js/share/share.js"></script>
+<script src="http://ibs8x/js/jouele/jouele.js"></script>
+<script src="http://ibs8x/js/jouele/jquery.jplayer.min.js"></script>
+<script src="http://ibs8x/js/fly/fly.js"></script>
+
+<link rel="stylesheet" href="http://ibs8x/js/jouele/jouele.css" />
+
+
+<link rel="stylesheet" href="http://ibs8x/css/main.css" />
+
+</head>
+
+<body
+    >
+
+<div class="frame">    
+
+
+
+
+<div class="stripe"></div>
+<!--
+
+<div class="header">
+  <div class="header-title">
+                <a href="http://ibs8x/">Илья Бирман</a>
+            </div>
+</div>
+-->
+
+<div class="menu">
+  
+  <div class="menu-home">
+    <a class="menu-item" href="http://ibs8x/"><i><u>Илья Бирман</u></i></a>  </div>  
+
+  <div class="menu-sections">
+    <!--
+    <span class="menu-item" style="margin-top: 0; padding-top: 0;"><img src="/i/ib-50px.png" width="32" height="32" alt="Илья Бирман" /></span>
+    -->
+    <a class="menu-item menu-item-selected" href="http://ibs8x/projects/"><i><u>Проекты</u></i></a><a class="menu-item" href="http://ibs8x/music/"><i><u>Музыка</u></i></a><a class="menu-item" href="http://ibs8x/world/"><i><u>Мир</u></i></a><a class="menu-item" href="/meanwhile/"><i><u>Блог</u></i></a><span class="menu-item-suffix">Одноразовые игры</span>  </div>
+
+  <div class="menu-languages">
+                  <span class="menu-item menu-item-selected"><i>ru</i></span>
+                        <a class="menu-item" href="http://ibs8x/english/projects/moscow-metro/"><i><u>en</u></i></a>
+            </div>
+
+  <div class="menu-end"></div>
+</div>
+
+<!--
+<div class="stripe" style="height: 1px; background: #ccc; margin: 0 0 32px"></div>
+-->
+
+
+  <div class="page-title">
+  <h1>Схема московского метро</h1>
+  <div class="grouplings"><a href="http://ibs8x/projects/moscow-metro-old/">Версия 2007...2012</a> &nbsp;&nbsp;&nbsp; <a href="http://ibs8x/projects/moscow-metro-reloaded/">Проект «Перезагрузка»</a> &nbsp;&nbsp;&nbsp; <span class="current">Версия 2013</span></div>		
+</div>
+
+<div class="main">
+
+  <div class="columns-wrapper-wrapper">
+  <div class="columns-wrapper">
+  
+    <div class="column column-x3 column-story">
+
+<!--
+      <p style="background: #fde08f; padding: 10px; margin-left: -10px; margin-right: -10px;"><span></span></p>
+    -->
+  
+      <p>Задача: разработать лучшую схему московского метро в соответствии с пожеланиями москвичей и рекомендациями Департамента транспорта.</p>
+
+      <p>Новая версия информативна, проста и полезна:</p>
+    </div>
+  
+    <div class="column column-x1">
+<!--
+      <p style="background: #e0f0e0; padding: 4px 10px; border-radius: 4px">
+        <span style="font-size: 18px">
+          <a href="http://dt.mos.ru/metro/" class="">Проголосовать за схему</span></a>
+        </span>
+      </p>
+
+      <p style="margin-top: 1.5em">-->
+      <p>
+        <span>
+          <a class="site-link" href="/download/ilya-birman-mosmetro-k-2012-3.787.pdf"><img src="/projects/moscow-metro/i/pdf-icon.png"
+        alt="" class="site-icon" /> Скачать <span class="small-caps">ПДФ</span></a>
+        </span>
+      </p>
+    </div>
+    
+    <div class="column-break"></div>
+  
+  </div>
+  </div>
+
+  <p><img src="/projects/moscow-metro/i/full.png" width="920" height="760" alt="Лучшая схема метро Москвы" style="margin: 0; border: 1px solid #ddd; margin: -1px 0 0 -1px; box-shadow: 0 10px 30px #f6f0e9"/></p>
+  
+  <br>
+  <h2>Три принципа</h2>
+  <br>
+  
+  <table width="920" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="center">
+  <td width="290" align="center"><p><img src="/projects/moscow-metro/i/simple.png" alt="" /></p></td>
+  <td width="25"></td>
+  <td width="290" align="center"><p><img src="/projects/moscow-metro/i/aimed.png" alt="" /></p></td>
+  <td width="25"></td>
+  <td width="290" align="center"><p><img src="/projects/moscow-metro/i/no-shit.png" alt="" /></p></td>
+  </tr>
+  <tr valign="top" height="10">
+  </tr>
+  <tr valign="top">
+  <td width="290">
+    <h3>Проще, а не сложнее</h3>
+    <p>Смысл не пострадал.</p>
+  </td>
+  <td width="25"></td>
+  <td width="290">
+    <h3>Кольцевая в центре</h3>
+    <p>Символ московского метро — строго в центре схемы.</p>
+    </td>
+  <td width="25"></td>
+  <td width="290">
+    <h3>Без мусора</h3>
+    <p>Только то, что нужно пассажиру в вагоне.</p>
+  </td>
+  </tr>
+  </table>
+
+  <br>
+  <h2>Заголовок</h2>
+  <p>Упрощение касается каждого элемента и начинается с заголовка.</p>
+  <p><img src="/projects/moscow-metro/i/title-before.png" style="margin: 0 -16px" ></p>
+  <p>Пассажир и так видит, что перед ним схема линий. Вместо пустых слов — короткий заголовок и время работы:</p>
+
+  <p align="center"><img src="/projects/moscow-metro/i/title-mine.png" wid_th="920" hei_ght="940" alt="Лучшая схема метро Москвы" style="margin: 40px" /></p>
+
+
+  <br>
+  
+  <h2>Библиотека имени Ленина</h2>
+
+  <p>Особенностям этого перехода между четырьмя станциями принято придавать много значения, но в нём нет ничего страшного. Хоть переход с <span style="color: #39afdf">Филёвской</span> линии на <span style="color: #707068">Серпуховско-Тимирязевскую</span> и не прямой, в другом месте между ними не перейти.</p>
+
+  <p>Для изображения этой особенности используют графические конструкции одна монструознее другой:</p>
+  
+  <div style="position: relative">
+    <table width="920" border="0" cellpadding="0" cellspacing="0">
+    <tr valign="top">
+    <td width="290">
+      <div style="position: relative">
+        <img src="/projects/moscow-metro/i/too-hard-1.png" alt="" width="290" height="200" style="outline: 1px #ddd solid" />
+      </div>
+    </td>
+    <td width="25"></td>
+    <td width="290">
+      <div style="position: relative">
+        <img src="/projects/moscow-metro/i/too-hard-2.png" alt="" width="290" height="200" style="outline: 1px #ddd solid" />
+      </div>
+    </td>
+    <td width="25"></td>
+    <td width="290">
+      <div style="position: relative">
+        <img src="/projects/moscow-metro/i/too-hard-3.png" alt="" width="290" height="200" style="outline: 1px #ddd solid" />
+      </div>
+    </td>
+    </tr>
+    </table>
+    <div style="position: absolute; left: -20px; top: -20px; width: 960px; height: 240px; background: url('/projects/moscow-metro/i/noo.png') center center no-repeat; "></div>
+  </div>
+  
+  <br>
+
+  <p>Важно компактно, правильно и однозначно показать переход, не превращая его в лабиринт:</p>
+  
+  <p><img src="/projects/moscow-metro/i/library-transfer.png" style="outline: 1px #ddd solid" /></p>
+  
+  <br>
+  
+  <p>Ещё нюанс: здесь переход с <span style="color: #d9392f">Сокольнической</span> на <span style="color: #2a6cbf">Арбатско-Покровскую</span> линию короче, чем на соседнем «Охотном Ряду» (справа сверху; там придётся идти через «Театральную»), поэтому в этом месте красная и синяя ветки проходят вплотную.</p>
+
+  <br>
+  <h2>Алфавитный указатель</h2>
+  
+  <div class="columns-wrapper-wrapper">
+  <div class="columns-wrapper">
+  
+    <div class="column column-x3 column-story">
+      <p>Традиционно с указателями используют нумерацию квадратов координатными парами вроде E2 и B7. Чтобы ей воспользоваться, нужно посмотреть в список, запомнить буквенно-цифровой код, потом найти саму сетку на схеме и понять, по какой стороне у неё буквы, а по какой — цифры, потом уже перейти к поиску станции в нужном квадрате. Но структура московского метро с кольцевой линией уже является прекрасной системой отсчёта.</p>
+      <p>Чтобы помочь найти станцию и не засорять схему сеткой, достаточно направить взгляд пассажира:</p>
+    </div>
+  
+    <div class="column column-x1">
+      <img src="/projects/moscow-metro/i/no-grid.png" align="right">
+    </div>
+    
+    <div class="column-break"></div>
+  
+  </div>
+  </div>
+
+  <p><img src="/projects/moscow-metro/i/sokolniki.png" wid_th="920" hei_ght="940" alt="Лучшая схема метро Москвы" /></p>
+
+  <br>
+
+  <p><img src="/projects/moscow-metro/i/index.png" wid_th="920" hei_ght="940" alt="Лучшая схема метро Москвы" /></p>
+  
+  <br>
+  <p>Попробуйте сами отыскать эти станции на схеме:</p>
+
+</div>
+
+<div align="center" ><img src="/projects/moscow-metro/i/diagram-only@2x.png" width="1000" hei_ght="1004" alt="Лучшая схема метро Москвы" /></div>
+
+<div class="main">
+  <br>
+  <p>Стрелка не требует системы координат, потому прекрасно работает и в отрыве от схемы. Так, указание: «Магазин на Кантемировской <img src="/projects/moscow-metro/i/arrow-autozavodskaya.png" valign="baseline" style="position: relative; margin: 0 .17em -1px 0">» сразу даёт представление о части города. Впоследствии для поиска станции на схеме к списку даже не придётся обращаться.</p>
+
+  <br>
+  <h2>Пересадки</h2>
+  
+  <p>Соединённые станции иногда имеют разные названия, иногда — общее, и есть станции «2 + 1». Когда кружков и подписей разное количество, соотнести их трудно или невозможно:</p>
+  
+  <div style="position: relative">
+    <table width="920" border="0" cellpadding="0" cellspacing="0">
+    <tr valign="top">
+    <td width="290">
+      <div style="position: relative">
+        <img src="/projects/moscow-metro/i/2-plus-1-very-old.png" alt="" width="290" height="200" style="outline: 1px #ddd solid" />
+      </div>
+    </td>
+    <td width="25"></td>
+    <td width="290">
+      <div style="position: relative">
+        <img src="/projects/moscow-metro/i/2-plus-1-old.png" alt="" width="290" height="200" style="outline: 1px #ddd solid" />
+      </div>
+    </td>
+    <td width="25"></td>
+    <td width="290">
+      <div style="position: relative">
+        <img src="/projects/moscow-metro/i/2-plus-1.png" alt="" width="290" height="200" style="outline: 1px #ddd solid" />
+      </div>
+    </td>
+    </tr>
+    </table>
+    <div style="position: absolute; left: -20px; top: -20px; width: 960px; height: 240px; background: url('/projects/moscow-metro/i/noo.png') center center no-repeat; "></div>
+  </div>
+  <br>
+  
+  <p>Такое обозначение понимают только москвичи, которые и так хорошо знают устройство таких узлов, и помнят, что жёлтая и оранжевая станции — Третьяковские, а зелёная — Новокузнецкая. Приезжие безуспешно ищут недостающие подписи.</p>
+
+  <p>Решение: «один кружок — одно название»:</p>
+  
+  <img src="/projects/moscow-metro/i/one-bull-one-name.png" style="outline: 1px #ddd solid" /></p>
+  <br>
+
+  <p>При такой системе названия станций читаются однозначно. При этом если станция стоит на пересечении линий, очевидно, что там пересадка. Нужно выйти из поезда и следовать по указателям.</p>
+  
+  <br>
+  <br>
+  <h2>Вокзалы и аэропорты</h2>  
+
+  <p>Второе по важности после линий метро — вокзалы и аэропорты. Нельзя допустить, чтобы кто-то опоздал на рейс только из-за того, что запутался в схеме. Каждая станция с вокзалом отмечена узнаваемым паровозиком <img src="/projects/moscow-metro/i/nanotrain.png" style="margin: 0 .17em" /> как на дорожных знаках.</p>
+  
+
+  <table width="920" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+  <td width="605"><p><img src="/projects/moscow-metro/i/aeroexpress-simple.png" wid_th="920" hei_ght="940" alt="Лучшая схема метро Москвы" style="border: 1px #ddd solid" /></p></td>
+  <td width="25"></td>
+  <td width="290">
+    <p>Аэроэкспресс — единственные железнодорожные линии на схеме, и их сразу видно.</p>
+    <p>Сложная траектория домодедовского экспресса выпрямлена, чтобы ничему не мешать.</p>
+    <p>Линии электричек бессмысленны без знания о маршрутах и расписаниях.</p>
+  </td>
+  </tr>
+  </table>
+  
+  <br>
+  
+  <table width="920" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+  <td width="605">
+    <p><img src="/projects/moscow-metro/i/svo-terminals.png" alt="" width="605" height="280" style="outline: 1px #ddd solid" /></p>
+  </td>
+  <td width="25"></td>
+  <td width="290">
+     <p>В Шереметьево от Планерной и Речного вокзала ходят автобусы, но они обходят терминалы в разном порядке.</p>
+     <p>Чтобы не изображать запутанные схемы их движения, достаточно перечислить терминалы с учётом этого.</p>
+  </td>
+  </tr>
+  </table>
+  <br>
+    
+  <br>
+  <h2>Скоростные автобусы</h2>  
+  <p>Информация об этих автобусах полезна, но вторична по отношению к линиям метро, вокзалам и аэропортам. Внимательное изучение их маршрутов помогает навести чистоту и в них:</p>
+  
+  <table width="920" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+  <td width="605"><p><img src="/projects/moscow-metro/i/bus-noise.png" alt="" width="605" height="320" style="outline: 1px #ddd solid" /></p></td>
+  <td width="25"></td>
+  <td width="290">
+    <p>Нет смысла загромождать схему пиктограммами около каждой остановки — достаточно одной на весь маршрут.</p>
+  </td>
+  </tr>
+  </table>
+  <br>
+  
+  <table width="920" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+  <td width="290"><p><img src="/projects/moscow-metro/i/bus-average-mine.png" alt="" width="290" height="160" style="outline: 1px #ddd solid" /></p></td>
+  <td width="25"></td>
+  <td width="290"><p><img src="/projects/moscow-metro/i/bus-minimal-mine.png" alt="" width="290" height="160" style="outline: 1px #ddd solid" /></p></td>
+  <td width="25"></td>
+  <td width="290"><p>Показана только часть маршрута рядом с метро. Если у метро лишь одна остановка, автобусная линия даже не изображается.</p></td>
+  </tr>
+  </table>
+  <br>
+ 
+  <br>
+  <h2>Цветовосприятие</h2>  
+  
+  <p>Схема устроена так, чтобы хорошо читаться людьми с проблемами цветовосприятия. Даже в чёрно-белом виде линии не путаются друг с другом благодаря тому, что изгибы вынесены из-под кружков станций на видное место:</p>
+  
+  <p><img src="/projects/moscow-metro/i/bw.png" alt="" style="outline: 1px #ddd solid" /></p>
+
+  <br>
+  <h2>Детали</h2>  
+  
+  <p>Каждая деталь сделана не для галочки, а с заботой о людях и чтобы приносить пользу:</p>
+  
+  <table width="920" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+  <td width="290"><p><img src="/projects/moscow-metro/i/latin-1905.png" alt="" width="290" height="200" style="outline: 1px #ddd solid" /></p></td>
+  <td width="25"></td>
+  <td width="290"><p><img src="/projects/moscow-metro/i/latin-vdnh.png" alt="" width="290" height="200" style="outline: 1px #ddd solid" /></p></td>
+  <td width="25"></td>
+  <td width="290"> <p>Важный сценарий использования латиницы — расслышать объявление станции на слух. Стоит помочь иностранцам, здесь нечего стесняться.</p></td>
+  </tr>
+  </table>
+  <br>
+  
+  <table width="920" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+  <td width="605"><p><img src="/projects/moscow-metro/i/butovo.png" wid_th="920" hei_ght="940" alt="Лучшая схема метро Москвы" style="outline: 1px #ddd solid" /></p></td>
+  <td width="25"></td>
+  <td width="290">
+    <p>Нет смысла выделять <span style="color: #7c99d4">Бутовскую линию</span> начертанием, термином «линия лёгкого метро», или особым индексом «Л1». Это лишь вызовет вопросы: Почему эта линия нарисована иначе? Как перейти, где оплатить проезд?</p>
+    <p>Это обычная линия, просто маленькая и идёт над землёй.</p>
+  </td>
+  </tr>
+  </table>
+  <br>
+  
+  <table width="920" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+  <td width="605"><p><img src="/projects/moscow-metro/i/soon.png" wid_th="920" hei_ght="940" alt="Лучшая схема метро Москвы" style="outline: 1px #ddd solid" /></p></td>
+  <td width="25"></td>
+  <td width="290">
+    <p>Имеет смысл показывать лишь те строящиеся линии, которые откроются скоро. Вместо легенды с бессодержательным текстом «Строящиеся линии» полезно написать, когда именно планируется открытие.</p>
+  </td>
+  </tr>
+  </table>
+  <br>
+  
+  <table width="920" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+  <td width="605"><p><img src="/projects/moscow-metro/i/no-airport.png" wid_th="920" hei_ght="940" alt="Лучшая схема метро Москвы" style="outline: 1px #ddd solid" /></p></td>
+  <td width="25"></td>
+  <td width="290">
+    <p>Станция «Аэропорт» называется так по бывшему аэродрому на Ходынском поле. Чтобы никого не сбить с толку, стоит подсказать, что сегодня никакого аэропорта там нет.</p>
+  </td>
+  </tr>
+  </table>
+  
+<!--  
+  <br>
+  <br>
+  <h2>Как выбрать лучшую схему?</h2>
+  <p>Представьте себя пассажиром и найдите ответы на те вопросы о машруте, которые вам могут прийти в голову в вагоне.</p>
+-->
+  
+  <p> </p>
+  
+
+  <p class="social-buttons"><span id="share-element"  share-url="http://ilyabirman.ru/projects/moscow-metro/"></span></p>
+  <div class="social-buttons-end"></div>
+  
+  <br>
+
+</div>
+
+
+<div class="secondary">
+  
+  <h3>О процессе и о метро в блоге</h3>
+  
+  <table border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+  <td width="290">
+    <p><a href="http://ilyabirman.ru/meanwhile/all/borovickiy-sad-imeni-arbatskoy/">Боровицкий сад имени Арбатской</a></p>
+    <p><a href="http://ilyabirman.ru/meanwhile/all/post-nenavisti-k-koordinatnym-setkam/">О ненависти к координатным сеткам</a></p>
+    <p><a href="http://ilyabirman.ru/meanwhile/all/metro-map-latin/">О латинице на схеме метро</a>
+    и <a href="http://ilyabirman.ru/meanwhile/all/eschyo-para-slov-pro-latinicu/">ещё о латинице</a>
+    <p><a href="http://ilyabirman.ru/meanwhile/all/black-and-white-diagrams/">Чёрно-белые схемы и проблемы дальтоников</a></p>
+    <p><a href="http://ilyabirman.ru/meanwhile/all/metro-line-curves/">Об изгибах линий</a></p>
+    <p><a href="http://ilyabirman.ru/meanwhile/all/lyublinskaya-ili-dnyom-sognyom-nochyu-razognyom/">Люблинская, или Днём согнём, ночью разогнём</a></p>
+    <p><a href="http://ilyabirman.ru/meanwhile/all/shema-versii-3-732-i-vsyakie-nyashki/">О строящихся линиях</a></p>
+  </td>
+  <td width="25"></td>
+  <td width="290">
+    <p><a href="http://ilyabirman.ru/meanwhile/all/chyorny-cvet-svoboden/">Чёрный цвет свободен</a>
+    <p><a href="http://ilyabirman.ru/meanwhile/all/transport-diagrams-and-geography/">О географии на транспортных схемах</a>
+    <p><a href="http://ilyabirman.ru/meanwhile/all/lyogkoe-metro/">Об избыточности термина «Лёгкое метро»</a>
+    <p><a href="http://ilyabirman.ru/meanwhile/all/metro-line-numbers/">О нумерации линий метро</a>
+    <p><a href="http://ilyabirman.ru/meanwhile/all/park-kultury/">Парк культуры</a>
+    <p><a href="http://ilyabirman.ru/meanwhile/2011/06/01/2/">Извинения менеджера Джубели-лайн</a>
+  </td>
+  </tr>
+  </table>
+  <br>  
+
+  <p><a href="http://ibs8x/projects/moscow-metro-reloaded/">Перезагрузка</a> — ещё один мой проект, связанный с метро.</p>
+  
+
+</div>
+
+<div class="footer">
+
+  <div class="footer-copyright">
+                <p>© 2012<span class="ellipsis">...</span>2013</p>
+    
+  </div>
+  <!--
+  -->
+  
+  <div class="footer-email">
+
+          <p>Эл. почта: <a href="mailto:ilyabirman@ilyabirman.ru">ilyabirman@ilyabirman.ru</a></p>
+      
+    
+    
+  </div>
+
+  
+</div>
+
+
+
+
+
+<!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter155348 = new Ya.Metrika({id:155348, clickmap:true, webvisor:true}); } catch(e) {} }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/155348" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->
+
+
+<!-- gpt = PGT -->
+
+
+</body>
+
+</html>
