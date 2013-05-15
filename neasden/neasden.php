@@ -1,6 +1,6 @@
 <?
 
-// Neasden v2.05
+// Neasden v2.06
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -42,6 +42,7 @@ class Neasden {
   private $required_line_classes = array ();
   private $saved_tags = array ();
   private $extensions = array ();
+  private $stopwatch = 0;
 
   const RX_SPECIAL_CHAR = "\x1";
   const RX_SPECIAL_SEQUENCE_LENGTH = 6;
@@ -82,6 +83,12 @@ class Neasden {
       }
     }
     
+  }
+  
+  
+  function stopwatch () {
+    list ($usec, $sec) = explode (' ', microtime ());
+    return ((float) $usec + (float) $sec);
   }
   
   
@@ -658,7 +665,8 @@ class Neasden {
       'comment' => array (),
     );
   
-    $l = mb_strlen ($text);
+    // raw length
+    $l_raw = strlen ($text);
     $r = '';
     $state = 'text';
     $prevstate = 'text';
@@ -667,9 +675,28 @@ class Neasden {
     $thisfrag = array ('content' => '', 'strength' => -1);
     $current_el = '';
   
-    for ($i = 0; $i < $l; $i ++ ) {
-  
-      $c = mb_substr ($text, $i, 1);
+    // echo '='. (self::stopwatch () - $this->stopwatch)."<br>";
+    
+    for ($i = 0; $i < $l_raw; $i ++ ) {
+
+      // next raw byte
+      $c_el = substr ($text, $i, 1);
+      $c = $c_el;
+      
+      // utf-8
+      if (mb_internal_encoding () == 'UTF-8') {
+        if (ord ($c_el) >= 128) {
+          $i ++;
+          $c_el = substr ($text, $i, 1);
+          $c .= $c_el;
+          while ((ord ($c_el) >= 128) && (ord ($c_el) < 192)) {
+            $i ++;
+            $c_el = substr ($text, $i, 1);
+            $c .= $c_el;
+          }
+        }
+      }
+
       $r .= $c;
   
       // auto manage state machine
@@ -689,7 +716,7 @@ class Neasden {
       if ($state == 'comment' and mb_substr ($r, -3, 3) == '-->') { 
         $state = 'text';
         $thisfrag['content'] .= $r;
-        $thisfrag['strength'] = FRAG_STRENGTH_SACRED;
+        $thisfrag['strength'] = self::FRAG_STRENGTH_SACRED;
         if ($thisfrag['content']) {
           $fragments[] = $thisfrag;
         }
@@ -807,6 +834,8 @@ class Neasden {
       $prevstate = $state;
   
     }
+
+    // echo '='. (self::stopwatch () - $this->stopwatch)."<br>";
   
     $thisfrag['content'] .= $r;
     $thisfrag['strength'] = $this->element_strength ($current_el);
@@ -832,7 +861,9 @@ class Neasden {
     }
     
     // dirty split
+    // echo '1='. (self::stopwatch () - $this->stopwatch)."<br>";
     $initial_fragments = $this->split_fragments ($text);
+    // echo '2='. (self::stopwatch () - $this->stopwatch)."<br>";
     
     // process initial fragments
     $resulting_fragments = array ();  
@@ -869,15 +900,21 @@ class Neasden {
       }
     
       $resulting_fragments[] = $resulting_fragment;
+      // echo '['. substr (htmlspecialchars ($resulting_fragment['result']), 0, 30) .']<br>';
+      // echo '0='. (self::stopwatch () - $this->stopwatch)."<br>";
     
     }
     
+    // echo '3='. (self::stopwatch () - $this->stopwatch)."<br>";
+
     return $resulting_fragments;
     
   }  
   
   public function format ($input = null) {
   
+    $this->stopwatch = self::stopwatch ();
+    
     if ($input !== null) $this->input = $input;
     
     $last_mb_encoding = mb_internal_encoding ();

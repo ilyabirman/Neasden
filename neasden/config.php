@@ -23,7 +23,7 @@
   
   'html.on' => true,
   'html.elements.opaque' => 'div p ul ol li blockquote table pre textarea',
-  'html.elements.sacred' => 'object embed iframe script style code',
+  'html.elements.sacred' => 'object embed iframe head link script style code',
 
   'groups.on' => true,
   'groups.headings.char'  => '#',
