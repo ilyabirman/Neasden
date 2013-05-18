@@ -97,7 +97,7 @@ class Neasden {
     if (substr ($name, -4) == '.php') $name = substr ($name, 0, strlen ($name) - 4); // usafe
     if (!array_key_exists ($name, $this->extensions)) {
       $NeasdenGroupClass = 'NeasdenGroup_' . $name;
-      include $file;
+      include_once $file;
       $this->extensions[$name] = array (
         'path' => dirname ($file) .'/'. $name .'/',
         'instance' => new $NeasdenGroupClass ($this),
@@ -420,7 +420,6 @@ class Neasden {
   
     } elseif (isset ($this->extensions[$class])) {
     
-
       return $this->extensions[$class]['instance']->render ($group, @$this->config['groups.classes'][$class]);
   
     } else {
