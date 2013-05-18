@@ -16,7 +16,7 @@ error_reporting(~0);
 define ('USER_FOLDER', '');
 //*/
 
-$text = file_get_contents ('tests/test-16-metromap.txt');
+$text = file_get_contents ('tests/test-17-htmlcomments.txt');
 $res = '';
 
 function stopwatch () {
@@ -29,7 +29,7 @@ $stopwatch = stopwatch ();
 $inputarray = array (
   'config' => 'neasden/config.php',
   'text-original' => $text,
-  'profile-name' => '',
+  'profile-name' => 'kavychki',
   'explain' => true,
 );
 
@@ -40,7 +40,7 @@ $Nn->profile_name = 'kavychki';
 
 $res = $Nn->format ($text);
 
-//$res = $Nn->explanation;
+$res = $Nn->explanation;
 
 $stopwatch = stopwatch () - $stopwatch;
 

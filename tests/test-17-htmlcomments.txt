@@ -1,0 +1,15 @@
+
+  
+    <div class="frontpage-gallery-element-image-wrapper">
+  
+      <div style="position: absolute; top: 23px"><a href="http://ibs8x/projects/moscow-metro/" class="nu"><img src="/projects/moscow-metro/i/icon.png" alt="Схема московского метро" /></a></div>
+  
+    </div>
+  
+    <p>Новая <a href="http://ibs8x/projects/moscow-metro/">схема московского метро</a></p>
+    <!--
+    <p>Новая <a href="http://ibs8x/projects/moscow-metro/">схема московского метро</a></p>
+    -->
+  
+  
+TEXT NOT VISIBLE
