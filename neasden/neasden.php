@@ -1,6 +1,6 @@
 <?
 
-// Neasden v2.06
+// Neasden v2.07
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -684,14 +684,12 @@ class Neasden {
       
       // utf-8
       if (mb_internal_encoding () == 'UTF-8') {
-        if (ord ($c_el) >= 128) {
-          $i ++;
-          $c_el = substr ($text, $i, 1);
-          $c .= $c_el;
+        if (ord ($c_el) >= 192) {
+          $c_el = substr ($text, $i + 1, 1);
           while ((ord ($c_el) >= 128) && (ord ($c_el) < 192)) {
             $i ++;
-            $c_el = substr ($text, $i, 1);
             $c .= $c_el;
+            $c_el = substr ($text, $i + 1, 1);
           }
         }
       }
@@ -699,9 +697,11 @@ class Neasden {
       $r .= $c;
   
       // auto manage state machine
-      if (array_key_exists ($c,  $machine[$state])) {
+      if (array_key_exists ($c, $machine[$state])) {
         $state = $machine[$state][$c];
       }
+      
+      #echo htmlspecialchars ('['.$r.'] ('.$c.') - '.$state).'<br>';
   
       // html comments: manually manage states
       if ($state == 'tag' and $r == '<!--') {
@@ -744,6 +744,7 @@ class Neasden {
   
           $tagname = $this->element_name ($r);
   
+
           if (substr ($tagname, 0, 1) != '/') { // usafe
   
             // open tag
@@ -778,7 +779,7 @@ class Neasden {
             if (in_array ($tagname, $tagstack)) {
   
               $strength_before = $this->element_strength ($current_el);
-  
+              
               // so tag is in stack, so we force close it
               while (array_pop ($tagstack) != $tagname);
               // if anything remains in the stack, that’s new current tag
