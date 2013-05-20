@@ -16,6 +16,7 @@ error_reporting(~0);
 define ('USER_FOLDER', '');
 //*/
 
+#$text = file_get_contents ('tests/test-16-metromap.txt');
 $text = file_get_contents ('tests/test-17-htmlcomments.txt');
 $res = '';
 

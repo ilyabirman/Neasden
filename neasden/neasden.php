@@ -679,17 +679,17 @@ class Neasden {
     for ($i = 0; $i < $l_raw; $i ++ ) {
 
       // next raw byte
-      $c_el = substr ($text, $i, 1);
+      $c_el = $text[$i];
       $c = $c_el;
       
       // utf-8
       if (mb_internal_encoding () == 'UTF-8') {
         if (ord ($c_el) >= 192) {
-          $c_el = substr ($text, $i + 1, 1);
+          $c_el = $text[$i + 1];
           while ((ord ($c_el) >= 128) && (ord ($c_el) < 192)) {
             $i ++;
             $c .= $c_el;
-            $c_el = substr ($text, $i + 1, 1);
+            $c_el = $text[$i + 1];
           }
         }
       }
