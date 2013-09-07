@@ -16,7 +16,8 @@ error_reporting(~0);
 define ('USER_FOLDER', '');
 //*/
 
-$text = file_get_contents ('tests/test-18-code.txt');
+//$text = file_get_contents ('tests/test-18-code.txt');
+$text = file_get_contents ('tests/test-19.txt');
 $res = '';
 
 function stopwatch () {
@@ -29,14 +30,14 @@ $stopwatch = stopwatch ();
 $inputarray = array (
   'config' => 'neasden/config.php',
   'text-original' => $text,
-  'profile-name' => 'kavychki',
+  'profile-name' => '',
   'explain' => true,
 );
 
 if (!include 'neasden/neasden.php') die ('neasden init failed');
 $Nn = new Neasden;
 $Nn->should_explain = true;
-$Nn->profile_name = 'kavychki';
+//$Nn->profile_name = 'kavychki';
 
 $res = $Nn->format ($text);
 

@@ -662,6 +662,7 @@ class Neasden {
         '"' => 'tag',
       ),
       'comment' => array (),
+      'code' => array (),
     );
   
     // raw length
@@ -673,6 +674,7 @@ class Neasden {
     $fragments = array ();
     $thisfrag = array ('content' => '', 'strength' => -1);
     $current_el = '';
+    $code_nesting = 0;
   
     // echo '='. (self::stopwatch () - $this->stopwatch)."<br>";
     
@@ -702,7 +704,7 @@ class Neasden {
       }
       
       #echo htmlspecialchars ('['.$r.'] ('.$c.') - '.$state).'<br>';
-  
+
       // html comments: manually manage states
       if ($state == 'tag' and $r == '<!--') {
         $state = 'comment';
@@ -722,6 +724,38 @@ class Neasden {
         $thisfrag = array ('content' => '', 'strength' => -1);
         $r = '';
       }
+    
+      // code tag: manually manage states
+      if (($state == 'text' or $state = 'code') and mb_substr ($r, -6, 6) == '<code>') {
+        ++ $code_nesting;
+        if ($code_nesting == 1) {
+          $state = 'code';
+          if ($thisfrag['content']) {
+            $fragments[] = $thisfrag;
+          }
+          $thisfrag = array (
+            'content' => '', // don’t put the very <code> tag here
+            'strength' => self::FRAG_STRENGTH_SACRED,
+            'code' => 1
+          );
+          $r = '';
+        }
+      }
+      if ($state == 'code' and mb_substr ($r, -7, 7) == '</code>') { 
+//        echo htmlspecialchars ($r);
+//        die;
+        -- $code_nesting;
+        if ($code_nesting < 1) {
+          $state = 'text';
+          $r = substr ($r, 0, -7); // remove the closing </code> tag from here
+          $thisfrag['content'] = $r;
+          if ($thisfrag['content']) {
+            $fragments[] = $thisfrag;
+          }
+          $thisfrag = array ('content' => '', 'strength' => -1);
+          $r = '';
+        }
+      }
   
       // state change
       if ($state != $prevstate) {
@@ -738,21 +772,12 @@ class Neasden {
             $thisfrag['strength'] = $this->element_strength ($current_el);
           }
           
-          if ($current_el == 'code') $thisfrag['code'] = true;
-  
-          if ($current_el == 'code') {
-            //echo htmlspecialchars (print_r ($thisfrag, true));
-            $thisfrag['content'] = ''; // remove the code tag itself
-            //die;
-          }
-          
           $r = mb_substr ($r, -1, 1);
   
         } elseif ($prevstate == 'tag' and $state == 'text') {
   
           $tagname = $this->element_name ($r);
-  
-
+          
           if (substr ($tagname, 0, 1) != '/') { // usafe
   
             // open tag
@@ -783,13 +808,9 @@ class Neasden {
   
             // close tag
             $tagname = substr ($tagname, 1); // usafe
-  
+            
             if (in_array ($tagname, $tagstack)) {
-  
-              if ($tagname == 'code') {
-                $r = ''; // don’t add the closing code tag to output
-              }
-              
+
               // so tag is in stack, so we force close it
               $strength_before = $this->element_strength ($tagname);
               while (($popping_el = array_pop ($tagstack)) != $tagname) {
@@ -852,7 +873,9 @@ class Neasden {
     // echo '='. (self::stopwatch () - $this->stopwatch)."<br>";
   
     $thisfrag['content'] .= $r;
-//    $thisfrag['strength'] = $this->element_strength ($current_el);
+    if ($thisfrag['strength'] == -1) {
+      $thisfrag['strength'] = $this->element_strength ($current_el);
+    }
     $r = '';
   
     if ($thisfrag['content']) {
@@ -975,7 +998,7 @@ class Neasden {
         if ($frag['strength'] == self::FRAG_STRENGTH_TEXT) $color = '#080';
         if ($frag['strength'] == self::FRAG_STRENGTH_OPAQUE) $color = '#00a';
         if ($frag['strength'] == self::FRAG_STRENGTH_SACRED) $color = '#000';
-    
+
         $this->explanation .= '<tr valign="top" class="frag">';
         $this->explanation .= (
           '<td style="background: #ffc; color: '. $color .'"><tt>['.
