@@ -1,0 +1,42 @@
+Так?
+
+<pre>pre</pre>
+
+
+fdsf
+
+<p>ds</p>
+
+<style>
+sfd
+</style>
+
+<code>
+<? // mui // usafe+
+
+function e2m_password () {
+  global $settings, $_strings;
+  $ret['title'] = $_strings['pt--password'];
+  $ret['heading'] = $_strings['pt--password-for-blog'];
+  $ret['form'] = 'form-password';
+  $ret['form-password'] = array (
+    'form-action' => e2_compose_url ('e2s_password_save'),
+    'submit-text' => $_strings['fb--change'],
+  );
+
+  return $ret;
+
+}  
+?>
+"fd"
+    <span class="admin-menu-drafts" id="e2-drafts-item"
+           >
+      <span id="e2-drafts">
+        <b><a href="http://e2/drafts/">Черновики</a></b>
+        <span class="admin-menu-drafts-count" id="e2-drafts-count">48</span>
+      </span>
+    </span>
+</code>
+
+fds fsdfsd    fsd
+fds

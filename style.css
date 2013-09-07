@@ -17,6 +17,7 @@ h2 { font-size: 115%; }
 h3, h4, h5, h6 { font-size: 100%; }
 p+ul, p+ol { margin-top: -.7em }
 blockquote { color: #009; border-left: 1px #009 solid; padding-left: 1em }
+code { white-space: pre; }
 
 .txt-picture { margin-bottom: .7em }
 .txt-picture p { margin: .35em 0 .7em 0; font-size: 85%; }

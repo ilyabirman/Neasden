@@ -1,6 +1,6 @@
 <?
 
-// Neasden v2.07
+// Neasden v2.1
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -737,7 +737,15 @@ class Neasden {
           if ($thisfrag['strength'] == -1) {
             $thisfrag['strength'] = $this->element_strength ($current_el);
           }
+          
+          if ($current_el == 'code') $thisfrag['code'] = true;
   
+          if ($current_el == 'code') {
+            //echo htmlspecialchars (print_r ($thisfrag, true));
+            $thisfrag['content'] = ''; // remove the code tag itself
+            //die;
+          }
+          
           $r = mb_substr ($r, -1, 1);
   
         } elseif ($prevstate == 'tag' and $state == 'text') {
@@ -778,17 +786,23 @@ class Neasden {
   
             if (in_array ($tagname, $tagstack)) {
   
-              $strength_before = $this->element_strength ($current_el);
+              if ($tagname == 'code') {
+                $r = ''; // don’t add the closing code tag to output
+              }
               
               // so tag is in stack, so we force close it
-              while (array_pop ($tagstack) != $tagname);
+              $strength_before = $this->element_strength ($tagname);
+              while (($popping_el = array_pop ($tagstack)) != $tagname) {
+                $strength_before = max ($strength_before, $this->element_strength ($popping_el));
+              };
+
               // if anything remains in the stack, that’s new current tag
               if (count ($tagstack) > 0) {
                 $current_el = $tagstack [count ($tagstack) - 1];
               } else {
                 $current_el = '';
               }
-  
+
               if ($this->element_strength ($current_el) < $strength_before) {
   
                 // so we are now off sacred elements, 
@@ -838,7 +852,7 @@ class Neasden {
     // echo '='. (self::stopwatch () - $this->stopwatch)."<br>";
   
     $thisfrag['content'] .= $r;
-    $thisfrag['strength'] = $this->element_strength ($current_el);
+//    $thisfrag['strength'] = $this->element_strength ($current_el);
     $r = '';
   
     if ($thisfrag['content']) {
@@ -893,10 +907,14 @@ class Neasden {
     
       }
     
-    
       // opaque fragments should be typographed
-      if ($initial_fragment['strength'] < self::FRAG_STRENGTH_SACRED) {
+      if ($initial_fragment['strength'] <= self::FRAG_STRENGTH_OPAQUE) {
         $resulting_fragment['result'] = $this->process_opaque_fragment ($resulting_fragment['result']);
+      }
+      
+      // wrap the code into the real code tags
+      if (array_key_exists ('code', $initial_fragment) and $initial_fragment['code']) {
+        $resulting_fragment['result'] = '<code>'. htmlspecialchars ($resulting_fragment['result']) .'</code>';
       }
     
       $resulting_fragments[] = $resulting_fragment;
