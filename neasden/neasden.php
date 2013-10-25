@@ -1,6 +1,6 @@
 <?
 
-// Neasden v2.1
+// Neasden v2.11
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -651,6 +651,7 @@ class Neasden {
         '<' => 'tag',
       ),
       'tag' => array (
+        '<' => 'tag--oops-it-was-text-before',
         '>' => 'text',
         "'" => 'attr-s',
         '"' => 'attr-d',
@@ -703,7 +704,12 @@ class Neasden {
         $state = $machine[$state][$c];
       }
       
-      #echo htmlspecialchars ('['.$r.'] ('.$c.') - '.$state).'<br>';
+      if ($state == 'tag--oops-it-was-text-before') {
+        $prevstate = 'text'; // boy is this dirty
+        $state = 'tag';
+      }
+      
+      // echo htmlspecialchars ('['.$r.'] ('.$c.') - '.$state).'<br>';
 
       // html comments: manually manage states
       if ($state == 'tag' and $r == '<!--') {
@@ -726,7 +732,7 @@ class Neasden {
       }
     
       // code tag: manually manage states
-      if (($state == 'text' or $state = 'code') and mb_substr ($r, -6, 6) == '<code>') {
+      if (($state == 'text' or $state == 'code') and mb_substr ($r, -6, 6) == '<code>') {
         ++ $code_nesting;
         if ($code_nesting == 1) {
           $state = 'code';

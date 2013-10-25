@@ -1,0 +1,20 @@
+Итоговая формула, с учётом перерисовки каждую 0,01 с, у меня получилась вот такая: <nobr>[1 / (<i>x</i><sup>1,25</sup> / 20 + 0,5) &minus; 0,05] &times; sin (<i>x</i> / 2) &times; 25.</nobr>
+
+<div id="e2-login-sheet-fake" style="position: relative; left: 50%; top: 0; margin: 0 -200px; width: 400px; text-align: center"><a href="#" onclick="if (nahStep) { x = 0; nahStep () }; return false" class="dashed">Попробовать формулу</a></div>
+
+<script>
+  var m = parseInt (document.getElementById ('e2-login-sheet-fake').style.marginLeft);
+  var x = 0, nahStepTimeOut;
+  var nahStep = function () {
+    if (nahStepTimeOut) clearTimeout (nahStepTimeOut);
+    l = (1 / (Math.pow (x, 1.25) / 20 + 0.5) - 0.05) * Math.sin (x/2);
+    document.getElementById ('e2-login-sheet-fake').style.marginLeft = (m + l * 25) + 'px';
+    x ++;
+    if (x < 82) {
+      nahStepTimeOut = setTimeout (nahStep, 10)
+    } else {
+      document.getElementById ('e2-login-sheet-fake').style.marginLeft = m + 'px'
+    }
+  }
+</script>
+
