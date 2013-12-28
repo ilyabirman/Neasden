@@ -16,8 +16,8 @@ error_reporting(~0);
 define ('USER_FOLDER', '');
 //*/
 
-//$text = file_get_contents ('tests/test-18-code.txt');
-$text = file_get_contents ('tests/test-20.txt');
+$text = file_get_contents ('tests/test-18-code.txt');
+//$text = file_get_contents ('tests/test-20.txt');
 $res = '';
 
 function stopwatch () {
@@ -50,6 +50,14 @@ $stopwatch = stopwatch () - $stopwatch;
 <html>
 <head>
   
+
+<!--
+<link rel="stylesheet" href="http://yandex.st/highlightjs/7.4/styles/ascetic.min.css">
+<script src="http://yandex.st/highlightjs/7.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+-->
+
+
 <link rel="stylesheet" href="style.css" />
 
 <?
@@ -57,10 +65,10 @@ $stopwatch = stopwatch () - $stopwatch;
   foreach ($Nn->links_required as $link) {
   
     if (substr ($link, -3) == '.js') {
-      echo '<script src="js/'. $link .'"></script>'. "\n";
+      echo '<script src="library/'. $link .'"></script>'. "\n";
     }
     if (substr ($link, -4) == '.css') {
-      echo '<link rel="stylesheet" href="js/'. $link .'" />'. "\n";
+      echo '<link rel="stylesheet" href="library/'. $link .'" />'. "\n";
     }
   }
   

@@ -1,6 +1,6 @@
 <?
 
-// Neasden v2.11
+// Neasden v2.12
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -943,7 +943,19 @@ class Neasden {
       
       // wrap the code into the real code tags
       if (array_key_exists ('code', $initial_fragment) and $initial_fragment['code']) {
-        $resulting_fragment['result'] = '<code>'. htmlspecialchars ($resulting_fragment['result']) .'</code>';
+        if ($this->config['html.code.on']) {
+          $resulting_fragment['result'] = (
+            $this->config['html.code.wrap'][0] .
+            htmlspecialchars ($resulting_fragment['result']) .
+            $this->config['html.code.wrap'][1]
+          );
+          if ($this->config['html.code.highlightjs']) {
+            $this->links_required[] = @$this->config['library']. 'highlight/highlight.js';
+            $this->links_required[] = @$this->config['library']. 'highlight/highlight.css';
+          }
+        } else {
+          $resulting_fragment['result'] = '<code>'. $resulting_fragment['result'] .'</code>';
+        }
       }
     
       $resulting_fragments[] = $resulting_fragment;

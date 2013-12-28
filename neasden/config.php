@@ -25,6 +25,10 @@
   'html.elements.opaque' => 'div p ul ol li blockquote table pre textarea',
   'html.elements.sacred' => 'object embed iframe head link script style code',
 
+  'html.code.on' => true,
+  'html.code.wrap' => array ('<pre><code>', '</code></pre>'),  
+  'html.code.highlightjs' => true,
+
   'groups.on' => true,
   'groups.headings.char'  => '#',
   'groups.headings.plus'  => 0,
