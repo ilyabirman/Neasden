@@ -6,7 +6,7 @@ class NeasdenGroup_youtube implements NeasdenGroup {
   
     $neasden->define_line_class (
       'youtube',
-      'http\:\/\/(?:www\.)?(?:(?:youtube\.com\/watch\/?\?v\=)|(?:youtu\.be\/))(.{11})'
+      'https?\:\/\/(?:www\.)?(?:(?:youtube\.com\/watch\/?\?v\=)|(?:youtu\.be\/))(.{11})([&#?].*)?'
     );
     $neasden->define_group ('youtube', '(-youtube-)(-p-)*');
   
