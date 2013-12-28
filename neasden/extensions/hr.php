@@ -1,4 +1,4 @@
-<?
+<?php
 
 class NeasdenGroup_hr implements NeasdenGroup {
 

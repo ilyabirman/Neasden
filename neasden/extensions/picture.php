@@ -1,4 +1,4 @@
-<?
+<?php
 
 class NeasdenGroup_picture implements NeasdenGroup {
 
