@@ -754,6 +754,7 @@ class Neasden {
         if ($code_nesting < 1) {
           $state = 'text';
           $r = substr ($r, 0, -7); // remove the closing </code> tag from here
+          $r = trim ($r);
           $thisfrag['content'] = $r;
           if ($thisfrag['content']) {
             $fragments[] = $thisfrag;
