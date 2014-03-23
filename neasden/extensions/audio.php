@@ -40,6 +40,7 @@ class NeasdenGroup_audio implements NeasdenGroup {
     
       if ($line['class'] == 'audio') {
         @list ($filebasename, $alt) = explode (' ', $line['content'], 2);
+        $this->neasden->resource_detected ($filebasename);
         if (!$alt) $alt = basename ($filebasename);
         $href = $myconf['src-prefix'] . $myconf['folder'] . $filebasename;
       }
