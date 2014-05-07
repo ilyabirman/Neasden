@@ -19,7 +19,15 @@
 			"file": "/Users/ilyabirman/Sites/neasden/neasden/neasden.php",
 			"settings":
 			{
-				"buffer_size": 31834,
+				"buffer_size": 31934,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/ilyabirman/Sites/neasden/neasden/config.php",
+			"settings":
+			{
+				"buffer_size": 2351,
 				"line_ending": "Unix"
 			}
 		},
@@ -27,7 +35,7 @@
 			"file": "/Users/ilyabirman/Sites/neasden/index.php",
 			"settings":
 			{
-				"buffer_size": 2154,
+				"buffer_size": 2147,
 				"line_ending": "Unix"
 			}
 		},
@@ -248,15 +256,15 @@
 					"file": "/Users/ilyabirman/Sites/neasden/neasden/neasden.php",
 					"settings":
 					{
-						"buffer_size": 31834,
+						"buffer_size": 31934,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								509,
-								509
+								23,
+								23
 							]
 						],
 						"settings":
@@ -273,10 +281,10 @@
 				},
 				{
 					"buffer": 1,
-					"file": "/Users/ilyabirman/Sites/neasden/index.php",
+					"file": "/Users/ilyabirman/Sites/neasden/neasden/config.php",
 					"settings":
 					{
-						"buffer_size": 2154,
+						"buffer_size": 2351,
 						"regions":
 						{
 						},
@@ -294,13 +302,41 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 24.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
+					"file": "/Users/ilyabirman/Sites/neasden/index.php",
+					"settings":
+					{
+						"buffer_size": 2147,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1028,
+								1028
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
 					"file": "/Users/ilyabirman/Sites/neasden/tests/test-21.txt",
 					"settings":
 					{
