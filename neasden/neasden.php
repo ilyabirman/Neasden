@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.14
+// Neasden v2.15
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -431,13 +431,21 @@ class Neasden {
         $ct = 'p';
       }
   
-      $lines_content = array ();
-      foreach ($group as $line) {
-        $lines_content[] = $line['content'];
+      if (count ($group)) {
+
+        $lines_content = array ();
+        foreach ($group as $line) {
+          $lines_content[] = $line['content'];
+        }
+        $lines_content = implode ('<br />'."\n", $lines_content);
+    
+        return "<". $ot .">". $lines_content ."</". $ct .">\n";
+
+      } else {
+
+        return '';
+
       }
-      $lines_content = implode ('<br />'."\n", $lines_content);
-  
-      return "<". $ot .">". $lines_content ."</". $ct .">\n";
   
   
     }
@@ -584,13 +592,13 @@ class Neasden {
       if ($quote_level_changed or !$match_found) {
   
         if ($quote_level_changed) {
-          $line['debug'] .= "\n".'qlc ';
+          $line['debug'] .= "\n".'quotelevelchanged ';
         }
   
         if (!$match_found) {
           $line['debug'] .= "\n".'nomatch ';
         }
-  
+
         $line['result'] = $this->render_group ($last_group_class, $good_buffer);
   
         for ($i=0; $i<$quote_level_inc; $i++) $line['result'] .= '<blockquote>'."\n";
