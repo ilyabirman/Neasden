@@ -10,8 +10,7 @@ class NeasdenGroup_list implements NeasdenGroup {
     
     $ul_item_regex = array ();
     foreach ($chars_ul_items as $item) {
-      // $ul_item_regex[] = '(\\'. $item .'[^'. $item .'].*)';
-      $ul_item_regex[] = '(\\'. $item .'(?:$|[^'. $item .'].*))';
+      $ul_item_regex[] = '(\\'. $item .' (?:$|[^'. $item .'].*))';
     }
     $ul_item_regex = implode ('|', $ul_item_regex);
     
