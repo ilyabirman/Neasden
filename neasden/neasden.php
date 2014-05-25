@@ -700,7 +700,11 @@ class Neasden {
           while ((ord ($c_el) >= 128) && (ord ($c_el) < 192)) {
             $i ++;
             $c .= $c_el;
-            $c_el = $text[$i + 1];
+            if ($i + 1 < $l_raw) {
+              $c_el = $text[$i + 1];
+            } else {
+              break;
+            }
           }
         }
       }
