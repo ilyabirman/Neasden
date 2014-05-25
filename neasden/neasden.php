@@ -78,6 +78,7 @@ class Neasden {
     foreach ($extensions_folders as $extensions_folder) {
       if (is_array ($files = glob ($extensions_folder. '/*.php'))) {
         foreach ($files as $file) {
+          // echo "<p>$file</p>";
           $this->load_extension ($file);
         }
       }
@@ -492,6 +493,10 @@ class Neasden {
       );
       return $result;
     }
+
+    // echo '<pre>';
+    // print_r( $this->line_classes);
+    // die;
   
     // other classes
     foreach ($this->line_classes as $class => $regex) {
