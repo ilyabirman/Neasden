@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 <center>
 
 3rd-right-left-right.jpg
 
-</center>123
-=======
--3rd-right-left-right.jpg
->>>>>>> 63674730101fe635417aa8b701d0c3eccb433c43
+</center>
