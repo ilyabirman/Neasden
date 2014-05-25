@@ -19,7 +19,15 @@
 			"file": "/Users/ilyabirman/Sites/neasden/neasden/neasden.php",
 			"settings":
 			{
-				"buffer_size": 31934,
+				"buffer_size": 32064,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/ilyabirman/Sites/neasden/tests/test-22.txt",
+			"settings":
+			{
+				"buffer_size": 48,
 				"line_ending": "Unix"
 			}
 		},
@@ -36,14 +44,6 @@
 			"settings":
 			{
 				"buffer_size": 2147,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/ilyabirman/Sites/neasden/tests/test-21.txt",
-			"settings":
-			{
-				"buffer_size": 44,
 				"line_ending": "Unix"
 			}
 		}
@@ -76,6 +76,7 @@
 	},
 	"file_history":
 	[
+		"/Users/ilyabirman/Sites/neasden/tests/test-21.txt",
 		"/Users/ilyabirman/Sites/e2/user/log.txt",
 		"/Users/ilyabirman/Sites/z2/system/core.php",
 		"/Users/ilyabirman/Sites/e2/system/neasden/extensions/fotorama.php",
@@ -181,6 +182,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"element_strength",
 			"comments-count-text",
 			"'comments-count-text'",
 			"comments-count-text",
@@ -256,15 +258,15 @@
 					"file": "/Users/ilyabirman/Sites/neasden/neasden/neasden.php",
 					"settings":
 					{
-						"buffer_size": 31934,
+						"buffer_size": 32064,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								23,
-								23
+								22706,
+								22706
 							]
 						],
 						"settings":
@@ -274,13 +276,39 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 13357.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
+					"file": "/Users/ilyabirman/Sites/neasden/tests/test-22.txt",
+					"settings":
+					{
+						"buffer_size": 48,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								48,
+								48
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
 					"file": "/Users/ilyabirman/Sites/neasden/neasden/config.php",
 					"settings":
 					{
@@ -291,8 +319,8 @@
 						"selection":
 						[
 							[
-								0,
-								0
+								515,
+								515
 							]
 						],
 						"settings":
@@ -302,13 +330,13 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 24.0,
+						"translation.y": 15.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 3,
 					"file": "/Users/ilyabirman/Sites/neasden/index.php",
 					"settings":
 					{
@@ -319,41 +347,13 @@
 						"selection":
 						[
 							[
-								1028,
-								1028
+								498,
+								498
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/Users/ilyabirman/Sites/neasden/tests/test-21.txt",
-					"settings":
-					{
-						"buffer_size": 44,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								44,
-								44
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
@@ -433,7 +433,7 @@
 		[
 			[
 				"",
-				"/Users/ilyabirman/Sites/e2/_sublime/theme-system.sublime-project"
+				"/Users/ilyabirman/Sites/e2/_sublime/e2.sublime-project"
 			]
 		],
 		"width": 380.0
