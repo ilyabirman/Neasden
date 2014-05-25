@@ -16,7 +16,7 @@ error_reporting(~0);
 define ('USER_FOLDER', '');
 //*/
 
-$text = file_get_contents ('tests/test-22.txt');
+$text = file_get_contents ('tests/test-21.txt');
 //$text = file_get_contents ('tests/test-20.txt');
 $res = '';
 
