@@ -7,6 +7,7 @@ explanation должен быть пустым, если не просили
 в ХТМЛ-коде генерируемых таблиц какие-то мусорные пробелы
 */
 
+
 header ('Content-Type: text/html; charset=utf-8');
 //error_reporting (E_ALL & ~E_NOTICE);
 error_reporting (E_ALL);
