@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.16
+// Neasden v2.17
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -253,15 +253,20 @@ class Neasden {
       in_array ($hang_right, $quotes_right)
     );
   
+    $rel_nofollow = '';
+    if (@$this->config['typography.nofollowhrefs']) {
+      $rel_nofollow = ' rel="nofollow"';
+    }
+
     if ($quotes_should_hang)  {
       $text = mb_substr ($text, 1, mb_strlen ($text) - 2);
-      $a_in = $this->isolate ('<a href="'. $href .'" class="nu">');
+      $a_in = $this->isolate ('<a href="'. $href .'"'. $rel_nofollow .' class="nu">');
       $u_in = $this->isolate ('<u>');
       $u_out = $this->isolate ('</u>');
       $a_out = $this->isolate ('</a>');
       return $a_in . $hang_left . $u_in . $text . $u_out . $hang_right . $a_out;
     } else {
-      $a_in = $this->isolate ('<a href="'. $href .'">');
+      $a_in = $this->isolate ('<a href="'. $href .'"'. $rel_nofollow .'>');
       $a_out = $this->isolate ('</a>');
       if (!@$text) $text = $href;
       return $a_in . $text . $a_out;
@@ -273,9 +278,20 @@ class Neasden {
   // converts naked urls in text into working links
   
   function revive_naked_url_callback ($params) {
+    
     $possible_space = $params[1];
     $url = $params[2];
-    return $possible_space . $this->isolate ('<a href="'. $url .'">'. $url .'</a>');
+
+    $rel_nofollow = '';
+    if (@$this->config['typography.nofollowhrefs']) {
+      $rel_nofollow = ' rel="nofollow"';
+    }
+
+    return (
+      $possible_space .
+      $this->isolate ('<a href="'. $url .'"'. $rel_nofollow .'>'. $url .'</a>')
+    );
+
   }
   
 

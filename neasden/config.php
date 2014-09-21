@@ -75,6 +75,7 @@
   'typography.on' => true,
   'typography.markup' => true,
   'typography.autohref' => true,
+  'typography.nofollowhrefs' => false,
   'typography.cleanup' => array (
     '&nbsp;' => ' ',
     '&laquo;' => '«',
