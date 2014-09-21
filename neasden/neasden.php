@@ -272,7 +272,7 @@ class Neasden {
 
   // converts naked urls in text into working links
   
-  function revive_naked_url ($params) {
+  function revive_naked_url_callback ($params) {
     $possible_space = $params[1];
     $url = $params[2];
     return $possible_space . $this->isolate ('<a href="'. $url .'">'. $url .'</a>');
@@ -297,6 +297,7 @@ class Neasden {
     $text = preg_replace_callback ('/(?:\<[^\>]+\>)/isxu', array ($this, 'isolate'), $text); // usafe
   
     if (@$this->config['typography.markup']) {
+
       // double brackets
       $chars = array ('\\(', '\\)', '\\[', '\\]');
       $text = preg_replace_callback ( // usafe
@@ -312,14 +313,19 @@ class Neasden {
         array ($this, 'process_double_brackets_contents_callback'),
         $text
       );
-
-      // naked urls in the text
-      $text = preg_replace_callback (
-        '/(\s|^)((?:http|https|ftp|ftps)\:\/\/[\w\d\#\.\/&=%-_!\?\@\*]+)/is',
-        array ($this, 'revive_naked_url'),
-        $text
-      );
   
+      // naked urls in the text
+      if (@$this->config['typography.autohref']) {
+        $text = preg_replace_callback (
+          '/'.
+          '(\s|^|'. $this->rx_tags_regex .')'.
+          '((?:https?|ftps?)\:\/\/[\w\d\#\.\/&=%-_!\?\@\*]+)'.
+          '/isu',
+          array ($this, 'revive_naked_url_callback'),
+          $text
+        );
+      }
+
       // wiki stuff
       $duomap = array ('/' => 'i', '*' => 'b', '-' => 's');
       foreach ($duomap as $from => $to) {
@@ -393,16 +399,6 @@ class Neasden {
           $text
         );
       }
-    }
-  
-    // url to working link
-    if (@$this->config['typography.autohref']) {
-      $text = preg_replace ( // usafe
-        '/(\s|^|'. $this->rx_tags_regex .')'.
-        '((?:https?)\:\/\/[\w\d\#\.\/&=%-_!\?\@\*]+)/isu',
-        '$1<a href="$2">$2</a>',
-        $text
-      );
     }
   
   
