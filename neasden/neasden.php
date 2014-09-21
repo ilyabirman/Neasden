@@ -270,6 +270,15 @@ class Neasden {
   }
   
 
+  // converts naked urls in text into working links
+  
+  function revive_naked_url ($params) {
+    $possible_space = $params[1];
+    $url = $params[2];
+    return $possible_space . $this->isolate ('<a href="'. $url .'">'. $url .'</a>');
+  }
+  
+
   // replacements, quotes, dashes, no-break spaces
   // input text must be netto:
   // no html entities, just actual utf-8 chars
@@ -301,6 +310,13 @@ class Neasden {
         '(?:'. $chars[2].$chars[2] .'(?!'. $chars[2] .')(.*?)(?<=\S)'. $chars[3].$chars[3] .')'.
         '/imu',
         array ($this, 'process_double_brackets_contents_callback'),
+        $text
+      );
+
+      // naked urls in the text
+      $text = preg_replace_callback (
+        '/(\s|^)((?:http|https|ftp|ftps)\:\/\/[\w\d\#\.\/&=%-_!\?\@\*]+)/is',
+        array ($this, 'revive_naked_url'),
         $text
       );
   
