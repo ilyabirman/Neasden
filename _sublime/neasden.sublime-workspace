@@ -19,7 +19,7 @@
 			"file": "/Users/ilyabirman/Sites/neasden/neasden/neasden.php",
 			"settings":
 			{
-				"buffer_size": 32064,
+				"buffer_size": 32103,
 				"line_ending": "Unix"
 			}
 		},
@@ -28,6 +28,14 @@
 			"settings":
 			{
 				"buffer_size": 48,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/ilyabirman/Sites/neasden/tests/test-23.txt",
+			"settings":
+			{
+				"buffer_size": 236,
 				"line_ending": "Unix"
 			}
 		},
@@ -43,7 +51,7 @@
 			"file": "/Users/ilyabirman/Sites/neasden/index.php",
 			"settings":
 			{
-				"buffer_size": 2147,
+				"buffer_size": 2096,
 				"line_ending": "Unix"
 			}
 		}
@@ -182,6 +190,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"<i>",
+			"class-data",
 			"element_strength",
 			"comments-count-text",
 			"'comments-count-text'",
@@ -250,7 +260,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -258,15 +268,15 @@
 					"file": "/Users/ilyabirman/Sites/neasden/neasden/neasden.php",
 					"settings":
 					{
-						"buffer_size": 32064,
+						"buffer_size": 32103,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								22706,
-								22706
+								7752,
+								7752
 							]
 						],
 						"settings":
@@ -276,7 +286,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 13357.0,
+						"translation.y": 4460.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -309,6 +319,32 @@
 				},
 				{
 					"buffer": 2,
+					"file": "/Users/ilyabirman/Sites/neasden/tests/test-23.txt",
+					"settings":
+					{
+						"buffer_size": 236,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								236,
+								236
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
 					"file": "/Users/ilyabirman/Sites/neasden/neasden/config.php",
 					"settings":
 					{
@@ -330,25 +366,25 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 15.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 4,
 					"file": "/Users/ilyabirman/Sites/neasden/index.php",
 					"settings":
 					{
-						"buffer_size": 2147,
+						"buffer_size": 2096,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								498,
-								498
+								977,
+								977
 							]
 						],
 						"settings":

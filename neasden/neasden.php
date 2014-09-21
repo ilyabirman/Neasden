@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.15
+// Neasden v2.16
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -232,15 +232,26 @@ class Neasden {
   
     $text = @$params[1] . @$params[2] . @$params[3] . @$params[4];
     @list ($href, $text) = explode (' ', $text, 2);
-    if (!@$text) $text = $href;
-  
+
     $quotes = $this->language_data['quotes'];
     $quotes_left = array ('"', $quotes[0], $quotes[1]);
     $quotes_right = array ('"', $quotes[2], $quotes[3]);
-    $hang_left = mb_substr ($text, 0, 1);
-    $hang_right = mb_substr ($text, -1);
-  
-    $quotes_should_hang = (in_array ($hang_left, $quotes_left) and in_array ($hang_right, $quotes_right));
+    $hang_left = '';
+    $hang_right = '';
+
+    if (@$text) {
+      $hang_left = mb_substr ($text, 0, 1);
+      $hang_right = mb_substr ($text, -1);
+    } else {
+      // if no text is given, then the whole brackets contents should be the href,
+      // it probably contains "//", and thus should be isolated
+      $text = $this->isolate ($href);
+    }
+    
+    $quotes_should_hang = (
+      in_array ($hang_left, $quotes_left) and
+      in_array ($hang_right, $quotes_right)
+    );
   
     if ($quotes_should_hang)  {
       $text = mb_substr ($text, 1, mb_strlen ($text) - 2);
@@ -1054,7 +1065,7 @@ class Neasden {
           foreach ($frag['processing'] as $group) {
             $this->explanation .= '<tr valign="top">';
             $this->explanation .= '<td><tt>['. @htmlspecialchars  ($group['content'], ENT_NOQUOTES, 'UTF-8') .']</tt></td>'; // usafe
-            $this->explanation .= '<td><tt>['. @str_repeat ('>', $group['depth']) .''. @$group['class'] .' ('. @$group['class-data'] .')<br />'. @print_r ($group['debug'], true) .']</tt></td>';
+            $this->explanation .= '<td><tt>['. @str_repeat ('>', $group['depth']) .''. @$group['class'] .'<br />'. @print_r ($group['debug'], true) .']</tt></td>';
             $this->explanation .= '<td><tt>['. @htmlspecialchars  ($group['result'], ENT_NOQUOTES, 'UTF-8') .']</tt></td>'; // usafe
             $this->explanation .= '</tr>';
           }

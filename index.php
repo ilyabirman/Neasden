@@ -16,8 +16,7 @@ error_reporting(~0);
 define ('USER_FOLDER', '');
 //*/
 
-$text = file_get_contents ('tests/test-22.txt');
-//$text = file_get_contents ('tests/test-20.txt');
+$text = file_get_contents ('tests/test-23.txt');
 $res = '';
 
 function stopwatch () {
@@ -41,7 +40,7 @@ $Nn->should_explain = true;
 
 $res = $Nn->format ($text);
 
- $res = $Nn->explanation;
+// $res = $Nn->explanation;
 
 $stopwatch = stopwatch () - $stopwatch;
 
