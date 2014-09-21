@@ -316,11 +316,14 @@ class Neasden {
   
       // naked urls in the text
       if (@$this->config['typography.autohref']) {
-        $text = preg_replace_callback (
+        $url_regex = (
           '/'.
           '(\s|^|'. $this->rx_tags_regex .')'.
           '((?:https?|ftps?)\:\/\/[\w\d\#\.\/&=%-_!\?\@\*]+)'.
-          '/isu',
+          '/isu'
+        );
+        $text = preg_replace_callback (
+          $url_regex,
           array ($this, 'revive_naked_url_callback'),
           $text
         );
