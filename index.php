@@ -1,4 +1,4 @@
-<?
+<?php
 
 /*
 научить # фигачить заголовки не с первого уровня, а с другого
@@ -16,7 +16,7 @@ error_reporting(~0);
 define ('USER_FOLDER', '');
 //*/
 
-$text = file_get_contents ('tests/test-23.txt');
+$text = file_get_contents ('tests/test-24.txt');
 $res = '';
 
 function stopwatch () {
@@ -59,7 +59,7 @@ $stopwatch = stopwatch () - $stopwatch;
 
 <link rel="stylesheet" href="style.css" />
 
-<?
+<?php
   
   foreach ($Nn->links_required as $link) {
   
@@ -76,11 +76,11 @@ $stopwatch = stopwatch () - $stopwatch;
 </head>
 <body>
 
-<?#= 'Time: '. $stopwatch; ?>
+<?php #= 'Time: '. $stopwatch; ?>
 
-<?#= neasden_explain ($text); ?>
+<?php #= neasden_explain ($text); ?>
 
-<?#= '<pre>'. htmlspecialchars ($res) .'</pre>' ?>
+<?php #= '<pre>'. htmlspecialchars ($res) .'</pre>' ?>
 
 <!--
 <table>
@@ -95,13 +95,13 @@ $stopwatch = stopwatch () - $stopwatch;
 
 <pre>
 Resources:
-<? print_r ($Nn->resources_detected); ?>
+<?php print_r ($Nn->resources_detected); ?>
 
 Links:
-<? print_r ($Nn->links_required); ?>
+<?php print_r ($Nn->links_required); ?>
 
 Groups:
-<? print_r ($Nn->groups_used); ?>
+<?php print_r ($Nn->groups_used); ?>
 
 </pre>
 
