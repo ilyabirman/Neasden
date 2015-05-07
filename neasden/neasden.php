@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.17
+// Neasden v2.18
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -843,7 +843,7 @@ class Neasden {
         } elseif ($prevstate == 'tag' and $state == 'text') {
   
           $tagname = $this->element_name ($r);
-          
+
           if (substr ($tagname, 0, 1) != '/') { // usafe
   
             // open tag
@@ -861,6 +861,15 @@ class Neasden {
   
             } else {
   
+              if ($this->config['html.img.prefix'] and $tagname == 'img') {
+                $r = preg_replace (
+                  '/(\s)src\=\"(?!\/|.*?\:\/\/)/i',
+                  '$1src="'. $this->config['html.img.prefix'],
+                  $r
+                );
+                // echo htmlspecialchars($r2);
+              }
+          
               $thisfrag['content'] .= $r;
               //$thisfrag['content'] .= $this->isolate ($r);
   

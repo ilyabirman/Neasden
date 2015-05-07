@@ -29,6 +29,8 @@
   'html.code.wrap' => array ('<pre><code>', '</code></pre>'),  
   'html.code.highlightjs' => true,
 
+  'html.img.prefix' => 'pictures/',
+
   'groups.on' => true,
   'groups.headings.char'  => '#',
   'groups.headings.plus'  => 0,

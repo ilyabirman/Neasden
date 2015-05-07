@@ -36,7 +36,7 @@ $inputarray = array (
 if (!include 'neasden/neasden.php') die ('neasden init failed');
 $Nn = new Neasden;
 $Nn->should_explain = true;
-//$Nn->profile_name = 'kavychki';
+// $Nn->profile_name = 'kavychki';
 
 $res = $Nn->format ($text);
 
