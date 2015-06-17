@@ -841,7 +841,7 @@ class Neasden {
           $r = mb_substr ($r, -1, 1);
   
         } elseif ($prevstate == 'tag' and $state == 'text') {
-  
+
           $tagname = $this->element_name ($r);
 
           if (substr ($tagname, 0, 1) != '/') { // usafe
@@ -867,9 +867,8 @@ class Neasden {
                   '$1src="'. $this->config['html.img.prefix'],
                   $r
                 );
-                // echo htmlspecialchars($r2);
               }
-          
+
               $thisfrag['content'] .= $r;
               //$thisfrag['content'] .= $this->isolate ($r);
   

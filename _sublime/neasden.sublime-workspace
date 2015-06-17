@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"this",
+				"thisfrag"
+			],
+			[
 				"array_ke",
 				"array_key_exists"
 			],
@@ -19,23 +23,15 @@
 			"file": "/Users/ilyabirman/Sites/neasden/neasden/neasden.php",
 			"settings":
 			{
-				"buffer_size": 32103,
+				"buffer_size": 33408,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/Users/ilyabirman/Sites/neasden/tests/test-22.txt",
+			"file": "/Users/ilyabirman/Sites/neasden/tests/test-24.txt",
 			"settings":
 			{
-				"buffer_size": 48,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/ilyabirman/Sites/neasden/tests/test-23.txt",
-			"settings":
-			{
-				"buffer_size": 236,
+				"buffer_size": 160,
 				"line_ending": "Unix"
 			}
 		},
@@ -43,7 +39,7 @@
 			"file": "/Users/ilyabirman/Sites/neasden/neasden/config.php",
 			"settings":
 			{
-				"buffer_size": 2351,
+				"buffer_size": 2427,
 				"line_ending": "Unix"
 			}
 		},
@@ -51,7 +47,7 @@
 			"file": "/Users/ilyabirman/Sites/neasden/index.php",
 			"settings":
 			{
-				"buffer_size": 2096,
+				"buffer_size": 2126,
 				"line_ending": "Unix"
 			}
 		}
@@ -84,6 +80,8 @@
 	},
 	"file_history":
 	[
+		"/Users/ilyabirman/Sites/neasden/tests/test-23.txt",
+		"/Users/ilyabirman/Sites/neasden/tests/test-22.txt",
 		"/Users/ilyabirman/Sites/neasden/tests/test-21.txt",
 		"/Users/ilyabirman/Sites/e2/user/log.txt",
 		"/Users/ilyabirman/Sites/z2/system/core.php",
@@ -260,7 +258,6 @@
 	"groups":
 	[
 		{
-			"selected": 2,
 			"sheets":
 			[
 				{
@@ -268,15 +265,15 @@
 					"file": "/Users/ilyabirman/Sites/neasden/neasden/neasden.php",
 					"settings":
 					{
-						"buffer_size": 32103,
+						"buffer_size": 33408,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7752,
-								7752
+								23,
+								23
 							]
 						],
 						"settings":
@@ -286,25 +283,25 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4460.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "/Users/ilyabirman/Sites/neasden/tests/test-22.txt",
+					"file": "/Users/ilyabirman/Sites/neasden/tests/test-24.txt",
 					"settings":
 					{
-						"buffer_size": 48,
+						"buffer_size": 160,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								48,
-								48
+								77,
+								77
 							]
 						],
 						"settings":
@@ -319,23 +316,25 @@
 				},
 				{
 					"buffer": 2,
-					"file": "/Users/ilyabirman/Sites/neasden/tests/test-23.txt",
+					"file": "/Users/ilyabirman/Sites/neasden/neasden/config.php",
 					"settings":
 					{
-						"buffer_size": 236,
+						"buffer_size": 2427,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								236,
-								236
+								762,
+								798
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -345,46 +344,18 @@
 				},
 				{
 					"buffer": 3,
-					"file": "/Users/ilyabirman/Sites/neasden/neasden/config.php",
-					"settings":
-					{
-						"buffer_size": 2351,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								515,
-								515
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
 					"file": "/Users/ilyabirman/Sites/neasden/index.php",
 					"settings":
 					{
-						"buffer_size": 2096,
+						"buffer_size": 2126,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								977,
-								977
+								1008,
+								1008
 							]
 						],
 						"settings":
@@ -394,7 +365,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 3.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
