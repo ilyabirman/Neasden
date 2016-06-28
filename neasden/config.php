@@ -30,6 +30,7 @@
   'html.code.highlightjs' => true,
 
   'html.img.prefix' => 'pictures/',
+  'html.img.detect' => true,
 
   'groups.on' => true,
   'groups.headings.char'  => '#',
