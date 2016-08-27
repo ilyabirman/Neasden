@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"reso",
+				"resource_detected"
+			],
+			[
 				"this",
 				"thisfrag"
 			],
@@ -23,7 +27,7 @@
 			"file": "/Users/ilyabirman/Sites/neasden/neasden/neasden.php",
 			"settings":
 			{
-				"buffer_size": 33408,
+				"buffer_size": 33719,
 				"line_ending": "Unix"
 			}
 		},
@@ -39,7 +43,7 @@
 			"file": "/Users/ilyabirman/Sites/neasden/neasden/config.php",
 			"settings":
 			{
-				"buffer_size": 2427,
+				"buffer_size": 2456,
 				"line_ending": "Unix"
 			}
 		},
@@ -80,6 +84,7 @@
 	},
 	"file_history":
 	[
+		"/Users/ilyabirman/Sites/neasden/neasden/extensions/picture.php",
 		"/Users/ilyabirman/Sites/neasden/tests/test-23.txt",
 		"/Users/ilyabirman/Sites/neasden/tests/test-22.txt",
 		"/Users/ilyabirman/Sites/neasden/tests/test-21.txt",
@@ -188,6 +193,11 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"resource_detected",
+			"resou",
+			"resources_detected",
+			"resou",
+			"img",
 			"<i>",
 			"class-data",
 			"element_strength",
@@ -258,6 +268,7 @@
 	"groups":
 	[
 		{
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -265,7 +276,7 @@
 					"file": "/Users/ilyabirman/Sites/neasden/neasden/neasden.php",
 					"settings":
 					{
-						"buffer_size": 33408,
+						"buffer_size": 33719,
 						"regions":
 						{
 						},
@@ -300,8 +311,8 @@
 						"selection":
 						[
 							[
-								77,
-								77
+								120,
+								120
 							]
 						],
 						"settings":
@@ -319,15 +330,15 @@
 					"file": "/Users/ilyabirman/Sites/neasden/neasden/config.php",
 					"settings":
 					{
-						"buffer_size": 2427,
+						"buffer_size": 2456,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								762,
-								798
+								798,
+								827
 							]
 						],
 						"settings":
@@ -354,8 +365,8 @@
 						"selection":
 						[
 							[
-								1008,
-								1008
+								845,
+								845
 							]
 						],
 						"settings":
@@ -365,7 +376,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
