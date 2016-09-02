@@ -54,6 +54,14 @@
 				"buffer_size": 2126,
 				"line_ending": "Unix"
 			}
+		},
+		{
+			"file": "/Users/ilyabirman/Sites/neasden/user/neasden/extensions/fotorama.php",
+			"settings":
+			{
+				"buffer_size": 2641,
+				"line_ending": "Unix"
+			}
 		}
 	],
 	"build_system": "",
@@ -193,6 +201,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"<?php",
 			"resource_detected",
 			"resou",
 			"resources_detected",
@@ -268,7 +277,6 @@
 	"groups":
 	[
 		{
-			"selected": 2,
 			"sheets":
 			[
 				{
@@ -367,6 +375,34 @@
 							[
 								845,
 								845
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/Users/ilyabirman/Sites/neasden/user/neasden/extensions/fotorama.php",
+					"settings":
+					{
+						"buffer_size": 2641,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5,
+								5
 							]
 						],
 						"settings":
