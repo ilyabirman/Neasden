@@ -16,4 +16,4 @@ xcuserdata
 # svn & cvs
 .svn
 CVS
-_sublime/*
+_sublime/*.sublime-workspace
