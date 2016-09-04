@@ -2,12 +2,22 @@
 
 return array (
   
+  'quotes-dumb' => array ('"', "'"),
+
   'quotes' => array ('“', '‘', '’', '”'),
+
+  'quotes-auto-depth' => true,
 
   'dash' => '–',
   
-  'nobreak' => array (
-    'e. g.',
+  'replacements' => array (
+
+    'e.g.'  => 'e. g.',
+    'e. g.' => 'e. g.',
+
+    "'" => '’',
+    '"' => '”',
+
   ),
 
   'with-next' =>

@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.19
+// Neasden v2.20
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -155,69 +155,120 @@ class Neasden {
   
   }
   
+
+  // makes a particular kind of smart quotes
+  function smart_quotes_diversify_char ($char, $left, $right, $text) {
+
+    $before_open = '^|\s|[-(\[]';
+    $after_close = '$|\s|[-)\].,!?]';
+
+    // double chars
+    if (1) {
+      $text = preg_replace (
+        '/((?:'. $before_open .')'. $this->rx_tags_regex .')'.
+        preg_quote ($char) . preg_quote ($char).
+        '(?!'. $this->rx_tags_regex .'($|\-|\s))/m',
+        '$1'. $left. $left,
+        $text
+      );
+    }
+  
+    if (1) {
+      $text = preg_replace (
+        '/(?<!^|\s|\-)('. $this->rx_tags_regex .')'.
+        preg_quote ($char) . preg_quote ($char).
+        '(?='. $this->rx_tags_regex . '(?:'. $after_close . '))/m',
+        '$1'. $right. $right,
+        $text
+      );
+    }
+
+    // single chars
+    if (1) {
+      $text = preg_replace (
+        '/((?:'. $before_open .')'. $this->rx_tags_regex .')'.
+        preg_quote ($char).
+        '(?!'. $this->rx_tags_regex .'($|\-|\s))/m',
+        '$1'. $left,
+        $text
+      );
+    }
+  
+    if (1) {
+      $text = preg_replace (
+        '/(?<!^|\s|\-)('. $this->rx_tags_regex .')'.
+        preg_quote ($char).
+        '(?='. $this->rx_tags_regex . '(?:'. $after_close . '))/m',
+        '$1'. $right,
+        $text
+      );
+    }
+
+    return $text;
+
+  }
+
   
   // puts quotes, really
-  function enclose_within_tagless ($text, $char, $enclosures) {
+  function smart_quotes ($text) {
   
-    if (count ($enclosures) == 0) return;
-    if (count ($enclosures) == 1) $enclosures[1] = $enclosures[0];
-    if (count ($enclosures) == 2) {
-      $enclosures[3] = $enclosures[1];
-      $enclosures[2] = $enclosures[1];
-      $enclosures[1] = $enclosures[0];
+    $dumb = $this->language_data['quotes-dumb'];
+    if (count ($dumb) == 0) return;
+
+    $quotes = $this->language_data['quotes'];
+    if (count ($quotes) == 0) return;
+    if (count ($quotes) == 1) $quotes[1] = $quotes[0];
+    if (count ($quotes) == 2) {
+      $quotes[3] = $quotes[1];
+      $quotes[2] = $quotes[1];
+      $quotes[1] = $quotes[0];
     }
-    if (count ($enclosures) == 3) $enclosures[3] = $enclosures[2];
+    if (count ($quotes) == 3) $quotes[3] = $quotes[2];
+
+    // if a special dumb char is given for inner quotes,
+    // replace it first:
+    if (isset ($dumb[1])) $text = $this->smart_quotes_diversify_char (
+      $dumb[1], $quotes[1], $quotes[2], $text
+      /*   ' ‘ ’   */
+    );
   
-    // obvious replacements
-    if (1) {
-      $text = preg_replace ( // usafe
-        '/((?:^|\s|\-)'. $this->rx_tags_regex .')'.
-        preg_quote ($char). // usafe
-        '(?!'. $this->rx_tags_regex .'($|\-|\s))/m',
-        '$1'. $enclosures[0],
-        $text
-      );
-    }
+    // obvious replacements:
+    $text = $this->smart_quotes_diversify_char (
+      $dumb[0], $quotes[0], $quotes[3], $text
+      /*   " “ ”   or   " « »   */
+    );
   
-    if (1) {
-      $text = preg_replace ( // usafe
-        '/(?<!^|\s|\-)('. $this->rx_tags_regex .')'.
-        preg_quote ($char). // usafe
-        '(?='. $this->rx_tags_regex ."(?:$|\-|\s))/m",
-        '$1'. $enclosures[3],
-        $text
-      );
-    }
-  
-    // remaining replacements
-    if (1) {
-      $len = mb_strlen ($enclosures[0]);
+    // guess remaining replacements
+    if ($this->language_data['quotes-auto-depth']) {
       $qdepth = 0;
       for ($i = 0; $i < mb_strlen ($text)-1; ++ $i) {
-        $scan = mb_substr ($text, $i, $len);
-        if ($scan == $enclosures[0]) {
-          $qdepth ++;
-          if ($qdepth > 1) $text = mb_substr ($text, 0, $i) . $enclosures[1] . mb_substr ($text, $i + $len);
-          $i += $len;
+
+        $scan = mb_substr ($text, $i, 1);
+
+        if ($scan == $quotes[0]) {
+          ++ $qdepth;
+          if ($qdepth > 1) $text = mb_substr ($text, 0, $i) . $quotes[1] . mb_substr ($text, $i + 1);
         }
-        if ($scan == $enclosures[3]) {
-          if ($qdepth > 1) $text = mb_substr ($text, 0, $i) . $enclosures[2] . mb_substr ($text, $i + $len);
-          $qdepth --;
-          $i += $len;
+        if ($scan == $quotes[3]) {
+          if ($qdepth > 1) $text = mb_substr ($text, 0, $i) . $quotes[2] . mb_substr ($text, $i + 1);
+          -- $qdepth;
         }
         if ($i > mb_strlen ($text)-1) break;
-        if (mb_substr ($text, $i, 1) == $char) {
+
+        // replace outer quotes with inner ones
+        if ($scan == $dumb[0]) {
           if ($qdepth > 0) {
             if ($qdepth > 1)
-              $text = mb_substr ($text, 0, $i) . $enclosures[2] . mb_substr ($text, $i + 1);
+              $text = mb_substr ($text, 0, $i) . $quotes[2] . mb_substr ($text, $i + 1);
             else
-              $text = mb_substr ($text, 0, $i) . $enclosures[3] . mb_substr ($text, $i + 1);
+              $text = mb_substr ($text, 0, $i) . $quotes[3] . mb_substr ($text, $i + 1);
             -- $qdepth;
           } else {
-            $text = mb_substr ($text, 0, $i) . $enclosures[0] . mb_substr ($text, $i + 1);
+            $text = mb_substr ($text, 0, $i) . $quotes[0] . mb_substr ($text, $i + 1);
             ++ $qdepth;
           }
         }
+
       }
     }
   
@@ -234,8 +285,8 @@ class Neasden {
     @list ($href, $text) = explode (' ', $text, 2);
 
     $quotes = $this->language_data['quotes'];
-    $quotes_left = array ('"', $quotes[0], $quotes[1]);
-    $quotes_right = array ('"', $quotes[2], $quotes[3]);
+    $quotes_left = array ('"', '\'', $quotes[0], $quotes[1]);
+    $quotes_right = array ('"', '\'', $quotes[2], $quotes[3]);
     $hang_left = '';
     $hang_right = '';
 
@@ -363,6 +414,9 @@ class Neasden {
       }
     }
   
+    // quotes
+    $text = $this->smart_quotes ($text);
+  
     // replacements
     if (1) {
       if (array_key_exists ('replacements', $this->language_data)) {
@@ -373,10 +427,6 @@ class Neasden {
         );
       }
     }
-  
-    // quotes
-    $text = $this->enclose_within_tagless ($text, '"', $quotes);
-  
   
     // dash
     $text = preg_replace ( // usafe
