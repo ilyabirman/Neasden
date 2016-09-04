@@ -16,7 +16,7 @@ error_reporting(~0);
 define ('USER_FOLDER', '');
 //*/
 
-$text = file_get_contents ('tests/test-24.txt');
+$text = file_get_contents ('tests/test-25.txt');
 $res = '';
 
 function stopwatch () {

@@ -19,7 +19,7 @@
     
   'library' => '',
   
-  'language' => 'ru',
+  'language' => 'en',
   
   'html.on' => true,
   'html.elements.opaque' => 'div p ul ol li blockquote table pre textarea',
