@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.20
+// Neasden v2.21
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -865,7 +865,7 @@ class Neasden {
           $r = substr ($r, 0, -7); // remove the closing </code> tag from here
           $r = trim ($r);
           $thisfrag['content'] = $r;
-          if ($thisfrag['content']) {
+          if ($thisfrag['content'] !== '') {
             $fragments[] = $thisfrag;
           }
           $thisfrag = array ('content' => '', 'strength' => -1);
