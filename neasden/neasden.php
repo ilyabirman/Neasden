@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.21
+// Neasden v2.3
 
 interface NeasdenGroup {
   function render ($group, $myconf);
