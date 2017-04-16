@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.20
+// Neasden v2.21
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -894,9 +894,24 @@ class Neasden {
 
           $tagname = $this->element_name ($r);
 
-          if (substr ($tagname, 0, 1) != '/') { // usafe
-  
-            // open tag
+          $is_open_tag = (substr ($tagname, 0, 1) != '/');
+
+          if (!$is_open_tag) {
+            $tagname = substr ($tagname, 1);
+          }
+
+          if (strstr (' '. $this->config['html.elements.ignore'] .' ', ' '. $tagname .' ')) {
+
+            if ($thisfrag['content'] !== '') {
+              $fragments[] = $thisfrag;
+            }
+            $prev_strength = $thisfrag['strength'];
+            $thisfrag = array ('content' => $r, 'strength' => self::FRAG_STRENGTH_SACRED);
+            $fragments[] = $thisfrag;
+            $thisfrag = array ('content' => '', 'strength' => $prev_strength);
+            $r = '';
+
+          } elseif ($is_open_tag) {
   
             if (
               $this->element_strength ($tagname) > $thisfrag['strength']
@@ -910,7 +925,7 @@ class Neasden {
               $thisfrag = array ('content' => $r, 'strength' => -1);
   
             } else {
-  
+
               if ($tagname == 'img') {
                 if ($this->config['html.img.detect']) {
                   if (preg_match (
@@ -942,8 +957,7 @@ class Neasden {
           } else {
   
             // close tag
-            $tagname = substr ($tagname, 1); // usafe
-            
+                          
             if (in_array ($tagname, $tagstack)) {
 
               // so tag is in stack, so we force close it
@@ -981,7 +995,7 @@ class Neasden {
                 // closing tag makes no sense, it wasn’t open
   
                 // so end whatever fragments we have
-                if ($thisfrag['content']) {
+                if ($thisfrag['content'] !== '') {
                   $fragments[] = $thisfrag;
                 }
   
