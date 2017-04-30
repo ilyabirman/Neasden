@@ -25,6 +25,7 @@
   'html.elements.opaque' => 'p ul ol li pre',
   'html.elements.ignore' => 'div blockquote table tr td th thead tbody tfoot caption colgroup col',
   'html.elements.sacred' => 'object embed iframe head link script style code textarea',
+  'html.basic' => false,
 
   'html.code.on' => true,
   'html.code.wrap' => array ('<pre><code>', '</code></pre>'),  

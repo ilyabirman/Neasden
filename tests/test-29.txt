@@ -1,0 +1,21 @@
+Вот: 
+
+<div class="advice-question">Hey Daniel, thanks for your great blog! Quick question: how do you capture internal audio, let's say some streaming in the browser or a dialogue in a film? I'm running macOS Sierra.
+
+Anton</div>
+
+Anton, in order to capture internal audio, you need to change signal routing using a special tool. There are quite a lot of such tools out there, but among the others, I'd recommend checking out "Soundflower" — it's a free, open-source, and tiny system extension.
+
+Once installed, go to System Preferences → Sound → Output, and choose Soundflower (2ch):
+
+soundflower-1.jpg
+System preferences
+
+Now all you need is any audio recording software, whether it's your DAW or an app like Audacity. Just choose //Soundflower (2ch)// in the audio recording settings:
+
+soundflower-2.jpg
+Audacity recording preferences
+
+And that's pretty much it. Once you hit the record button, it should start recording any sound that is coming from applications on your computer.
+
+<p class="footnotes">P.S. This post is a part of the weekly “Advice” series. I’m happy to advise on such topics as production, performance, management, marketing, and design in the music industry and beyond. ((/advice/ask Send me your questions)), too.</p>
