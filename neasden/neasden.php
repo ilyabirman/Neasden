@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.21
+// Neasden v2.22
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -413,9 +413,11 @@ class Neasden {
         );
       }
     }
-  
+
     // quotes
-    $text = $this->smart_quotes ($text);
+    if (@$this->config['typography.quotes']) {
+      $text = $this->smart_quotes ($text);
+    }
   
     // replacements
     if (1) {
@@ -708,7 +710,7 @@ class Neasden {
         $last_group_class = $this->matching_group ($rdef) or $last_group_class = self::DEFAULT_GROUP;
   
       }
-  
+
       $groups[] = $line;
   
     }
