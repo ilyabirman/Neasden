@@ -273,7 +273,7 @@ class Neasden {
           $text .= $scan;
         }
         
-        $text_remaining = mb_substr ($text_remaining, 1);
+        $text_remaining = substr ($text_remaining, strlen ($scan));
         if ($text_remaining === false or $text_remaining === '') break;
 
       }
