@@ -78,6 +78,7 @@
   ),
   
   'typography.on' => true,
+  'typography.quotes' => true,
   'typography.markup' => true,
   'typography.autohref' => true,
   'typography.nofollowhrefs' => false,
