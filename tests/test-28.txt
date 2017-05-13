@@ -1,0 +1,8 @@
+<div class="advice-question">
+<p>Hey Daniel, thanks for your great blog! Quick question: how do you capture internal audio, let's say some streaming in the browser or a dialogue in a film? I'm running macOS Sierra.</p>
+<p>Anton</p>
+</div>
+
+<div class="advice-question"><p>Hey Daniel, thanks for your great blog! Quick question: how do you capture internal audio, let’s say some streaming in the browser or a dialogue in a film? I’m running macOS Sierra.</p>
+<p>Anton</p>
+</div>

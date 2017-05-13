@@ -16,7 +16,8 @@ error_reporting(~0);
 define ('USER_FOLDER', '');
 //*/
 
-$text = file_get_contents ('tests/test-27-kogut.txt');
+$text = file_get_contents ('tests/test-30-kogut.txt');
+
 $res = '';
 
 function stopwatch () {
@@ -36,9 +37,12 @@ $inputarray = array (
 if (!include 'neasden/neasden.php') die ('neasden init failed');
 $Nn = new Neasden;
 $Nn->should_explain = true;
-// $Nn->profile_name = 'kavychki';
+// $Nn->profile_name = 'full';
 
 $res = $Nn->format ($text);
+// echo '<pre>'.htmlspecialchars($res).'<br>';
+// echo sha1($text).'<br>';
+// die (sha1($res));
 
 // $res = $Nn->explanation;
 
