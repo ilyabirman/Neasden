@@ -19,7 +19,7 @@
     
   'library' => '',
   
-  'language' => 'en',
+  'language' => 'ru',
   
   'html.on' => true,
   'html.elements.opaque' => 'p ul ol li pre',

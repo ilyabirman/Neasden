@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.22
+// Neasden v2.3
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -216,6 +216,7 @@ class Neasden {
     if (count ($dumb) == 0) return;
 
     $quotes = $this->language_data['quotes'];
+
     if (count ($quotes) == 0) return;
     if (count ($quotes) == 1) $quotes[1] = $quotes[0];
     if (count ($quotes) == 2) {
@@ -237,37 +238,44 @@ class Neasden {
       $dumb[0], $quotes[0], $quotes[3], $text
       /*   " “ ”   or   " « »   */
     );
-  
+
     // guess remaining replacements
     if ($this->language_data['quotes-auto-depth']) {
+      $text_remaining = $text;
+      $text = '';
       $qdepth = 0;
-      for ($i = 0; $i < mb_strlen ($text)-1; ++ $i) {
+      while (1) {
 
-        $scan = mb_substr ($text, $i, 1);
+        // this wirdness is needed for optimization:
+        $scan = substr ($text_remaining, 0, 10);
+        $scan = mb_substr ($scan, 0, 1);
+        if ($scan === false or $scan === '') break;
 
         if ($scan == $quotes[0]) {
           ++ $qdepth;
-          if ($qdepth > 1) $text = mb_substr ($text, 0, $i) . $quotes[1] . mb_substr ($text, $i + 1);
-        }
-        if ($scan == $quotes[3]) {
-          if ($qdepth > 1) $text = mb_substr ($text, 0, $i) . $quotes[2] . mb_substr ($text, $i + 1);
+          if ($qdepth > 1) $text .= $quotes[1];
+          else $text .= $quotes[0];
+        } elseif ($scan == $quotes[3]) {
+          if ($qdepth > 1) $text .= $quotes[2];
+          else $text .= $quotes[3];
           -- $qdepth;
-        }
-        if ($i > mb_strlen ($text)-1) break;
-
-        // replace outer quotes with inner ones
-        if ($scan == $dumb[0]) {
+        } elseif ($scan == $dumb[0]) {
           if ($qdepth > 0) {
             if ($qdepth > 1)
-              $text = mb_substr ($text, 0, $i) . $quotes[2] . mb_substr ($text, $i + 1);
+              $text .= $quotes[2];
             else
-              $text = mb_substr ($text, 0, $i) . $quotes[3] . mb_substr ($text, $i + 1);
+              $text .= $quotes[3];
             -- $qdepth;
           } else {
-            $text = mb_substr ($text, 0, $i) . $quotes[0] . mb_substr ($text, $i + 1);
+            $text .= $quotes[0];
             ++ $qdepth;
           }
+        } else {
+          $text .= $scan;
         }
+        
+        $text_remaining = mb_substr ($text_remaining, 1);
+        if ($text_remaining === false or $text_remaining === '') break;
 
       }
     }
