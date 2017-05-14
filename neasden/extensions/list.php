@@ -44,7 +44,7 @@ class NeasdenGroup_list implements NeasdenGroup {
     foreach ($group as $line_number => $line) {
       $depth = max (0, $line['depth'] - $basedepth);
       $depthsp = str_repeat (' ', $depth * 2);
-    
+
       if ($line['class'] == 'empty') {
       } elseif ($line['class'] == 'p') {
     
@@ -109,9 +109,18 @@ class NeasdenGroup_list implements NeasdenGroup {
         $result .= '</li>' . "\n";
     
       }
-      
-    }
     
+    }
+
+    $depth = 0;
+    $depthsp = '';
+    
+    while ($prevdepth > 0) {
+      $list_tag = ($is_ordered_list[$prevdepth] ? 'ol' : 'ul');
+      if ($depth < $prevdepth) $result .= $depthsp. "</". $list_tag .">\n</li>\n";
+      -- $prevdepth;
+    }
+
     if ($is_ordered_list[0]) {
       $result .= '</ol>'."\n";
     } else {
