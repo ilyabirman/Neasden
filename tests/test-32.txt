@@ -1,0 +1,13 @@
+<
+
+Code didn't work before 2.42:
+
+<code>
+  angular.module('app', [])
+    .config(function(Constant, Provider) {
+      // ...
+    })
+    .controller(function(Service, Value, ...) {
+    })
+  ;
+</code>

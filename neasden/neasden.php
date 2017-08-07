@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.41
+// Neasden v2.42
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -209,7 +209,6 @@ class Neasden {
   }
 
   
-  // puts quotes, really
   function smart_quotes ($text) {
   
     $dumb = $this->language_data['quotes-dumb'];
@@ -827,6 +826,14 @@ class Neasden {
         $state = 'tag';
       }
       
+      // make sure tag is real. must start with a letter or "!"
+      if ($state == 'tag' and mb_strlen ($r) == 2) {
+        if (!preg_match ('/\<(\w|\!)/i', $r)) {
+          $prevstate = 'text';
+          $state = 'text';
+        }
+      }
+
       // echo htmlspecialchars ('['.$r.'] ('.$c.') - '.$state).'<br>';
 
       // html comments: manually manage states
@@ -838,6 +845,7 @@ class Neasden {
         $thisfrag = array ('content' => $r, 'strength' => -1);
         $r = '';
       }
+
       if ($state == 'comment' and mb_substr ($r, -3, 3) == '-->') { 
         $state = 'text';
         $thisfrag['content'] .= $r;
@@ -849,8 +857,13 @@ class Neasden {
         $r = '';
       }
     
-      // code tag: manually manage states
-      if (($state == 'text' or $state == 'code') and mb_substr ($r, -6, 6) == '<code>') {
+      if (
+        ($state == 'text' or $state == 'code' or $state == 'tag') and
+        mb_substr ($r, -6, 6) == '<code>'
+      ) {
+        if ($state == 'tag') {
+          $prevstate = 'text'; // boy is this dirty
+        }
         ++ $code_nesting;
         if ($code_nesting == 1) {
           $state = 'code';
@@ -865,6 +878,7 @@ class Neasden {
           $r = '';
         }
       }
+      
       if ($state == 'code' and mb_substr ($r, -7, 7) == '</code>') { 
 //        echo htmlspecialchars ($r);
 //        die;
@@ -885,7 +899,7 @@ class Neasden {
       // state change
       if ($state != $prevstate) {
         if ($prevstate == 'text' and $state == 'tag') {
-  
+
           // state changes from text to tag,
           // so commit all previous text to this fragment
           // start a new run with a '<'
