@@ -828,7 +828,7 @@ class Neasden {
       
       // make sure tag is real. must start with a letter or "!"
       if ($state == 'tag' and mb_strlen ($r) == 2) {
-        if (!preg_match ('/\<(\w|\!)/i', $r)) {
+        if (!preg_match ('/\<(\/|\w|\!)/i', $r)) {
           $prevstate = 'text';
           $state = 'text';
         }
