@@ -16,7 +16,7 @@ error_reporting(~0);
 define ('USER_FOLDER', '');
 //*/
 
-$text = file_get_contents ('tests/test-33.txt');
+$text = file_get_contents ('tests/test-34.txt');
 
 $res = '';
 
@@ -40,11 +40,11 @@ $Nn->should_explain = true;
 // $Nn->profile_name = 'full';
 
 $res = $Nn->format ($text);
-echo '<pre>'.htmlspecialchars($res).'<br>';
-echo sha1($text).'<br>';
-die (sha1($res));
+// echo '<pre>'.htmlspecialchars($res).'<br>';
+// echo sha1($text).'<br>';
+// die (sha1($res));
 
-// $res = $Nn->explanation;
+$res = $Nn->explanation;
 
 $stopwatch = stopwatch () - $stopwatch;
 
