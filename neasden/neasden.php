@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.42
+// Neasden v2.43
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -839,7 +839,7 @@ class Neasden {
       // html comments: manually manage states
       if ($state == 'tag' and $r == '<!--') {
         $state = 'comment';
-        if ($thisfrag['content']) {
+        if ($thisfrag['content'] !== '') {
           $fragments[] = $thisfrag;
         }
         $thisfrag = array ('content' => $r, 'strength' => -1);
@@ -850,7 +850,7 @@ class Neasden {
         $state = 'text';
         $thisfrag['content'] .= $r;
         $thisfrag['strength'] = self::FRAG_STRENGTH_SACRED;
-        if ($thisfrag['content']) {
+        if ($thisfrag['content'] !== '') {
           $fragments[] = $thisfrag;
         }
         $thisfrag = array ('content' => '', 'strength' => -1);
@@ -867,7 +867,7 @@ class Neasden {
         ++ $code_nesting;
         if ($code_nesting == 1) {
           $state = 'code';
-          if ($thisfrag['content']) {
+          if ($thisfrag['content'] !== '') {
             $fragments[] = $thisfrag;
           }
           $thisfrag = array (
@@ -942,7 +942,7 @@ class Neasden {
   
               // new fragment is stronger,
               // so commit this fragment to fragments, start a new fragment
-              if ($thisfrag['content']) {
+              if ($thisfrag['content'] !== '') {
                 $fragments[] = $thisfrag;
               }
               $thisfrag = array ('content' => $r, 'strength' => -1);
@@ -1050,7 +1050,7 @@ class Neasden {
     }
     $r = '';
   
-    if ($thisfrag['content']) {
+    if ($thisfrag['content'] !== '') {
       $fragments[] = $thisfrag;
     }
   
