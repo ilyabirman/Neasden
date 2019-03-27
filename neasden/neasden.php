@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.43
+// Neasden v2.5
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -846,7 +846,7 @@ class Neasden {
         $r = '';
       }
 
-      if ($state == 'comment' and mb_substr ($r, -3, 3) == '-->') { 
+      if ($state == 'comment' and substr ($r, -3, 3) == '-->') { 
         $state = 'text';
         $thisfrag['content'] .= $r;
         $thisfrag['strength'] = self::FRAG_STRENGTH_SACRED;
@@ -859,7 +859,7 @@ class Neasden {
     
       if (
         ($state == 'text' or $state == 'code' or $state == 'tag') and
-        mb_substr ($r, -6, 6) == '<code>'
+        substr ($r, -6, 6) == '<code>'
       ) {
         if ($state == 'tag') {
           $prevstate = 'text'; // boy is this dirty
@@ -879,7 +879,7 @@ class Neasden {
         }
       }
       
-      if ($state == 'code' and mb_substr ($r, -7, 7) == '</code>') { 
+      if ($state == 'code' and substr ($r, -7, 7) == '</code>') { 
 //        echo htmlspecialchars ($r);
 //        die;
         -- $code_nesting;
@@ -1070,9 +1070,9 @@ class Neasden {
     }
     
     // dirty split
-    // echo '1='. (self::stopwatch () - $this->stopwatch)."<br>";
+    echo '1='. (self::stopwatch () - $this->stopwatch)."<br>";
     $initial_fragments = $this->split_fragments ($text);
-    // echo '2='. (self::stopwatch () - $this->stopwatch)."<br>";
+    echo '2='. (self::stopwatch () - $this->stopwatch)."<br>";
     
     // process initial fragments
     $resulting_fragments = array ();  
@@ -1130,7 +1130,7 @@ class Neasden {
     
     }
     
-    // echo '3='. (self::stopwatch () - $this->stopwatch)."<br>";
+    echo '3='. (self::stopwatch () - $this->stopwatch)."<br>";
 
     return $resulting_fragments;
     
