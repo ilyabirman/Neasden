@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.5
+// Neasden v2.6
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -211,6 +211,8 @@ class Neasden {
   
   function smart_quotes ($text) {
   
+    // echo '1350='. (self::stopwatch () - $this->stopwatch)."<br>";
+
     $dumb = $this->language_data['quotes-dumb'];
     if (count ($dumb) == 0) return;
 
@@ -231,54 +233,69 @@ class Neasden {
       /*   ' ‘ ’   */
     );
   
+    // echo '1354='. (self::stopwatch () - $this->stopwatch)."<br>";
     // obvious replacements:
     $text = $this->smart_quotes_diversify_char (
       $dumb[0], $quotes[0], $quotes[3], $text
       /*   " “ ”   or   " « »   */
     );
+    // echo '1355='. (self::stopwatch () - $this->stopwatch)."<br>";
 
     // guess remaining replacements
     if ($this->language_data['quotes-auto-depth']) {
-      $text_remaining = $text;
-      $text = '';
+
+      $text_pointer = 0;
+      $text_length = strlen ($text);
+      $new_text = '';
+
       $qdepth = 0;
+
       while (1) {
 
-        // this wirdness is needed for optimization:
-        $scan = substr ($text_remaining, 0, 10);
-        $scan = mb_substr ($scan, 0, 1);
+        $first_char = ord ($text[$text_pointer]);
+
+        if ($first_char < 128)      $scan_bytes = 1;
+        elseif ($first_char < 224)  $scan_bytes = 2;
+        elseif ($first_char < 240)  $scan_bytes = 3;
+        elseif ($first_char < 248)  $scan_bytes = 4;
+        elseif ($first_char == 252) $scan_bytes = 5;
+        else                        $scan_bytes = 6;
+
+        $scan = substr ($text, $text_pointer, $scan_bytes);
+
         if ($scan === false or $scan === '') break;
 
         if ($scan == $quotes[0]) {
           ++ $qdepth;
           if ($qdepth > 1) $text .= $quotes[1];
-          else $text .= $quotes[0];
+          else $new_text .= $quotes[0];
         } elseif ($scan == $quotes[3]) {
           if ($qdepth > 1) $text .= $quotes[2];
-          else $text .= $quotes[3];
+          else $new_text .= $quotes[3];
           -- $qdepth;
         } elseif ($scan == $dumb[0]) {
           if ($qdepth > 0) {
             if ($qdepth > 1)
-              $text .= $quotes[2];
+              $new_text .= $quotes[2];
             else
-              $text .= $quotes[3];
+              $new_text .= $quotes[3];
             -- $qdepth;
           } else {
-            $text .= $quotes[0];
+            $new_text .= $quotes[0];
             ++ $qdepth;
           }
         } else {
-          $text .= $scan;
+          $new_text .= $scan;
         }
         
-        $text_remaining = substr ($text_remaining, strlen ($scan));
-        if ($text_remaining === false or $text_remaining === '') break;
+        $text_pointer += $scan_bytes;
+        if ($text_pointer >= $text_length) break;
 
       }
     }
   
-    return $text;                                                
+    // echo '1359='. (self::stopwatch () - $this->stopwatch)."<br>";
+    return $new_text; 
   
   }
   
@@ -366,8 +383,8 @@ class Neasden {
     //$span_tsp = $this->isolate ('<span class=\"tsp\">'. $nbsp .'</span>');
     $nobr_in = $this->isolate ('<nobr>');
     $nobr_out = $this->isolate ('</nobr>');
-  
-    $text = preg_replace_callback ('/(?:\<[^\>]+\>)/isxu', array ($this, 'isolate'), $text); // usafe
+
+    $text = preg_replace_callback ('/(?:\<[^\>]+\>)/u', array ($this, 'isolate'), $text); // usafe
   
     if (@$this->config['typography.markup']) {
 
@@ -488,19 +505,24 @@ class Neasden {
   // should be typographed with this function
   
   private function process_opaque_fragment ($text) {
-  
+
+    // echo '10='. (self::stopwatch () - $this->stopwatch)."<br>";
+
     // replace &laquo; with normal quote characters
     $text = str_replace (
       array_keys ($this->config['typography.cleanup']),
       array_values ($this->config['typography.cleanup']),
       $text
     );
-  
+    // echo '11='. (self::stopwatch () - $this->stopwatch)."<br>";
+
     if ($this->config['typography.on']) {
       $text = $this->typography ($text);
     }
+    // echo '12='. (self::stopwatch () - $this->stopwatch)."<br>";
   
     $text = $this->unisolate ($text);
+    // echo '13='. (self::stopwatch () - $this->stopwatch)."<br>";
   
     return $text;
   
@@ -1073,6 +1095,7 @@ class Neasden {
     echo '1='. (self::stopwatch () - $this->stopwatch)."<br>";
     $initial_fragments = $this->split_fragments ($text);
     echo '2='. (self::stopwatch () - $this->stopwatch)."<br>";
+    // echo count($initial_fragments)."<br>";
     
     // process initial fragments
     $resulting_fragments = array ();  
@@ -1091,7 +1114,7 @@ class Neasden {
         $this->config['groups.on'] and
         $initial_fragment['strength'] == self::FRAG_STRENGTH_TEXT
       ) {
-    
+
         $resulting_fragment['result'] = '';
         $resulting_fragment['processing'] = array ();
     
