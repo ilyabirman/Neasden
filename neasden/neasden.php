@@ -1092,9 +1092,9 @@ class Neasden {
     }
     
     // dirty split
-    echo '1='. (self::stopwatch () - $this->stopwatch)."<br>";
+    // echo '1='. (self::stopwatch () - $this->stopwatch)."<br>";
     $initial_fragments = $this->split_fragments ($text);
-    echo '2='. (self::stopwatch () - $this->stopwatch)."<br>";
+    // echo '2='. (self::stopwatch () - $this->stopwatch)."<br>";
     // echo count($initial_fragments)."<br>";
     
     // process initial fragments
@@ -1153,7 +1153,7 @@ class Neasden {
     
     }
     
-    echo '3='. (self::stopwatch () - $this->stopwatch)."<br>";
+    // echo '3='. (self::stopwatch () - $this->stopwatch)."<br>";
 
     return $resulting_fragments;
     
