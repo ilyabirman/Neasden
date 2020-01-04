@@ -7,6 +7,12 @@ explanation должен быть пустым, если не просили
 в ХТМЛ-коде генерируемых таблиц какие-то мусорные пробелы
 */
 
+// 
+// вот это неправильно обрабатывается:
+// ((https://ilyabirman.ru/meanwhile/all/jerusalem-old-city-street-name-plates/ Иерусалим (старый город)))
+// см. test-38.txt
+
+
 header ('Content-Type: text/html; charset=utf-8');
 //error_reporting (E_ALL & ~E_NOTICE);
 error_reporting (E_ALL);
@@ -16,7 +22,7 @@ error_reporting(~0);
 define ('USER_FOLDER', '');
 //*/
 
-$text = file_get_contents ('tests/test-36.txt');
+$text = file_get_contents ('tests/test-39.txt');
 
 $res = '';
 
@@ -37,14 +43,14 @@ $inputarray = array (
 if (!include 'neasden/neasden.php') die ('neasden init failed');
 $Nn = new Neasden;
 // $Nn->should_explain = true;
-$Nn->profile_name = 'kavychki';
+// $Nn->profile_name = 'kavychki';
 
 $res = $Nn->format ($text);
-// echo '<pre>'.htmlspecialchars($res).'<br>';
+echo '<pre>'.htmlspecialchars($res).'<br>';
 // echo sha1($text).'<br>';
 // die (sha1($res));
 
-$res = $Nn->explanation;
+// $res = $Nn->explanation;
 
 $stopwatch = stopwatch () - $stopwatch;
 

@@ -1,0 +1,6 @@
+<code>1</code>
+
+<pre class="e2-text-code"><code class="python">
+def test:
+     pass
+</code></pre>

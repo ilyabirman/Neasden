@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.6
+// Neasden v2.61
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -213,6 +213,8 @@ class Neasden {
   
     // echo '1350='. (self::stopwatch () - $this->stopwatch)."<br>";
 
+    if ($text === '') return '';
+
     $dumb = $this->language_data['quotes-dumb'];
     if (count ($dumb) == 0) return;
 
@@ -388,7 +390,7 @@ class Neasden {
   
     if (@$this->config['typography.markup']) {
 
-      // double brackets
+      // double parentheses and brackets
       $chars = array ('\\(', '\\)', '\\[', '\\]');
       $text = preg_replace_callback ( // usafe
         '/'.
@@ -419,7 +421,7 @@ class Neasden {
         );
       }
 
-      // wiki stuff
+      // wiki stuff: italic, bold, strike through
       $duomap = array ('/' => 'i', '*' => 'b', '-' => 's');
       foreach ($duomap as $from => $to) {
         if (!@$t_in[$to]) $t_in[$to] = $this->isolate ('<'. $to .'>');
@@ -879,6 +881,15 @@ class Neasden {
         $r = '';
       }
     
+      if (
+        substr ($r, -5, 5) == '<code'
+      ) {
+        if ($this->config['html.code.highlightjs']) {
+          $this->links_required[] = @$this->config['library']. 'highlight/highlight.js';
+          $this->links_required[] = @$this->config['library']. 'highlight/highlight.css';
+        }
+      }
+
       if (
         ($state == 'text' or $state == 'code' or $state == 'tag') and
         substr ($r, -6, 6) == '<code>'
