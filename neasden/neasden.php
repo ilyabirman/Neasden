@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.7
+// Neasden v2.71
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -212,7 +212,6 @@ class Neasden {
   function smart_quotes ($text) {
   
     // echo '1350='. (self::stopwatch () - $this->stopwatch)."<br>";
-
     if ($text === '') return '';
 
     $dumb = $this->language_data['quotes-dumb'];
@@ -269,10 +268,10 @@ class Neasden {
 
         if ($scan == $quotes[0]) {
           ++ $qdepth;
-          if ($qdepth > 1) $text .= $quotes[1];
+          if ($qdepth > 1) $new_text .= $quotes[1];
           else $new_text .= $quotes[0];
         } elseif ($scan == $quotes[3]) {
-          if ($qdepth > 1) $text .= $quotes[2];
+          if ($qdepth > 1) $new_text .= $quotes[2];
           else $new_text .= $quotes[3];
           -- $qdepth;
         } elseif ($scan == $dumb[0]) {

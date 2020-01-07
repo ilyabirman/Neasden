@@ -22,7 +22,7 @@ error_reporting(~0);
 define ('USER_FOLDER', '');
 //*/
 
-$text = file_get_contents ('tests/test-39.txt');
+$text = file_get_contents ('tests/test-40.txt');
 
 $res = '';
 
