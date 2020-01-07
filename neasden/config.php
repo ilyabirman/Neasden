@@ -28,7 +28,8 @@
   'html.basic' => false,
 
   'html.code.on' => true,
-  'html.code.wrap' => array ('<pre><code>', '</code></pre>'),  
+  // 'html.code.wrap' => array ('<pre><code>', '</code></pre>'),  
+  'html.code.wrap' => array ('<pre><code class="%s">', '</code></pre>'),  
   'html.code.highlightjs' => true,
 
   'html.img.prefix' => 'pictures/',

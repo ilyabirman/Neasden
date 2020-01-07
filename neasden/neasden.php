@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.61
+// Neasden v2.7
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -891,8 +891,8 @@ class Neasden {
       }
 
       if (
-        ($state == 'text' or $state == 'code' or $state == 'tag') and
-        substr ($r, -6, 6) == '<code>'
+        in_array ($state, ['text', 'code', 'tag']) and
+        preg_match ('/<code(?:\s+lang=([^> ]+)\s*)?>$/si', $r, $m)
       ) {
         if ($state == 'tag') {
           $prevstate = 'text'; // boy is this dirty
@@ -903,11 +903,12 @@ class Neasden {
           if ($thisfrag['content'] !== '') {
             $fragments[] = $thisfrag;
           }
-          $thisfrag = array (
+          $thisfrag = [
             'content' => '', // don’t put the very <code> tag here
             'strength' => self::FRAG_STRENGTH_SACRED,
-            'code' => 1
-          );
+            'code' => 1,
+            'lang' => isset($m[1]) ? trim($m[1], '"\'') : ''
+          ];
           $r = '';
         }
       }
@@ -1145,7 +1146,7 @@ class Neasden {
       if (array_key_exists ('code', $initial_fragment) and $initial_fragment['code']) {
         if ($this->config['html.code.on']) {
           $resulting_fragment['result'] = (
-            $this->config['html.code.wrap'][0] .
+            sprintf ($this->config['html.code.wrap'][0], $initial_fragment['lang']) .
             htmlspecialchars ($resulting_fragment['result']) .
             $this->config['html.code.wrap'][1]
           );
