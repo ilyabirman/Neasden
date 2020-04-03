@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.72
+// Neasden v2.73
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -22,10 +22,10 @@ class Neasden {
   public $should_explain = false;
   public $profile_name = '';
   public $explanation = '';
-  public $resources_detected = array ();  
+  public $resources_detected = [];
+  public $ctree = [];
   
-  public $language_data = array (
-  );
+  public $language_data = [];
   
   private $groups = array (
     'empty'   => '(-empty-)+',
@@ -38,10 +38,10 @@ class Neasden {
     'h6'      => '(-h6-)+',
   );
 
-  private $line_classes = array ();
-  private $required_line_classes = array ();
-  private $saved_tags = array ();
-  private $extensions = array ();
+  private $line_classes = [];
+  private $required_line_classes = [];
+  private $saved_tags = [];
+  private $extensions = [];
   private $stopwatch = 0;
 
   const RX_SPECIAL_CHAR = "\x1";
@@ -51,9 +51,9 @@ class Neasden {
   
   function __construct () {
 
-    $this->resources_detected = array ();
-    $this->links_required = array ();
-    $this->groups_used = array ();
+    $this->resources_detected = [];
+    $this->links_required = [];
+    $this->groups_used = [];
     
     $this->rx_tags_regex = (
       '(?:'. 
@@ -135,7 +135,6 @@ class Neasden {
       $this->links_required[] = $link;
     }
   }
-  
   
   function special_sequence ($index) {
     return self::RX_SPECIAL_CHAR . str_pad ($index, self::RX_SPECIAL_SEQUENCE_LENGTH, '0', STR_PAD_LEFT) . self::RX_SPECIAL_CHAR; // usafe
@@ -561,7 +560,7 @@ class Neasden {
   
       if (count ($group)) {
 
-        $lines_content = array ();
+        $lines_content = [];
         foreach ($group as $line) {
           $lines_content[] = $line['content'];
         }
@@ -660,12 +659,12 @@ class Neasden {
     $depths_spaceshifts = array (0);
     $depth = 0;
   
-    $list_levels = array ();
+    $list_levels = [];
   
     $last_group_class = self::DEFAULT_GROUP;
   
-    $groups = array ();
-    $good_buffer = array ();
+    $groups = [];
+    $good_buffer = [];
   
     $rdef = '';
   
@@ -802,8 +801,8 @@ class Neasden {
       'attr-d' => array (
         '"' => 'tag',
       ),
-      'comment' => array (),
-      'code' => array (),
+      'comment' => [],
+      'code' => [],
     );
   
     // raw length
@@ -811,8 +810,8 @@ class Neasden {
     $r = '';
     $state = 'text';
     $prevstate = 'text';
-    $tagstack = array ();
-    $fragments = array ();
+    $tagstack = [];
+    $fragments = [];
     $thisfrag = array ('content' => '', 'strength' => -1);
     $current_el = '';
     $code_nesting = 0;
@@ -888,8 +887,8 @@ class Neasden {
         substr ($r, -5, 5) == '<code'
       ) {
         if ($this->config['html.code.highlightjs']) {
-          $this->links_required[] = @$this->config['library']. 'highlight/highlight.js';
-          $this->links_required[] = @$this->config['library']. 'highlight/highlight.css';
+          $this->require_link (@$this->config['library']. 'highlight/highlight.js');
+          $this->require_link (@$this->config['library']. 'highlight/highlight.css');
         }
       }
 
@@ -1113,7 +1112,7 @@ class Neasden {
     // echo count($initial_fragments)."<br>";
     
     // process initial fragments
-    $resulting_fragments = array ();  
+    $resulting_fragments = [];  
     foreach ($initial_fragments as $initial_fragment) {
     
       // if explaining, borough the initial
@@ -1131,9 +1130,11 @@ class Neasden {
       ) {
 
         $resulting_fragment['result'] = '';
-        $resulting_fragment['processing'] = array ();
+        $resulting_fragment['processing'] = [];
+
+        $groups = $this->groups ($initial_fragment['content']);
     
-        foreach ($this->groups ($initial_fragment['content']) as $group) {
+        foreach ($groups as $group) {
           $resulting_fragment['processing'][] = $group;
           $resulting_fragment['result'] .= $group['result'];
         }
@@ -1154,8 +1155,8 @@ class Neasden {
             $this->config['html.code.wrap'][1]
           );
           if ($this->config['html.code.highlightjs']) {
-            $this->links_required[] = @$this->config['library']. 'highlight/highlight.js';
-            $this->links_required[] = @$this->config['library']. 'highlight/highlight.css';
+            $this->require_link (@$this->config['library']. 'highlight/highlight.js');
+            $this->require_link (@$this->config['library']. 'highlight/highlight.css');
           }
         } else {
           $resulting_fragment['result'] = '<code>'. $resulting_fragment['result'] .'</code>';
@@ -1163,12 +1164,23 @@ class Neasden {
       }
     
       $resulting_fragments[] = $resulting_fragment;
+
+      if ($resulting_fragment['strength'] >= self::FRAG_STRENGTH_OPAQUE) {
+        $this->ctree[] = $resulting_fragment['result'];
+      } else {
+        $this->ctree[] = $groups;
+      }
+      
       // echo '['. substr (htmlspecialchars ($resulting_fragment['result']), 0, 30) .']<br>';
       // echo '0='. (self::stopwatch () - $this->stopwatch)."<br>";
     
     }
     
     // echo '3='. (self::stopwatch () - $this->stopwatch)."<br>";
+
+    // echo '<pre>';
+    // echo htmlspecialchars (print_r ($resulting_fragments, true));
+    // die;
 
     return $resulting_fragments;
     
