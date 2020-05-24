@@ -1,0 +1,10 @@
+    <h2>Подключение</h2>
+    <p>Добавьте в элемент <code>&lt;head&gt;</code> на странице:</p>
+
+    <blockquote><code>
+      &lt;script src="/путь/к/<wbr />jquery.js"&gt;&lt;/script&gt;<br />
+      &lt;script src="jouele/<wbr />jouele.js"&gt;&lt;/script&gt;<br />
+      &lt;link rel="stylesheet" type="text/css" href="jouele/jouele.css" /&gt;<br />
+    </code></blockquote>
+
+    <h2>Простое использование</h2>

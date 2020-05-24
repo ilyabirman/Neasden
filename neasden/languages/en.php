@@ -13,7 +13,9 @@ return array (
   'replacements' => array (
 
     'e.g.'  => 'e. g.',
-    'e. g.' => 'e. g.',
+    'e. g.' => 'e. g.',
+    'E.g.'  => 'E. g.',
+    'E. g.' => 'E. g.',
 
     "'" => '’',
     '"' => '”',

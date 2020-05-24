@@ -1,0 +1,10 @@
+<aside>
+<div>
+<a href=""><img src="https://site.ru/i.jpg" width="200px" height="100px">
+<div>
+<p class="header1">Заголовок</p>
+<p class="lead1">Подзаголовок</p>
+</div>
+</a>
+</div>
+</aside>
