@@ -23,7 +23,7 @@ class Neasden {
   public $profile_name = '';
   public $explanation = '';
   public $resources_detected = [];
-  public $ctree = [];
+  // public $ctree = [];
   
   public $language_data = [];
   
@@ -1166,11 +1166,11 @@ class Neasden {
     
       $resulting_fragments[] = $resulting_fragment;
 
-      if ($resulting_fragment['strength'] >= self::FRAG_STRENGTH_OPAQUE) {
-        $this->ctree[] = $resulting_fragment['result'];
-      } else {
-        $this->ctree[] = $groups;
-      }
+      // if ($resulting_fragment['strength'] >= self::FRAG_STRENGTH_OPAQUE) {
+      //   $this->ctree[] = $resulting_fragment['result'];
+      // } elseif (isset ($groups)) {
+      //   $this->ctree[] = $groups;
+      // }
       
       // echo '['. substr (htmlspecialchars ($resulting_fragment['result']), 0, 30) .']<br>';
       // echo '0='. (self::stopwatch () - $this->stopwatch)."<br>";

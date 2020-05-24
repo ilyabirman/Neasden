@@ -22,7 +22,7 @@ error_reporting(~0);
 define ('USER_FOLDER', '');
 //*/
 
-$text = file_get_contents ('tests/test-40.txt');
+$text = file_get_contents ('tests/test-42.txt');
 
 $res = '';
 
@@ -42,15 +42,18 @@ $inputarray = array (
 
 if (!include 'neasden/neasden.php') die ('neasden init failed');
 $Nn = new Neasden;
-// $Nn->should_explain = true;
-// $Nn->profile_name = 'kavychki';
+$Nn->should_explain = true;
+$Nn->profile_name = 'kavychki';
 
 $res = $Nn->format ($text);
-echo '<pre>'.htmlspecialchars($res).'<br>';
+
+file_put_contents ('check.json', json_encode ($Nn->ctree, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+// echo '<pre>'.htmlspecialchars($res).'<br>';
+echo $res;
 // echo sha1($text).'<br>';
 // die (sha1($res));
 
-// $res = $Nn->explanation;
+$res = $Nn->explanation;
 
 $stopwatch = stopwatch () - $stopwatch;
 
