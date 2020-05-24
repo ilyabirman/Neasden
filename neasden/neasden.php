@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.74
+// Neasden v2.75
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -472,7 +472,6 @@ class Neasden {
     // unions and prepositions
     if (1) {
       if ($nobreak_fw = $this->language_data['with-next']) {
-        $nobreak_fw = str_replace ('$', '\$', $nobreak_fw);
         $text = preg_replace ( // usafe
           "/".
           "(?<!\pL|\-)".    // not-a—Unicode-letter-or-dash lookbehind
@@ -486,7 +485,6 @@ class Neasden {
       }
   
       if ($nobreak_bw = $this->language_data['with-prev']) {
-        $nobreak_bw = str_replace ('$', '\$', $nobreak_bw);
         $text = preg_replace ( // usafe
           "/".
           " ".             // a space

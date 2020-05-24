@@ -28,9 +28,9 @@ return array (
   ),
 
   'with-next' =>
-  '(a|à|an|as|and|\&|at|but|by|ce|ces|cet|de|des|du|en|et|for|in|la|le|les|ne|no|not|of|on|or|per|the|to|un|une|$|€|£)', // cette|dans|
+  '(a|à|an|as|and|\&|at|but|by|ce|ces|cet|de|des|du|en|et|for|in|la|le|les|ne|no|not|of|on|or|per|the|to|un|une|\$|€|£)', // cette|dans|
 
-  'with-prev' => '(₽|$|€|£)',
+  'with-prev' => '(₽|\$|€|£)',
   
 );
 
