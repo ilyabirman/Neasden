@@ -1,8 +1,0 @@
-[
-    "<p>Добавьте в элемент ",
-    "<code>&lt;head&gt;<\/code>",
-    " на странице:<\/p>\n",
-    "<blockquote>",
-    "<code>&lt;script src=\"\/путь\/к\/<wbr \/>jquery.js\"&gt;&lt;\/script&gt;<br \/>\r\n      &lt;script src=\"jouele\/<wbr \/>jouele.js\"&gt;&lt;\/script&gt;<br \/>\r\n      &lt;link rel=\"stylesheet\" type=\"text\/css\" href=\"jouele\/jouele.css\" \/&gt;<br \/><\/code>",
-    "<\/blockquote>"
-]
