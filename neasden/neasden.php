@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.75
+// Neasden v2.76
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -628,7 +628,8 @@ class Neasden {
       $regex = '/^(?:'. $regex .')$/isu';
       if (preg_match ($regex, $line, $matches)) { // usafe
         if (
-          !method_exists (@$this->extensions[$class]['instance'], 'detect_line')
+          !@$this->extensions[$class]['instance']
+          or !method_exists (@$this->extensions[$class]['instance'], 'detect_line')
           or $this->extensions[$class]['instance']->detect_line ($line, @$this->config['groups.classes'][$class])
         ) {
           $result['class'] = $class;
