@@ -26,7 +26,7 @@ class NeasdenGroup_picture implements NeasdenGroup {
       
       // check if alt start with an url
       @list ($link, $newalt) = explode (' ', $alt, 2);
-      if (preg_match ('/[a-z]+\:.+/i', $link)) { // usafe
+      if (preg_match ('/[a-z]+\:.+/i', $link)) {
         $alt = $newalt;
       } else {
         $link = '';

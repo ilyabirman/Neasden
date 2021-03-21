@@ -28,7 +28,7 @@ sfd
 </style>
 
 <code>
-<? // mui // usafe+
+<?
 
 function e2m_password () {
   global $settings, $_strings;

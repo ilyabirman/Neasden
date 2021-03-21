@@ -84,12 +84,12 @@ class NeasdenGroup_list implements NeasdenGroup {
         $result .= '<li>';
     
         if ($line['class'] == 'ol-item') {
-          $line_numberless = ltrim ($line['content'], '0123456789'); // usafe
-          $result .= ltrim (mb_substr ($line_numberless, 1), ' '); // usafe
+          $line_numberless = ltrim ($line['content'], '0123456789');
+          $result .= ltrim (mb_substr ($line_numberless, 1), ' ');
         }
     
         if ($line['class'] == 'ul-item') {
-          $result .= ltrim (mb_substr ($line['content'], 1), ' ' . $line['content'][0]); // usafe
+          $result .= ltrim (mb_substr ($line['content'], 1), ' ' . $line['content'][0]);
         }
         
       }
