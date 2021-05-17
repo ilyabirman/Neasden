@@ -15,8 +15,7 @@ class NeasdenGroup_picture implements NeasdenGroup {
     list ($filebasename, ) = explode (' ', $line, 2);  
     return is_file ($myconf['folder'] . $filebasename);
   }
-  
-  
+
   function render ($group, $myconf) {
     $p = false;
   

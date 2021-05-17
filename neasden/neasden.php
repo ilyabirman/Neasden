@@ -1,6 +1,6 @@
 <?php
 
-// Neasden v2.76
+// Neasden v2.77
 
 interface NeasdenGroup {
   function render ($group, $myconf);
@@ -986,7 +986,7 @@ class Neasden {
             } else {
 
               if ($tagname == 'img') {
-                if ($this->config['html.img.detect']) {
+                if (@$this->config['html.img.detect']) {
                   if (preg_match (
                     '/\ssrc\=\"(?!.*?\:\/\/)(.*?)\"/i',
                     $r,
@@ -995,7 +995,7 @@ class Neasden {
                     $this -> resource_detected ($matches[1]);
                   }
                 }
-                if ($this->config['html.img.prefix']) {
+                if (@$this->config['html.img.prefix']) {
                   $r = preg_replace (
                     '/(\s)src\=\"(?!\/|.*?\:\/\/)/i',
                     '$1src="'. $this->config['html.img.prefix'],
